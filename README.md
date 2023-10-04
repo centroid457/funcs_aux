@@ -1,4 +1,5 @@
 # funcs_aux
+Now its just a beginning!
 Designed to collect useful funcs in one place!
 
 ## Features

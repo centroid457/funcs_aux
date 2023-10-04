@@ -2,7 +2,7 @@
 Designed to collect useful funcs in one place!
 
 ## Features
-1. 88888888888888888888888
+1. 
 
 
 ## License
@@ -26,14 +26,3 @@ from funcs_aux import *
 
 
 ## GUIDE
-
-### 1. Env
-*
-
-```python
-from funcs_aux import *
-
-
-class Cls:
-    pass
-```

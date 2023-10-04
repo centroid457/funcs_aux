@@ -29,9 +29,11 @@ def array_2d_get_compact_str(
     row_pos = 0
     result: str = ""
 
-    tab_row_nums = (count_rows +1)/10 + 1
-    if (count_rows+1)%10 > 0:
-        tab_row_nums += 1
+    # tab_row_nums = (count_rows +1)//10 + 1
+    # if (count_rows+1)%10 > 0:
+    #     tab_row_nums += 1
+
+    tab_row_nums = 4
 
     if wrap:
         if use_rows_num:

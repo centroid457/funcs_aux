@@ -64,7 +64,7 @@ class Test__np:
             (np.array([[1,2,],[1,2,]]), {1:"#"}, None, None, None, None, "#2\n#2", True),
             (np.array([[1,2,],[1,2,]]), None, 1, None, None, None, "12\n\n12", True),
             (np.array([[1,2,],[1,2,]]), None, None, True, None, None, "==\n12\n12\n==", True),
-            (np.array([[1,2,],[1,2,]]), None, None, None, True, None, "1 12\n2 12", True),
+            (np.array([[1,2,],[1,2,]]), None, None, None, True, None, "1   12\n2   12", True),
         ])
     def test__array_2d_get_compact_str(self, p1, p2, p3, p4, p5, _func_result, _EXPECTED, _EXPECT_COMPARE):
         test_obj_link = array_2d_get_compact_str

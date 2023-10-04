@@ -29,9 +29,13 @@ def array_2d_get_compact_str(
     row_pos = 0
     result: str = ""
 
+    tab_row_nums = (count_rows +1)/10 + 1
+    if (count_rows+1)%10 > 0:
+        tab_row_nums += 1
+
     if wrap:
         if use_rows_num:
-            result += " " * 3
+            result += " " * tab_row_nums
         result += "=" * count_columns + "\n"
 
     for row in array:
@@ -40,21 +44,20 @@ def array_2d_get_compact_str(
             result += f"\n"
 
         if use_rows_num:
-            result += f"{row_pos:3} "
+            result += "{:{width}}".format(str(row_pos), width=tab_row_nums)
         for value in row:
             replaced = interpreter.get(value)
             if replaced is not None:
                 value = replaced
             result += f"{value}"
 
-        # result += f"\n"
         if row_pos != count_rows:
             result += f"\n"
 
     if wrap:
         result += "\n"
         if use_rows_num:
-            result += " " * 3
+            result += " " * tab_row_nums
         result += "=" * count_columns
 
     return result

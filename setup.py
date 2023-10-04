@@ -13,8 +13,8 @@ NAME = "funcs_aux"
 
 setup(
   version="0.0.1",
-  description="________________",
-  keywords=["________________", ],
+  description="useful funcs in one place",
+  keywords=["functions", "auxiliary"],
   classifiers=[
     # "Topic :: ________________",
 
@@ -32,7 +32,7 @@ setup(
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.11",
     "Operating System :: OS Independent",
-    # "Environment :: Console",
+    "Environment :: Console",
     "Intended Audience :: Developers",
     "Natural Language :: English",
     "Typing :: Typed",

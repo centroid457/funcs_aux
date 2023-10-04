@@ -58,19 +58,23 @@ STR_EXCEPTION_MARK = "***STR_EXCEPTION_MARK***"
 class Test__np:
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
-        argnames="p1,p2,_func_result,_EXPECTED,_EXPECT_COMPARE",
+        argnames="p1,p2,p3,p4,p5,_func_result,_EXPECTED,_EXPECT_COMPARE",
         argvalues=[
-            (np.array([[1,2,],[1,2,]]), None, None, "12\n12", True),
-            (np.array([[1,2,],[1,2,]]), {1:"#"}, None, "#2\n#2", True),
+            (np.array([[1,2,],[1,2,]]), None, None, None, None, None, "12\n12", True),
+            (np.array([[1,2,],[1,2,]]), {1:"#"}, None, None, None, None, "#2\n#2", True),
+            (np.array([[1,2,],[1,2,]]), None, 1, None, None, None, "12\n\n12", True),
+            (np.array([[1,2,],[1,2,]]), None, None, True, None, None, "==\n12\n12\n==", True),
+            (np.array([[1,2,],[1,2,]]), None, None, None, True, None, "  1 12\n  2 12", True),
+
         ])
-    def test__array_2d_get_compact_str(self, p1, p2, _func_result, _EXPECTED, _EXPECT_COMPARE):
+    def test__array_2d_get_compact_str(self, p1, p2, p3, p4, p5, _func_result, _EXPECTED, _EXPECT_COMPARE):
         test_obj_link = array_2d_get_compact_str
 
         if _func_result is None:
             _func_result = lambda i: i
 
         try:
-            result = _func_result(test_obj_link(array=p1, interpreter=p2))
+            result = _func_result(test_obj_link(array=p1, interpreter=p2, separate_rows=p3, wrap=p4, use_rows_num=p5))
         except:
             result = STR_EXCEPTION_MARK
 

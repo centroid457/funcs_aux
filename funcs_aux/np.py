@@ -11,7 +11,7 @@ def array_2d_get_compact_str(
         array: np.ndarray,
         interpreter: Optional[Dict[Any, Any]] = None,
         separate_rows: Optional[int] = None,
-        separate_array: Optional[bool] = None,
+        wrap: Optional[bool] = None,
         use_rows_num: Optional[bool] = None
 ) -> str:
     """
@@ -19,24 +19,24 @@ def array_2d_get_compact_str(
     :param array:
     :param interpreter: dictionary to change some elements
     :param separate_rows: add blank line on step
-    :param separate_array: add additional strings before and after data
+    :param wrap: add additional strings before and after data
     :param use_rows_num: add row num in
     :return:
     """
     interpreter = interpreter or {}
     count_rows = len(array)
-    count_columns = len(str(array[0]))
+    count_columns = len(array[0])
     row_pos = 0
     result: str = ""
 
-    if separate_array:
+    if wrap:
         if use_rows_num:
             result += " " * 3
-        result += "=" * count_columns
+        result += "=" * count_columns + "\n"
 
     for row in array:
         row_pos += 1
-        if separate_rows and (row_pos - 1) % separate_rows == 0:
+        if separate_rows and row_pos > 1 and (row_pos - 1) % separate_rows == 0:
             result += f"\n"
 
         if use_rows_num:
@@ -46,10 +46,13 @@ def array_2d_get_compact_str(
             if replaced is not None:
                 value = replaced
             result += f"{value}"
+
+        # result += f"\n"
         if row_pos != count_rows:
             result += f"\n"
 
-    if separate_array:
+    if wrap:
+        result += "\n"
         if use_rows_num:
             result += " " * 3
         result += "=" * count_columns

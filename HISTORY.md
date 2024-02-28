@@ -11,6 +11,10 @@
 ********************************************************************************
 ## NEWS
 
+0.0.6 (2024/02/28 19:11:14)
+------------------------------
+- add collection__path_create_original_names  
+
 0.0.5 (2024/02/28 11:03:13)
 ------------------------------
 - open new group COLLECTS! add collection__get_original_item__case_type_insensitive  

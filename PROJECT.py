@@ -28,6 +28,7 @@ class PROJECT:
     # add DOUBLE SPACE at the end of all lines! for correct representation in MD-viewers
     DESCRIPTION_SHORT: str = "useful funcs in one place"
     DESCRIPTION_LONG: str = """
+    
 Now its just a beginning!
 Designed to collect useful funcs in one place!
 """
@@ -38,7 +39,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 0, 5)
+    VERSION: Tuple[int, int, int] = (0, 0, 6)
     TODO: List[str] = [
         "..."
     ]
@@ -46,7 +47,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "open new group COLLECTS! add collection__get_original_item__case_type_insensitive"
+        "add collection__path_create_original_names"
     ]
 
     # FINALIZE -----------------------------------------------

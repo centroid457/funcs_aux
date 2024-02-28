@@ -4,7 +4,7 @@ from object_info import ObjectInfo
 
 
 # =====================================================================================================================
-def collection__get_original_item__case_type_insensitive(item: Any, data: Collection) -> Optional[Any]:
+def collection__get_original_item__case_insensitive(item: Any, data: Collection) -> Optional[Any]:
     """
     NOTES:
     1. DONT TRY use None in keys
@@ -23,7 +23,7 @@ def collection__get_original_item__case_type_insensitive(item: Any, data: Collec
             return value
 
 
-def collection__path_create_original_names__case_type_insensitive(path: Union[str, List], data: Collection) -> Optional[List[Any]]:
+def collection__path_create_original_names(path: Union[str, int, List], data: Collection) -> Optional[List[Any]]:
     """
     NOTES:
     1. path used as address as index for list and key for dicts
@@ -48,7 +48,7 @@ def collection__path_create_original_names__case_type_insensitive(path: Union[st
     for path_part in path:
         if isinstance(data, dict):
             # DICT ----------------
-            address_original = collection__get_original_item__case_type_insensitive(path_part, data)
+            address_original = collection__get_original_item__case_insensitive(path_part, data)
             if address_original is None:
                 return
             data = data[address_original]

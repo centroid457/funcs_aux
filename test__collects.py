@@ -1,5 +1,4 @@
 from typing import *
-
 import pytest
 
 from funcs_aux import *

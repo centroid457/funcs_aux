@@ -1,26 +1,55 @@
-# virtual env python
+# ==========================
+# VERSION = (0, 0, 1)   # use build as broadcast/nested
+
+# PYTHON ===================
+# virtual env --------------
 .venv/
 venv/
 env/
 
-# byte-compiled
+# byte-compiled ------------
 **/__pycache__/
 **/*.py[cod]
 
-# pycharm
+# IDE ----------------------
 .idea/
+.vscode/
 
-# PYTEST
+# PYTEST -------------------
 **/.pytest_cache/
 
-# TEMP
+# PYPI DISTRIBUTION --------
+build/
+_build/
+dist/
+
+**/build/
+**/_build/
+**/dist/
+
+*.egg-info/
+
+# documentation ------------
+#documentation/build/*
+#documentation/source/_build/*
+
+# some other ---------------
+htmlcov/
+.coverage
+*~lock*
+manage.sh
+todo.org
+*.orig
+
+# USER =====================
+# TEMP ---------------------
 TEMPORARY/
 -*
 
-# user saved data
+# user saved data ----------
 USERDATA/
 
-# DISTRIBUTION
-build/
-dist/
-*.egg-info/
+# ========================================
+# SPECIAL FOR THIS PROJECT ---------------
+
+# ========================================

@@ -38,7 +38,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 0, 4)
+    VERSION: Tuple[int, int, int] = (0, 0, 5)
     TODO: List[str] = [
         "..."
     ]
@@ -46,7 +46,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "..."
+        "open new group COLLECTS! add collection__get_original_item__case_type_insensitive"
     ]
 
     # FINALIZE -----------------------------------------------

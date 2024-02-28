@@ -1,10 +1,17 @@
-# funcs_aux
+# funcs_aux (v0.0.5)
+
+## DESCRIPTION_SHORT
+useful funcs in one place
+
+## DESCRIPTION_LONG
+Now its just a beginning!
+Designed to collect useful funcs in one place!
 
 
 ## Features
-1. 
 
 
+********************************************************************************
 ## License
 See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
 
@@ -18,11 +25,15 @@ See the [HISTORY.md](HISTORY.md) file for release history.
 pip install funcs-aux
 ```
 
-## Import
 
+## Import
 ```python
 from funcs_aux import *
 ```
 
 
-## GUIDE
+********************************************************************************
+## USAGE EXAMPLES
+See tests and sourcecode for other examples.
+
+********************************************************************************

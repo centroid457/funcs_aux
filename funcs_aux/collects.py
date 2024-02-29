@@ -12,6 +12,8 @@ class ResultWithStatus(NamedTuple):
     OK: Optional[bool] = None
     VALUE: Any = None
 
+    # TODO: apply magic for direct check like IF!  __bool__
+
 
 # =====================================================================================================================
 Type__IterablePath_Key = Union[str, int]
@@ -37,13 +39,14 @@ class Iterables:
             self,
             item_expected: Any,
             data: Optional[Type__Iterable] = None
-    ) -> Optional[Any]:
+    ) -> ResultWithStatus:
         """
         get FIRST original item from any collection by comparing str(expected).lower()==str(original).lower().
 
         NOTE:
-        1. NONE VALUE - dont try find it! this is an exact special value!
+        1. NONE VALUE - RESOLVED!!!
         2. SEVERAL VALUES - not used! by now it is just FIRST matched!
+            several items? - it is not useful!!! returning first is most expected!
 
         USEFUL in case-insensitive systems (like terminals or serial devices) or object structured by prefix-names:
         1. get key in dict
@@ -54,13 +57,23 @@ class Iterables:
         :return: actual item from collection
             None - if value is unreachable
         """
-        # FIXME: what if several items? - it is not useful!!! returning first is most expected!
-
         if data is None:
             data = self.DATA
         for value in list(data):
             if str(value).lower() == str(item_expected).lower():
-                return value
+                return ResultWithStatus(True, value)
+
+        # FIXME: APPLY ResultWithStatus
+        # FIXME: APPLY ResultWithStatus
+        # FIXME: APPLY ResultWithStatus
+        # FIXME: APPLY ResultWithStatus
+        # FIXME: APPLY ResultWithStatus
+        # FIXME: APPLY ResultWithStatus
+        # FIXME: APPLY ResultWithStatus
+        # FIXME: APPLY ResultWithStatus
+        # FIXME: APPLY ResultWithStatus
+
+        return ResultWithStatus()
 
     def path__get_original(
             self,

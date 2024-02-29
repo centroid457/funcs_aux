@@ -47,7 +47,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "add collection__path_create_original_names"
+                            "add ResultWithStatus",
     ]
 
     # FINALIZE -----------------------------------------------

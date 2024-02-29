@@ -10,7 +10,19 @@ Type__IterablePath_Expected = Union[Type__IterablePath_Key, Type__IterablePath_O
 Type__Iterable = Union[dict, list, tuple, set, Iterable]
 
 
+class ResultWithStatus(NamedTuple):
+    """
+    main idea - solve NONE-value ambiguity
+    by simple way
+    """
+    OK: Optional[bool] = None
+    VALUE: Any = None
+
+
 class Iterables:
+    """
+    collect universal funcs which work with collections
+    """
     # AUX ---------------------
     DATA: Type__Iterable
     PATH: List[Type__IterablePath_Key]
@@ -35,6 +47,7 @@ class Iterables:
         1. get key in dict
         2. find attribute name in objects
 
+        :param data:
         :param item_expected:
         :return: actual item from collection
             None - if value is unreachable
@@ -50,13 +63,14 @@ class Iterables:
     def path__get_original(
             self,
             path_expected: Type__IterablePath_Expected,
-            data: Optional[Type__Iterable] = None
+            data: Optional[Type__Iterable] = None,
     ) -> Optional[Type__IterablePath_Original]:
         """
         NOTES:
         1. path used as address KEY for dicts and as INDEX for other listed data
         2. SEPARATOR is only simple SLASH '/'!
 
+        :param data:
         :param path_expected:
         :return:
             None - if path is unreachable/incorrect
@@ -96,6 +110,24 @@ class Iterables:
             path_original.append(address_original)
 
         return path_original
+
+    def value__get_by_path(
+            self,
+            path_expected: Type__IterablePath_Expected,
+            data: Optional[Type__Iterable] = None
+    ) -> ResultWithStatus:
+        if data is None:
+            data = self.DATA
+
+        # work ----------------------------
+        path_original = self.path__get_original(path_expected, data)
+        try:
+            for path_part in path_original:
+                data = data[path_part]
+        except:
+            return ResultWithStatus()
+
+        return ResultWithStatus(True, data)
 
 
 # =====================================================================================================================

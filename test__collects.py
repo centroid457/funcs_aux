@@ -155,3 +155,47 @@ class Test__3:
 
 
 # =====================================================================================================================
+class Test__4:
+    @classmethod
+    def setup_class(cls):
+        cls.victim = Iterables().value_by_path__set
+        pass
+
+    # @classmethod
+    # def teardown_class(cls):
+    #     pass
+    #
+    # def setup_method(self, method):
+    #     pass
+    #
+    #
+    # def teardown_method(self, method):
+    #     pass
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__1(self):
+        data = [0,1,2,]
+        assert not self.victim(5, 11, data)
+        assert data[1] == 1
+        assert data == [0,1,2,]
+
+        data = [0,1,2,]
+        assert self.victim(1, 11, data) is True
+        assert data[1] == 11
+        assert data == [0,11,2,]
+
+        data = [[0],1,2,]
+        assert self.victim("0/0", 11, data) is True
+        assert data[0] == [11]
+        assert data == [[11],1,2,]
+
+        data = {"hello": [0,1,2,]}
+        assert self.victim("hello", 11, data) is True
+        assert data == {"hello": 11}
+
+        data = {"hello": [0,1,2,]}
+        assert self.victim("hello/1", 11, data) is True
+        assert data == {"hello": [0,11,2,]}
+
+
+# =====================================================================================================================

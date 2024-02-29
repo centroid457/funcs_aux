@@ -152,18 +152,23 @@ class Iterables:
             path_expected: Type__IterablePath_Expected,
             value: Any,
             data: Optional[Type__Iterable] = None
-    ) -> Optional[ResultSucceed]:
+    ) -> bool:
         if data is None:
             data = self.DATA
 
         # work ----------------------------
         path_original = self.path__get_original(path_expected, data)
         try:
-            for path_part in path_original.VALUE:
-                data = data[path_part]
+            length = len(path_original.VALUE)
+            for pos, path_part in enumerate(path_original.VALUE, start=1):
+                if pos == length:
+                    data[path_part] = value
+                else:
+                    data = data[path_part]
         except:
-            return
+            return False
 
-        return ResultSucceed(data)
+        return True
+
 
 # =====================================================================================================================

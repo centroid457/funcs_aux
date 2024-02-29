@@ -4,67 +4,85 @@ from object_info import ObjectInfo
 
 
 # =====================================================================================================================
-def collection__get_original_item__case_insensitive(item: Any, data: Collection) -> Optional[Any]:
-    """
-    NOTES:
-    1. DONT TRY use None in keys
-
-    USEFUL in case-insensitive systems (like terminals or serial devices):
-    1. get key in dict
-    2. find attribute name in objects
-
-    :param item:
-    :param data:
-    :return:
-    """
-    # FIXME: what if several items? - it is not useful!!! returning first is most expected!
-    for value in list(data):
-        if str(value).lower() == str(item).lower():
-            return value
+Type__IterablePath_Key = Union[str, int]
+Type__IterablePath_Original = List[Type__IterablePath_Key]
+Type__IterablePath_Expected = Union[Type__IterablePath_Key, Type__IterablePath_Original]
+Type__Iterable = Union[dict, list, tuple, set, Iterable]
 
 
-def collection__path_create_original_names(path: Union[str, int, List], data: Collection) -> Optional[List[Any]]:
-    """
-    NOTES:
-    1. path used as address as index for list and key for dicts
-    2. separator is simple SLASH!
+class Iterables:
+    # AUX ---------------------
+    DATA: Type__Iterable
+    PATH: List[Type__IterablePath_Key]
 
-    :param item:
-    :param data:
-    :return:
-        None - if path is unreachable/incorrect
-        List[Any] - reachable path which could be used to get value from data by chain data[i1][i2][i3]
-    """
+    def __init__(self, data: Type__Iterable):
+        self.DATA = data
+        self.PATH = []
 
-    # TODO: add tests!!!
-    if not isinstance(path, list):
-        path = str(path)
+    def item__get_original__case_insensitive(self, item_expected: Any) -> Optional[Any]:
+        """
+        get FIRST original item from any collection by comparing str(expected).lower()==str(original).lower().
 
-    if isinstance(path, str):
-        path = path.split("/")
+        NOTE:
+        1. NONE VALUE - dont try find it! this is an exact special value!
+        2. SEVERAL VALUES - not used! by now it is just FIRST matched!
 
-    # work ----------------------------
-    result_path = []
-    for path_part in path:
-        if isinstance(data, dict):
-            # DICT ----------------
-            address_original = collection__get_original_item__case_insensitive(path_part, data)
-            if address_original is None:
-                return
-            data = data[address_original]
+        USEFUL in case-insensitive systems (like terminals or serial devices) or object structured by prefix-names:
+        1. get key in dict
+        2. find attribute name in objects
 
-        elif isinstance(data, (list, tuple)):
-            # ITERABLE ----------------
-            try:
-                address_original = int(path_part)
-                data = data[address_original]
-            except:
-                return
+        :param item_expected:
+        :return: actual item from collection
+            None - if value is unreachable
+        """
+        # FIXME: what if several items? - it is not useful!!! returning first is most expected!
+        for value in list(self.DATA):
+            if str(value).lower() == str(item_expected).lower():
+                return value
+
+    def path__get_original(self, path_expected: Type__IterablePath_Expected) -> Optional[Type__IterablePath_Original]:
+        """
+        NOTES:
+        1. path used as address KEY for dicts and as INDEX for other listed data
+        2. SEPARATOR is only simple SLASH '/'!
+
+        :param path_expected:
+        :return:
+            None - if path is unreachable/incorrect
+            List[Any] - reachable path which could be used to get value from data by chain data[i1][i2][i3]
+        """
+        # prepare type ----------------------------
+        if isinstance(path_expected, (list, tuple, set)):
+            path_expected = list(path_expected)
         else:
-            return
-        result_path.append(address_original)
+            path_expected = str(path_expected)
 
-    return result_path
+        if isinstance(path_expected, str):
+            path_expected = path_expected.split("/")
+
+        # work ----------------------------
+        path_original = []
+        data = self.DATA
+        for path_part in path_expected:
+            if isinstance(data, dict):
+                # DICT ----------------
+                address_original = self.item__get_original__case_insensitive(path_part)
+                if address_original is None:
+                    return
+                data = data[address_original]
+
+            elif isinstance(data, (list, tuple)):
+                # ITERABLE ----------------
+                try:
+                    address_original = int(path_part)
+                    data = data[address_original]
+                except:
+                    return
+            else:
+                return
+            path_original.append(address_original)
+
+        return path_original
 
 
 # =====================================================================================================================

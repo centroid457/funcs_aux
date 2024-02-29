@@ -5,7 +5,7 @@ from funcs_aux import *
 
 
 # =====================================================================================================================
-class Test__item__get_original__case_insensitive:
+class Test__1:
     @classmethod
     def setup_class(cls):
         cls.victim = Iterables().item__get_original__case_insensitive
@@ -26,38 +26,38 @@ class Test__item__get_original__case_insensitive:
     def test__int(self):
         assert self.victim(0, [1]) is None
 
-        assert self.victim(1, [1]) == 1
-        assert self.victim(1, [1, 2]) == 1
-        assert self.victim(2, [1, 2]) == 2
+        assert self.victim(1, [1]) == ResultSucceed(1)
+        assert self.victim(1, [1, 2]) == ResultSucceed(1)
+        assert self.victim(2, [1, 2]) == ResultSucceed(2)
 
-        assert self.victim(1, ["1", 2]) == "1"
-        assert self.victim("1", ["1", 2]) == "1"
+        assert self.victim(1, ["1", 2]) == ResultSucceed("1")
+        assert self.victim("1", ["1", 2]) == ResultSucceed("1")
 
-        assert self.victim(1, ["1", 1]) == "1"
-        assert self.victim(1, [1, "1"]) == 1
+        assert self.victim(1, ["1", 1]) == ResultSucceed("1")
+        assert self.victim(1, [1, "1"]) == ResultSucceed(1)
 
-        assert self.victim("1", [1, 1]) == 1
+        assert self.victim("1", [1, 1]) == ResultSucceed(1)
 
     def test__collections_1__iterables(self):
-        assert self.victim(1, [1, 2]) == 1
-        assert self.victim(1, (1, 2)) == 1
-        assert self.victim(1, {1, 2}) == 1
-        assert self.victim(1, range(5)) == 1
+        assert self.victim(1, [1, 2]) == ResultSucceed(1)
+        assert self.victim(1, (1, 2)) == ResultSucceed(1)
+        assert self.victim(1, {1, 2}) == ResultSucceed(1)
+        assert self.victim(1, range(5)) == ResultSucceed(1)
 
     def test__collections_2__dict(self):
-        assert self.victim(2, {1: 11, 2: 22}) == 2
-        assert self.victim("2", {1: 11, 2: 22}) == 2
-        assert self.victim(2, {1: 11, "2": 22}) == "2"
-        assert self.victim("2", {1: 11, "2": 22}) == "2"
+        assert self.victim(2, {1: 11, 2: 22}) == ResultSucceed(2)
+        assert self.victim("2", {1: 11, 2: 22}) == ResultSucceed(2)
+        assert self.victim(2, {1: 11, "2": 22}) == ResultSucceed("2")
+        assert self.victim("2", {1: 11, "2": 22}) == ResultSucceed("2")
 
     def test__case(self):
-        assert self.victim("hello", ["hello123", 'hello']) == "hello"
-        assert self.victim("hello", ["hello123", 'HELLO']) == "HELLO"
-        assert self.victim("heLLO", ["hello123", 'Hello']) == "Hello"
+        assert self.victim("hello", ["hello123", 'hello']) == ResultSucceed("hello")
+        assert self.victim("hello", ["hello123", 'HELLO']) == ResultSucceed("HELLO")
+        assert self.victim("heLLO", ["hello123", 'Hello']) == ResultSucceed("Hello")
 
 
 # =====================================================================================================================
-class Test__path__get_original:
+class Test__2:
     @classmethod
     def setup_class(cls):
         cls.victim = Iterables().path__get_original
@@ -128,7 +128,7 @@ class Test__path__get_original:
 
 
 # =====================================================================================================================
-class Test__value__get_by_path:
+class Test__3:
     @classmethod
     def setup_class(cls):
         cls.victim = Iterables().value_by_path__get
@@ -147,9 +147,9 @@ class Test__value__get_by_path:
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__1(self):
-        assert self.victim("hello", {"hello": [1]}) == ResultWithStatus(True, [1, ])
-        assert self.victim("hello/1", {"hello": [1]}) == ResultWithStatus(None, None)
-        assert self.victim("hello/0", {"hello": [1]}) == ResultWithStatus(True, 1)
+        assert self.victim("hello", {"hello": [1]}) == ResultSucceed([1])
+        assert self.victim("hello/1", {"hello": [1]}) is None
+        assert self.victim("hello/0", {"hello": [1]}) == ResultSucceed(1)
 
 
 # =====================================================================================================================

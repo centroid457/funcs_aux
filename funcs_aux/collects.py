@@ -4,15 +4,29 @@ from object_info import ObjectInfo
 
 
 # =====================================================================================================================
-class ResultWithStatus(NamedTuple):
+class ResultSucceed(NamedTuple):
     """
     main idea - solve NONE-value ambiguity
     by simple way
-    """
-    OK: Optional[bool] = None
-    VALUE: Any = None
 
-    # TODO: apply magic for direct check like IF!  __bool__
+    USAGE:
+    ------
+    def func(a, b) -> Optional(ResultSucceed):
+        if a in b:
+            return ResultSucceed(a)
+        else:
+            return
+
+    result = func("None", [None, ])
+    assert result is None
+
+    result = func(None, [None, ])
+    assert result == ResultSucceed(None)
+
+    if result:
+        print(result.VALUE)
+    """
+    VALUE: Any
 
 
 # =====================================================================================================================
@@ -39,7 +53,7 @@ class Iterables:
             self,
             item_expected: Any,
             data: Optional[Type__Iterable] = None
-    ) -> ResultWithStatus:
+    ) -> Optional[ResultSucceed]:
         """
         get FIRST original item from any collection by comparing str(expected).lower()==str(original).lower().
 
@@ -61,19 +75,7 @@ class Iterables:
             data = self.DATA
         for value in list(data):
             if str(value).lower() == str(item_expected).lower():
-                return ResultWithStatus(True, value)
-
-        # FIXME: APPLY ResultWithStatus
-        # FIXME: APPLY ResultWithStatus
-        # FIXME: APPLY ResultWithStatus
-        # FIXME: APPLY ResultWithStatus
-        # FIXME: APPLY ResultWithStatus
-        # FIXME: APPLY ResultWithStatus
-        # FIXME: APPLY ResultWithStatus
-        # FIXME: APPLY ResultWithStatus
-        # FIXME: APPLY ResultWithStatus
-
-        return ResultWithStatus()
+                return ResultSucceed(value)
 
     def path__get_original(
             self,
@@ -109,8 +111,9 @@ class Iterables:
             if isinstance(data, dict):
                 # DICT ----------------
                 address_original = self.item__get_original__case_insensitive(path_part, data)
-                if address_original is None:
+                if not address_original:
                     return
+                address_original = address_original.VALUE
                 data = data[address_original]
 
             elif isinstance(data, (list, tuple)):
@@ -130,7 +133,7 @@ class Iterables:
             self,
             path_expected: Type__IterablePath_Expected,
             data: Optional[Type__Iterable] = None
-    ) -> ResultWithStatus:
+    ) -> Optional[ResultSucceed]:
         if data is None:
             data = self.DATA
 
@@ -140,9 +143,9 @@ class Iterables:
             for path_part in path_original:
                 data = data[path_part]
         except:
-            return ResultWithStatus()
+            return
 
-        return ResultWithStatus(True, data)
+        return ResultSucceed(data)
 
 
 # =====================================================================================================================

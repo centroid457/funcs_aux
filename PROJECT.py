@@ -47,7 +47,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-                            "add ResultWithStatus",
+                            "add ResultSucceed",
     ]
 
     # FINALIZE -----------------------------------------------

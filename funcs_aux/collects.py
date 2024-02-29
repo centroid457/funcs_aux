@@ -28,6 +28,9 @@ class ResultSucceed(NamedTuple):
     """
     VALUE: Any
 
+    def __call__(self, *args, **kwargs) -> Any:
+        return self.VALUE
+
 
 # =====================================================================================================================
 Type__IterablePath_Key = Union[str, int]

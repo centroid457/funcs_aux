@@ -5,6 +5,16 @@ from funcs_aux import *
 
 
 # =====================================================================================================================
+def test__ResultSucceed():
+    assert ResultSucceed(123)() == 123
+
+    assert ResultSucceed(123).VALUE == 123
+    assert ResultSucceed([123]).VALUE == [123]
+    assert ResultSucceed({123}).VALUE == {123}
+    assert ResultSucceed({123: 123}).VALUE == {123: 123}
+
+
+# =====================================================================================================================
 class Test__1:
     @classmethod
     def setup_class(cls):

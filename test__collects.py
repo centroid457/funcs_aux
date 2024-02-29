@@ -51,6 +51,8 @@ class Test__1:
         assert self.victim("2", {1: 11, "2": 22}) == ResultSucceed("2")
 
     def test__case(self):
+        assert self.victim("hell", ["hello123", 'hello']) is None
+
         assert self.victim("hello", ["hello123", 'hello']) == ResultSucceed("hello")
         assert self.victim("hello", ["hello123", 'HELLO']) == ResultSucceed("HELLO")
         assert self.victim("heLLO", ["hello123", 'Hello']) == ResultSucceed("Hello")
@@ -76,54 +78,54 @@ class Test__2:
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__path__list(self):
-        assert self.victim([0, ], [[1], 2]) == [0, ]
-        assert self.victim(["0", ], [[1], 2]) == [0, ]
+        assert self.victim([0, ], [[1], 2]) == ResultSucceed([0, ])
+        assert self.victim(["0", ], [[1], 2]) == ResultSucceed([0, ])
 
         assert self.victim([0, 0], [1]) is None
-        assert self.victim([0, 0], [[1]]) == [0, 0, ]
+        assert self.victim([0, 0], [[1]]) == ResultSucceed([0, 0, ])
         assert self.victim([0, 1], [[1]]) is None
 
     def test__value__list__single(self):
-        assert self.victim(0, [1]) == [0, ]
-        assert self.victim("0", [1]) == [0, ]
+        assert self.victim(0, [1]) == ResultSucceed([0, ])
+        assert self.victim("0", [1]) == ResultSucceed([0, ])
 
         assert self.victim(1, [1]) is None
         assert self.victim("1", [1]) is None
 
-        assert self.victim(1, [1, 11]) == [1, ]
-        assert self.victim("1", [1, 11]) == [1, ]
+        assert self.victim(1, [1, 11]) == ResultSucceed([1, ])
+        assert self.victim("1", [1, 11]) == ResultSucceed([1, ])
 
     def test__value__list__multy(self):
-        assert self.victim(0, [[1], 2]) == [0, ]
-        assert self.victim("0", [[1], 2]) == [0, ]
+        assert self.victim(0, [[1], 2]) == ResultSucceed([0, ])
+        assert self.victim("0", [[1], 2]) == ResultSucceed([0, ])
 
         assert self.victim("0/0", [1]) is None
-        assert self.victim("0/0", [[1]]) == [0, 0, ]
+        assert self.victim("0/0", [[1]]) == ResultSucceed([0, 0, ])
         assert self.victim("0/1", [[1]]) is None
 
     def test__value__dict_str(self):
         assert self.victim("hello", ["hello", ]) is None
 
-        assert self.victim("hello", {"hello": 1}) == ["hello", ]
-        assert self.victim("hello", {"HELLO": 1}) == ["HELLO", ]
-        assert self.victim("HELLO", {"hello": 1}) == ["hello", ]
+        assert self.victim("hello", {"hello": 1}) == ResultSucceed(["hello", ])
+        assert self.victim("hello", {"HELLO": 1}) == ResultSucceed(["HELLO", ])
+        assert self.victim("HELLO", {"hello": 1}) == ResultSucceed(["hello", ])
 
     def test__value__dict_int(self):
-        assert self.victim("1", {"1": 11, }) == ["1", ]
-        assert self.victim("1", {1: 11, }) == [1, ]
-        assert self.victim(1, {1: 11, }) == [1, ]
+        assert self.victim("1", {"1": 11, }) == ResultSucceed(["1", ])
+        assert self.victim("1", {1: 11, }) == ResultSucceed([1, ])
+        assert self.victim(1, {1: 11, }) == ResultSucceed([1, ])
 
         assert self.victim("1/2", {1: 11, }) is None
-        assert self.victim("1/2", {1: {2: 22}, }) == [1, 2, ]
-        assert self.victim("1/2/1", {1: {2: [30, 31, 32]}, }) == [1, 2, 1]
+        assert self.victim("1/2", {1: {2: 22}, }) == ResultSucceed([1, 2, ])
+        assert self.victim("1/2/1", {1: {2: [30, 31, 32]}, }) == ResultSucceed([1, 2, 1])
 
     def test__value__dict__with_list(self):
-        assert self.victim("hello", {"hello": [1]}) == ["hello", ]
+        assert self.victim("hello", {"hello": [1]}) == ResultSucceed(["hello", ])
         assert self.victim("hello/1", {"hello": [1]}) is None
-        assert self.victim("hello/0", {"hello": [1]}) == ["hello", 0]
+        assert self.victim("hello/0", {"hello": [1]}) == ResultSucceed(["hello", 0])
 
-        assert self.victim("hello1/hello2", {"hello1": {"hello2": [1]}}) == ["hello1", "hello2"]
-        assert self.victim("hello1/hello2/0", {"hello1": {"hello2": [1]}}) == ["hello1", "hello2", 0, ]
+        assert self.victim("hello1/hello2", {"hello1": {"hello2": [1]}}) == ResultSucceed(["hello1", "hello2"])
+        assert self.victim("hello1/hello2/0", {"hello1": {"hello2": [1]}}) == ResultSucceed(["hello1", "hello2", 0, ])
         assert self.victim("hello1/hello2/1", {"hello1": {"hello2": [1]}}) is None
 
 

@@ -81,7 +81,7 @@ class Iterables:
             self,
             path_expected: Type__IterablePath_Expected,
             data: Optional[Type__Iterable] = None,
-    ) -> Optional[Type__IterablePath_Original]:
+    ) -> Optional[ResultSucceed]:
         """
         NOTES:
         1. path used as address KEY for dicts and as INDEX for other listed data
@@ -127,7 +127,7 @@ class Iterables:
                 return
             path_original.append(address_original)
 
-        return path_original
+        return ResultSucceed(path_original)
 
     def value_by_path__get(
             self,
@@ -140,12 +140,30 @@ class Iterables:
         # work ----------------------------
         path_original = self.path__get_original(path_expected, data)
         try:
-            for path_part in path_original:
+            for path_part in path_original.VALUE:
                 data = data[path_part]
         except:
             return
 
         return ResultSucceed(data)
 
+    def value_by_path__set(
+            self,
+            path_expected: Type__IterablePath_Expected,
+            value: Any,
+            data: Optional[Type__Iterable] = None
+    ) -> Optional[ResultSucceed]:
+        if data is None:
+            data = self.DATA
+
+        # work ----------------------------
+        path_original = self.path__get_original(path_expected, data)
+        try:
+            for path_part in path_original.VALUE:
+                data = data[path_part]
+        except:
+            return
+
+        return ResultSucceed(data)
 
 # =====================================================================================================================

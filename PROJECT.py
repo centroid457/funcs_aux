@@ -36,10 +36,12 @@ Designed to collect useful funcs in one place!
         # "feat1",
         # ["feat2", "block1", "block2"],
 
+        "ResultSucceed - resolved ambiguity with None-result for any method result!",
+        "Iterables - work with any iterable data by path/..."
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 0, 6)
+    VERSION: Tuple[int, int, int] = (0, 0, 7)
     TODO: List[str] = [
         "..."
     ]
@@ -47,7 +49,8 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-                            "add ResultSucceed",
+        "ref/rename collects +make it all as class!",
+        "add ResultSucceed",
     ]
 
     # FINALIZE -----------------------------------------------

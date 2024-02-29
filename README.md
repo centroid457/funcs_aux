@@ -1,4 +1,4 @@
-# funcs_aux (v0.0.6)
+# funcs_aux (v0.0.7)
 
 ## DESCRIPTION_SHORT
 useful funcs in one place
@@ -9,6 +9,8 @@ Designed to collect useful funcs in one place!
 
 
 ## Features
+1. ResultSucceed - resolved ambiguity with None-result for any method result!  
+2. Iterables - work with any iterable data by path/...  
 
 
 ********************************************************************************

@@ -25,6 +25,7 @@ class ResultSucceed(NamedTuple):
 
     if result:
         print(result.VALUE)
+        print(result())
     """
     VALUE: Any
 

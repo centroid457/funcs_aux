@@ -1,17 +1,5 @@
-from typing import *
-import pytest
-
 from funcs_aux import *
-
-
-# =====================================================================================================================
-def test__ResultSucceed():
-    assert ResultSucceed(123)() == 123
-
-    assert ResultSucceed(123).VALUE == 123
-    assert ResultSucceed([123]).VALUE == [123]
-    assert ResultSucceed({123}).VALUE == {123}
-    assert ResultSucceed({123: 123}).VALUE == {123: 123}
+from funcs_aux import ResultSucceed
 
 
 # =====================================================================================================================

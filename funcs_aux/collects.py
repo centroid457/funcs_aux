@@ -126,7 +126,7 @@ class Iterables:
 
         return path_original
 
-    def value__get_by_path(
+    def value_by_path__get(
             self,
             path_expected: Type__IterablePath_Expected,
             data: Optional[Type__Iterable] = None

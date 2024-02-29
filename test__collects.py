@@ -131,7 +131,7 @@ class Test__path__get_original:
 class Test__value__get_by_path:
     @classmethod
     def setup_class(cls):
-        cls.victim = Iterables().value__get_by_path
+        cls.victim = Iterables().value_by_path__get
         pass
 
     # @classmethod

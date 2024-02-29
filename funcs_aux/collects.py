@@ -15,11 +15,15 @@ class Iterables:
     DATA: Type__Iterable
     PATH: List[Type__IterablePath_Key]
 
-    def __init__(self, data: Type__Iterable):
-        self.DATA = data
+    def __init__(self, data: Optional[Type__Iterable] = None):
+        self.DATA = data or {}
         self.PATH = []
 
-    def item__get_original__case_insensitive(self, item_expected: Any) -> Optional[Any]:
+    def item__get_original__case_insensitive(
+            self,
+            item_expected: Any,
+            data: Optional[Type__Iterable] = None
+    ) -> Optional[Any]:
         """
         get FIRST original item from any collection by comparing str(expected).lower()==str(original).lower().
 
@@ -36,11 +40,18 @@ class Iterables:
             None - if value is unreachable
         """
         # FIXME: what if several items? - it is not useful!!! returning first is most expected!
-        for value in list(self.DATA):
+
+        if data is None:
+            data = self.DATA
+        for value in list(data):
             if str(value).lower() == str(item_expected).lower():
                 return value
 
-    def path__get_original(self, path_expected: Type__IterablePath_Expected) -> Optional[Type__IterablePath_Original]:
+    def path__get_original(
+            self,
+            path_expected: Type__IterablePath_Expected,
+            data: Optional[Type__Iterable] = None
+    ) -> Optional[Type__IterablePath_Original]:
         """
         NOTES:
         1. path used as address KEY for dicts and as INDEX for other listed data
@@ -51,6 +62,9 @@ class Iterables:
             None - if path is unreachable/incorrect
             List[Any] - reachable path which could be used to get value from data by chain data[i1][i2][i3]
         """
+        if data is None:
+            data = self.DATA
+
         # prepare type ----------------------------
         if isinstance(path_expected, (list, tuple, set)):
             path_expected = list(path_expected)
@@ -62,11 +76,10 @@ class Iterables:
 
         # work ----------------------------
         path_original = []
-        data = self.DATA
         for path_part in path_expected:
             if isinstance(data, dict):
                 # DICT ----------------
-                address_original = self.item__get_original__case_insensitive(path_part)
+                address_original = self.item__get_original__case_insensitive(path_part, data)
                 if address_original is None:
                     return
                 data = data[address_original]

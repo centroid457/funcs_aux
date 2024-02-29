@@ -4,12 +4,6 @@ from object_info import ObjectInfo
 
 
 # =====================================================================================================================
-Type__IterablePath_Key = Union[str, int]
-Type__IterablePath_Original = List[Type__IterablePath_Key]
-Type__IterablePath_Expected = Union[Type__IterablePath_Key, Type__IterablePath_Original]
-Type__Iterable = Union[dict, list, tuple, set, Iterable]
-
-
 class ResultWithStatus(NamedTuple):
     """
     main idea - solve NONE-value ambiguity
@@ -19,6 +13,14 @@ class ResultWithStatus(NamedTuple):
     VALUE: Any = None
 
 
+# =====================================================================================================================
+Type__IterablePath_Key = Union[str, int]
+Type__IterablePath_Original = List[Type__IterablePath_Key]
+Type__IterablePath_Expected = Union[Type__IterablePath_Key, Type__IterablePath_Original]
+Type__Iterable = Union[dict, list, tuple, set, Iterable]
+
+
+# =====================================================================================================================
 class Iterables:
     """
     collect universal funcs which work with collections

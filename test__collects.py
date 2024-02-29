@@ -100,6 +100,7 @@ class Test__path__get_original:
         assert self.victim("0/0", [1]) is None
         assert self.victim("0/0", [[1]]) == [0, 0, ]
         assert self.victim("0/1", [[1]]) is None
+
     def test__value__dict_str(self):
         assert self.victim("hello", ["hello", ]) is None
 

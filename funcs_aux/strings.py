@@ -25,6 +25,8 @@ class Strings:
         self.SOURCE = source
 
     def try_convert_to__elementary(self, source: Optional[Any] = None) -> TYPE__ELEMENTARY:
+        # FIXME: this is not work FULL and CORRECT!!!! need FIX!!!
+
         # INIT source -------------
         if source is None:
             source = self.SOURCE

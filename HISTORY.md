@@ -11,6 +11,12 @@
 ********************************************************************************
 ## NEWS
 
+0.0.8 (2024/03/01 11:55:18)
+------------------------------
+- add Strings.try_convert_to__elementary (not finished - correct working with singles only)  
+- separate ResultSucceedSimple into file + tests  
+- add ResultFull (not tested)  
+
 0.0.7 (2024/02/29 16:03:50)
 ------------------------------
 - ref/rename collects +make it all as class!  

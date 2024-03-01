@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 0, 7)
+    VERSION: Tuple[int, int, int] = (0, 0, 8)
     TODO: List[str] = [
         "..."
     ]
@@ -63,8 +63,9 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-                "separate ResultSucceedSimple into file + tests",
-                "add ResultFull"
+        "add Strings.try_convert_to__elementary (not finished - correct working with singles only)",
+        "separate ResultSucceedSimple into file + tests",
+        "add ResultFull (not tested)",
     ]
 
     # FINALIZE -----------------------------------------------

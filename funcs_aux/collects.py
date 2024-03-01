@@ -1,5 +1,5 @@
 from typing import *
-from funcs_aux.result import ResultSucceed
+from funcs_aux.results import ResultSucceed
 
 
 # =====================================================================================================================

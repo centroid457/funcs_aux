@@ -17,7 +17,11 @@ class PROJECT:
     NAME_IMPORT: str = "funcs_aux"
     KEYWORDS: List[str] = [
         "functions",
-        "auxiliary",
+        "auxiliary", "auxiliary funcs",
+        "np funcs",
+        "collections funcs",
+        "strings funcs",
+        "result object",
     ]
     CLASSIFIERS_TOPICS_ADD: List[str] = [
         # "Topic :: Communications",
@@ -49,8 +53,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "ref/rename collects +make it all as class!",
-        "add ResultSucceed",
+                "separate ResultSucceed into file + tests",
     ]
 
     # FINALIZE -----------------------------------------------

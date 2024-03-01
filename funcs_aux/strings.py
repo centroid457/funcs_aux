@@ -25,6 +25,10 @@ class Strings:
         self.SOURCE = source
 
     def try_convert_to__elementary(self, source: Optional[Any] = None) -> TYPE__ELEMENTARY:
+        """
+        by now it works correct only with single elementary values like INT/FLOAT/BOOL/NONE
+        for collections it may work but may not work correctly!!! so use it by your own risk and conscious choice!!
+        """
         # FIXME: this is not work FULL and CORRECT!!!! need FIX!!!
 
         # INIT source -------------

@@ -1,3 +1,5 @@
+import pytest
+
 from funcs_aux import *
 from funcs_aux import ResultSucceedSimple
 
@@ -27,7 +29,7 @@ class Test__1:
         assert self.victim([]) == []
         assert self.victim({1: 1}) == {1: 1}
 
-    def test__none(self):
+    def test__single__none(self):
         # single
         assert self.victim(None) is None
         assert self.victim("None") is None
@@ -41,19 +43,17 @@ class Test__1:
         # assert self.victim("['None',]") == ['None']
         # assert self.victim("['null']") == ['None']
 
-    def test__bool(self):
-        # TODO: APPLY USUALL VALUES FOR NULL/FALSE/TRUE
-
+    def test__single__bool(self):
         assert self.victim(True) is True
         assert self.victim(False) is False
 
-        assert self.victim("True") == "True"
-        assert self.victim("False") == "False"
+        assert self.victim("True") is True
+        assert self.victim("False") is False
 
         assert self.victim("true") is True
         assert self.victim("false") is False
 
-    def test__numbs(self):
+    def test__single__numbs(self):
         assert self.victim("000") == "000"
         assert self.victim("01") == "01"
 
@@ -64,7 +64,8 @@ class Test__1:
         assert self.victim("1.0") == 1.0
         assert self.victim("1.000") == 1.0
 
-    def test__iters(self):
+    # iters -----------------------------------------------------------------------------------------------------------
+    def test__iters1(self):
         assert self.victim("[]") == []
 
     def test__dicts(self):
@@ -74,6 +75,15 @@ class Test__1:
 
         # correct
         assert self.victim('{"1": 1}') == {"1": 1}
+
+    @pytest.mark.skip
+    def test__iters2(self):
+        # TODO: FINISH
+        # TODO: FINISH
+        # TODO: FINISH
+        # TODO: FINISH
+        # TODO: FINISH
+        pass
 
 
 # =====================================================================================================================

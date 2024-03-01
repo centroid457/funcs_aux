@@ -1,5 +1,5 @@
 from typing import *
-from funcs_aux.results import ResultSucceed
+from funcs_aux.results import ResultSucceedSimple
 
 
 # =====================================================================================================================
@@ -26,7 +26,7 @@ class Iterables:
             self,
             item_expected: Any,
             data: Optional[Type__Iterable] = None
-    ) -> Optional[ResultSucceed]:
+    ) -> Optional[ResultSucceedSimple]:
         """
         get FIRST original item from any collection by comparing str(expected).lower()==str(original).lower().
 
@@ -48,13 +48,13 @@ class Iterables:
             data = self.DATA
         for value in list(data):
             if str(value).lower() == str(item_expected).lower():
-                return ResultSucceed(value)
+                return ResultSucceedSimple(value)
 
     def path__get_original(
             self,
             path_expected: Type__IterablePath_Expected,
             data: Optional[Type__Iterable] = None,
-    ) -> Optional[ResultSucceed]:
+    ) -> Optional[ResultSucceedSimple]:
         """
         NOTES:
         1. path used as address KEY for dicts and as INDEX for other listed data
@@ -100,13 +100,13 @@ class Iterables:
                 return
             path_original.append(address_original)
 
-        return ResultSucceed(path_original)
+        return ResultSucceedSimple(path_original)
 
     def value_by_path__get(
             self,
             path_expected: Type__IterablePath_Expected,
             data: Optional[Type__Iterable] = None
-    ) -> Optional[ResultSucceed]:
+    ) -> Optional[ResultSucceedSimple]:
         if data is None:
             data = self.DATA
 
@@ -118,7 +118,7 @@ class Iterables:
         except:
             return
 
-        return ResultSucceed(data)
+        return ResultSucceedSimple(data)
 
     def value_by_path__set(
             self,

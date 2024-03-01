@@ -14,7 +14,7 @@
 0.0.7 (2024/02/29 16:03:50)
 ------------------------------
 - ref/rename collects +make it all as class!  
-- add ResultSucceed  
+- add ResultSucceedSimple  
 
 0.0.6 (2024/02/28 19:11:14)
 ------------------------------

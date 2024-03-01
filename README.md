@@ -9,7 +9,7 @@ Designed to collect useful funcs in one place!
 
 
 ## Features
-1. ResultSucceed - resolved ambiguity with None-result for any method result!  
+1. ResultSucceedSimple - resolved ambiguity with None-result for any method result!  
 2. Iterables - work with any iterable data by path/...  
 
 

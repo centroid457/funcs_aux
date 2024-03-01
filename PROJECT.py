@@ -40,8 +40,18 @@ Designed to collect useful funcs in one place!
         # "feat1",
         # ["feat2", "block1", "block2"],
 
-        "ResultSucceed - resolved ambiguity with None-result for any method result!",
-        "Iterables - work with any iterable data by path/..."
+        [
+            "RESULTS",
+            "ResultSucceedSimple - resolved ambiguity with None-result for any method result!",
+            "ResultFull",
+         ],
+        [
+            "ITERABLES",
+            "work with any iterable data by path/...",
+        ],
+        [
+            "STRINGS",
+        ],
     ]
 
     # HISTORY -----------------------------------------------
@@ -53,7 +63,8 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-                "separate ResultSucceed into file + tests",
+                "separate ResultSucceedSimple into file + tests",
+                "add ResultFull"
     ]
 
     # FINALIZE -----------------------------------------------

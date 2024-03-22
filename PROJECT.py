@@ -42,8 +42,8 @@ Designed to collect useful funcs in one place!
 
         [
             "RESULTS",
-            "ResultSucceedSimple - resolved ambiguity with None-result for any method result!",
-            "ResultFull",
+            "ResultValue - resolved ambiguity with None-result for any method result!",
+            "ResultFunc",
          ],
         [
             "ITERABLES",
@@ -63,9 +63,12 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "add Strings.try_convert_to__elementary (not finished - correct working with singles only)",
-        "separate ResultSucceedSimple into file + tests",
-        "add ResultFull (not tested)",
+
+
+        ["[RESULTS]",
+         "rename ResultValue"
+         "add ResultFunc + tests",
+         ]
     ]
 
     # FINALIZE -----------------------------------------------

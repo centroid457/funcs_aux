@@ -4,10 +4,11 @@ from typing import *
 # =====================================================================================================================
 TYPE__FUNC = Callable[..., Any]
 TYPE__ARGS = Tuple[Any, ...]
+TYPE__KWARGS = Dict[str, Any]
 
 
 # =====================================================================================================================
-class ResultSucceedSimple(NamedTuple):
+class ResultValue(NamedTuple):
     """
     MAIN GOAL:
     ----------
@@ -20,9 +21,9 @@ class ResultSucceedSimple(NamedTuple):
 
     USAGE:
     ------
-    def func(a, b) -> Optional(ResultSucceedSimple):
+    def func(a, b) -> Optional(ResultValue):
         if a in b:
-            return ResultSucceedSimple(a)
+            return ResultValue(a)
         else:
             return
 
@@ -30,20 +31,23 @@ class ResultSucceedSimple(NamedTuple):
     assert result is None
 
     result = func(None, [None, ])
-    assert result == ResultSucceedSimple(None)
+    assert result == ResultValue(None)
 
     if result:
-        print(result.VALUE)
+        print(result.RESULT_VALUE)
         print(result())
     """
-    VALUE: Any
+    RESULT_VALUE: Any
 
     def __call__(self, *args, **kwargs) -> Any:
-        return self.VALUE
+        return self.run()
+
+    def run(self) -> Any:
+        return self.RESULT_VALUE
 
 
 # =====================================================================================================================
-class ResultFull:
+class ResultFunc:
     """
     MAIN GOAL:
     ----------
@@ -59,14 +63,14 @@ class ResultFull:
     # INPUT ---------------------------------
     FUNC: TYPE__FUNC
     ARGS: TYPE__ARGS = None
-    KWARGS: Dict[str, Any] = None
+    KWARGS: TYPE__KWARGS = None
 
     # RESULT --------------------------------
     RESULT_VALUE: Optional[Any] = None
     RESULT_EXX: Optional[Exception] = None
     RESULT_OK: bool
 
-    def __init__(self, func: TYPE__FUNC, args: TYPE__ARGS = None, kwargs: Dict[str, Any] = None, run_on_init: bool = None):
+    def __init__(self, func: TYPE__FUNC, args: TYPE__ARGS = None, kwargs: TYPE__KWARGS = None, run_on_init: bool = None):
         self.RUN_ON_INIT = run_on_init
 
         self.FUNC = func

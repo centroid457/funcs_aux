@@ -10,8 +10,8 @@ Designed to collect useful funcs in one place!
 
 ## Features
 1. RESULTS:  
-	- ResultSucceedSimple - resolved ambiguity with None-result for any method result!  
-	- ResultFull  
+	- ResultValue - resolved ambiguity with None-result for any method result!  
+	- ResultFunc  
 2. ITERABLES:  
 	- work with any iterable data by path/...  
 3. STRINGS:  

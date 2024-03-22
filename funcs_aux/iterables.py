@@ -1,5 +1,5 @@
 from typing import *
-from funcs_aux.results import ResultSucceedSimple
+from funcs_aux.results import ResultValue
 
 
 # =====================================================================================================================
@@ -26,12 +26,12 @@ class Iterables:
             self,
             item_expected: Any,
             data: Optional[Type__Iterable] = None
-    ) -> Optional[ResultSucceedSimple]:
+    ) -> Optional[ResultValue]:
         """
         get FIRST original item from any collection by comparing str(expected).lower()==str(original).lower().
 
         NOTE:
-        1. NONE VALUE - RESOLVED!!!
+        1. NONE RESULT_VALUE - RESOLVED!!!
         2. SEVERAL VALUES - not used! by now it is just FIRST matched!
             several items? - it is not useful!!! returning first is most expected!
 
@@ -48,13 +48,13 @@ class Iterables:
             data = self.DATA
         for value in list(data):
             if str(value).lower() == str(item_expected).lower():
-                return ResultSucceedSimple(value)
+                return ResultValue(value)
 
     def path__get_original(
             self,
             path_expected: Type__IterablePath_Expected,
             data: Optional[Type__Iterable] = None,
-    ) -> Optional[ResultSucceedSimple]:
+    ) -> Optional[ResultValue]:
         """
         NOTES:
         1. path used as address KEY for dicts and as INDEX for other listed data
@@ -86,7 +86,7 @@ class Iterables:
                 address_original = self.item__get_original__case_insensitive(path_part, data)
                 if not address_original:
                     return
-                address_original = address_original.VALUE
+                address_original = address_original.RESULT_VALUE
                 data = data[address_original]
 
             elif isinstance(data, (list, tuple)):
@@ -100,25 +100,25 @@ class Iterables:
                 return
             path_original.append(address_original)
 
-        return ResultSucceedSimple(path_original)
+        return ResultValue(path_original)
 
     def value_by_path__get(
             self,
             path_expected: Type__IterablePath_Expected,
             data: Optional[Type__Iterable] = None
-    ) -> Optional[ResultSucceedSimple]:
+    ) -> Optional[ResultValue]:
         if data is None:
             data = self.DATA
 
         # work ----------------------------
         path_original = self.path__get_original(path_expected, data)
         try:
-            for path_part in path_original.VALUE:
+            for path_part in path_original.RESULT_VALUE:
                 data = data[path_part]
         except:
             return
 
-        return ResultSucceedSimple(data)
+        return ResultValue(data)
 
     def value_by_path__set(
             self,
@@ -132,8 +132,8 @@ class Iterables:
         # work ----------------------------
         path_original = self.path__get_original(path_expected, data)
         try:
-            length = len(path_original.VALUE)
-            for pos, path_part in enumerate(path_original.VALUE, start=1):
+            length = len(path_original.RESULT_VALUE)
+            for pos, path_part in enumerate(path_original.RESULT_VALUE, start=1):
                 if pos == length:
                     data[path_part] = value
                 else:

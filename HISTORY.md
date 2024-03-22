@@ -14,13 +14,13 @@
 0.0.8 (2024/03/01 11:55:18)
 ------------------------------
 - add Strings.try_convert_to__elementary (not finished - correct working with singles only)  
-- separate ResultSucceedSimple into file + tests  
-- add ResultFull (not tested)  
+- separate ResultValue into file + tests  
+- add ResultFunc (not tested)  
 
 0.0.7 (2024/02/29 16:03:50)
 ------------------------------
 - ref/rename collects +make it all as class!  
-- add ResultSucceedSimple  
+- add ResultValue  
 
 0.0.6 (2024/02/28 19:11:14)
 ------------------------------

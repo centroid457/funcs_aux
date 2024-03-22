@@ -1,21 +1,21 @@
-from funcs_aux import ResultSucceedSimple, ResultFull
+from funcs_aux import ResultValue, ResultFunc
 
 
 # =====================================================================================================================
 def test__ResultSucceed():
-    assert ResultSucceedSimple(123)() == 123
+    assert ResultValue(123)() == 123
 
-    assert ResultSucceedSimple(123).VALUE == 123
-    assert ResultSucceedSimple([123]).VALUE == [123]
-    assert ResultSucceedSimple({123}).VALUE == {123}
-    assert ResultSucceedSimple({123: 123}).VALUE == {123: 123}
+    assert ResultValue(123).RESULT_VALUE == 123
+    assert ResultValue([123]).RESULT_VALUE == [123]
+    assert ResultValue({123}).RESULT_VALUE == {123}
+    assert ResultValue({123: 123}).RESULT_VALUE == {123: 123}
 
 
 # =====================================================================================================================
 class Test__ResultFull:
     # @classmethod
     # def setup_class(cls):
-    #     # cls.Victim = ResultFull
+    #     # cls.Victim = ResultFunc
     #     pass
     #
     # @classmethod
@@ -23,7 +23,7 @@ class Test__ResultFull:
     #     pass
     #
     def setup_method(self, method):
-        self.Victim = ResultFull
+        self.Victim = ResultFunc
 
         pass
 

@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 0, 8)
+    VERSION: Tuple[int, int, int] = (0, 0, 9)
     TODO: List[str] = [
         "..."
     ]
@@ -63,15 +63,10 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-
-
-
-
         ["[RESULTS]",
          "rename ResultValue",
          "add ResultFunc + tests",
-         "add ResultExpect_Step + some tests",
-         "add ResultExpect_Chain + need tests",
+         "add ResultExpect_Step/ResultExpect_Chain + some tests",
          ]
     ]
 

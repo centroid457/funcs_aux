@@ -11,6 +11,13 @@
 ********************************************************************************
 ## NEWS
 
+0.0.9 (2024/03/22 16:15:33)
+------------------------------
+- [RESULTS]:  
+	- rename ResultValue  
+	- add ResultFunc + tests  
+	- add ResultExpect_Step/ResultExpect_Chain + some tests  
+
 0.0.8 (2024/03/01 11:55:18)
 ------------------------------
 - add Strings.try_convert_to__elementary (not finished - correct working with singles only)  

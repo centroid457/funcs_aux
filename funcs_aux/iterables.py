@@ -86,7 +86,7 @@ class Iterables:
                 address_original = self.item__get_original__case_insensitive(path_part, data)
                 if not address_original:
                     return
-                address_original = address_original.RESULT_VALUE
+                address_original = address_original.VALUE
                 data = data[address_original]
 
             elif isinstance(data, (list, tuple)):
@@ -113,7 +113,7 @@ class Iterables:
         # work ----------------------------
         path_original = self.path__get_original(path_expected, data)
         try:
-            for path_part in path_original.RESULT_VALUE:
+            for path_part in path_original.VALUE:
                 data = data[path_part]
         except:
             return
@@ -132,8 +132,8 @@ class Iterables:
         # work ----------------------------
         path_original = self.path__get_original(path_expected, data)
         try:
-            length = len(path_original.RESULT_VALUE)
-            for pos, path_part in enumerate(path_original.RESULT_VALUE, start=1):
+            length = len(path_original.VALUE)
+            for pos, path_part in enumerate(path_original.VALUE, start=1):
                 if pos == length:
                     data[path_part] = value
                 else:

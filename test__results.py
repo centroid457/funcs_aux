@@ -22,10 +22,10 @@ class Test__ResultValue:
     def test__1(self):
         assert ResultValue(123)() == 123
 
-        assert ResultValue(123).RESULT_VALUE == 123
-        assert ResultValue([123]).RESULT_VALUE == [123]
-        assert ResultValue({123}).RESULT_VALUE == {123}
-        assert ResultValue({123: 123}).RESULT_VALUE == {123: 123}
+        assert ResultValue(123).VALUE == 123
+        assert ResultValue([123]).VALUE == [123]
+        assert ResultValue({123}).VALUE == {123}
+        assert ResultValue({123: 123}).VALUE == {123: 123}
 
 
 # =====================================================================================================================

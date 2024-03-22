@@ -38,13 +38,13 @@ class ResultValue(NamedTuple):
         print(result.RESULT__VALUE)
         print(result())
     """
-    RESULT_VALUE: Any
+    VALUE: Any
 
     def __call__(self, *args, **kwargs) -> Any:
         return self.run()
 
     def run(self) -> Any:
-        return self.RESULT_VALUE
+        return self.VALUE
 
 
 # =====================================================================================================================

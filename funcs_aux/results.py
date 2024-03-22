@@ -192,6 +192,11 @@ class _ResultExpect_Base:
     def __call__(self, *args, **kwargs) -> Self:
         return self.run(*args, **kwargs)
 
+    @property
+    def MSG(self) -> str:
+        result = f"[result={self.STEP__RESULT}]{self.TITLE or ''}"
+        return result
+
     def _result__clear(self) -> None:
         self.STEP__RESULT = False
         self.STEP__EXX = None
@@ -216,11 +221,6 @@ class _ResultExpect_Base:
     def _run__wrapped(self) -> Union[bool, NoReturn]:
         pass
 
-    @property
-    def MSG(self) -> str:
-        result = f"[result={self.STEP__RESULT}]{self.TITLE or ''}"
-        return result
-
 
 class ResultExpect_Step(_ResultExpect_Base):
     # SETTINGS --------------------------------
@@ -235,7 +235,8 @@ class ResultExpect_Step(_ResultExpect_Base):
             value_as_func: bool = True,
             value_under_func: TYPE__FUNC_UNDER_VALUE = None,
             value_expected: Any = True,
-            **kwargs,
+
+            **kwargs
     ):
         super().__init__(**kwargs)
 
@@ -266,18 +267,23 @@ class ResultExpect_Chain(_ResultExpect_Base):
     # SETTINGS --------------------------------
     CHAINS: List[Union[_ResultExpect_Base]] = None
 
+    # AUX --------------------------------
+    STEP__INDEX: int = -1
+
     def __init__(
             self,
             chains: List[Union[ResultExpect_Step, Self]],
-            **kwargs,
+            **kwargs
     ):
         super().__init__(**kwargs)
 
         self.CHAINS = chains
 
     def _run__wrapped(self) -> bool:
+        self.STEP__INDEX = -1
         result = True
         for step in self.CHAINS:
+            self.STEP__INDEX += 1
             if isinstance(step, _ResultExpect_Base):
                 step.run(*self.ARGS, **self.KWARGS)
 
@@ -286,8 +292,11 @@ class ResultExpect_Chain(_ResultExpect_Base):
 
                 if not step.STEP__RESULT and step.CHAIN__STOP_ON_FAIL:
                     break
-
         return result
+
+    @property
+    def CHAINS_COUNT(self) -> int:
+        return len(self.CHAINS or [])
 
 
 # =====================================================================================================================

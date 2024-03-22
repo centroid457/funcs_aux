@@ -184,10 +184,12 @@ class Test__ResultExpect_Chain:
     #     pass
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__bool_1(self):
-        victim = self.Victim(bool)
+    def test__1(self):
+        chain = [
+            ResultExpect_Step(bool, value_expected=False, chain__use_result=True, chain__stop_on_fail=True),
+        ]
+        victim = self.Victim(chain)
 
-        assert victim.VALUE == bool
         assert victim.ARGS == ()
         assert victim.KWARGS == {}
 
@@ -195,23 +197,109 @@ class Test__ResultExpect_Chain:
         assert victim.STEP__EXX is None
 
         # ------------------------------
-        victim(1)
-        assert victim.VALUE == bool
-        assert victim.ARGS == (1, )
+        victim.run()
+
+        assert victim.ARGS == ()
         assert victim.KWARGS == {}
 
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
+        assert victim.STEP__INDEX == 0
+        assert victim.CHAINS_COUNT == 1
 
         # ------------------------------
-        victim.VALUE_EXPECTED = False
-        victim.run()
-        assert victim.VALUE == bool
+        victim.run(1)
+
         assert victim.ARGS == (1, )
         assert victim.KWARGS == {}
 
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
+        assert victim.STEP__INDEX == 0
+        assert victim.CHAINS_COUNT == 1
+
+    def test__single(self):
+        chain = [
+            ResultExpect_Step(bool, value_expected=False, chain__use_result=True, chain__stop_on_fail=True),
+        ]
+        victim = self.Victim(chain)
+
+        # ------------------------------
+        victim.run()
+
+        assert victim.STEP__RESULT is True
+        assert victim.STEP__EXX is None
+        assert victim.STEP__INDEX == 0
+        assert victim.CHAINS_COUNT == 1
+
+        chain = [
+            ResultExpect_Step(bool, value_expected=True, chain__use_result=True, chain__stop_on_fail=True),
+        ]
+        victim = self.Victim(chain)
+
+        # ------------------------------
+        victim.run()
+
+        assert victim.STEP__RESULT is False
+        assert victim.STEP__EXX is None
+        assert victim.STEP__INDEX == 0
+        assert victim.CHAINS_COUNT == 1
+
+        chain = [
+            ResultExpect_Step(bool, value_expected=True, chain__use_result=False, chain__stop_on_fail=False),
+        ]
+        victim = self.Victim(chain)
+
+        # ------------------------------
+        victim.run()
+
+        assert victim.STEP__RESULT is True
+        assert victim.STEP__EXX is None
+        assert victim.STEP__INDEX == 0
+        assert victim.CHAINS_COUNT == 1
+
+    def test__double__first_fail(self):
+        chain = [
+            ResultExpect_Step(bool, value_expected=True, chain__use_result=True, chain__stop_on_fail=True),
+            ResultExpect_Step(bool, value_expected=False, chain__use_result=True, chain__stop_on_fail=True),
+        ]
+        victim = self.Victim(chain)
+
+        # ------------------------------
+        victim.run()
+
+        assert victim.STEP__RESULT is False
+        assert victim.STEP__EXX is None
+        assert victim.STEP__INDEX == 0
+        assert victim.CHAINS_COUNT == 2
+
+        chain = [
+            ResultExpect_Step(bool, value_expected=True, chain__use_result=True, chain__stop_on_fail=False),
+            ResultExpect_Step(bool, value_expected=False, chain__use_result=True, chain__stop_on_fail=True),
+        ]
+        victim = self.Victim(chain)
+
+        # ------------------------------
+        victim.run()
+
+        assert victim.STEP__RESULT is False
+        assert victim.STEP__EXX is None
+        assert victim.STEP__INDEX == 1
+        assert victim.CHAINS_COUNT == 2
+
+        chain = [
+            ResultExpect_Step(bool, value_expected=True, chain__use_result=False, chain__stop_on_fail=False),
+            ResultExpect_Step(bool, value_expected=False, chain__use_result=True, chain__stop_on_fail=True),
+        ]
+        victim = self.Victim(chain)
+
+        # ------------------------------
+        victim.run()
+
+        assert victim.STEP__RESULT is True
+        assert victim.STEP__EXX is None
+        assert victim.STEP__INDEX == 1
+        assert victim.CHAINS_COUNT == 2
 
 
 # =====================================================================================================================

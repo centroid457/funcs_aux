@@ -2,6 +2,11 @@ from typing import *
 
 
 # =====================================================================================================================
+TYPE__FUNC = Callable[..., Any]
+TYPE__ARGS = Tuple[Any, ...]
+
+
+# =====================================================================================================================
 class ResultSucceedSimple(NamedTuple):
     """
     MAIN GOAL:
@@ -48,38 +53,61 @@ class ResultFull:
     -----------
     return object in any cases (if you get final result or if there are any errors in execution)!
     """
-    # TODO: add TESTS
-    # TODO: add TESTS
-    # TODO: add TESTS
-    # TODO: add TESTS
-    # TODO: add TESTS
-    # TODO: add TESTS
+    # SETTINGS -----------------------------
+    RUN_ON_INIT: bool = None
 
-    # INPUT
-    FUNC: Callable
-    ARGS: Tuple[Any, ...] = []
-    KWARGS: Dict[str, Any] = {}
+    # INPUT ---------------------------------
+    FUNC: TYPE__FUNC
+    ARGS: TYPE__ARGS = None
+    KWARGS: Dict[str, Any] = None
 
-    # RESULTS
-    OK: Optional[bool] = None
-    RESULT: Optional[Any] = None
-    EXX: Optional[Exception] = None
+    # RESULT --------------------------------
+    RESULT_VALUE: Optional[Any] = None
+    RESULT_EXX: Optional[Exception] = None
+    RESULT_OK: bool
 
-    def __call__(self, *args, **kwargs) -> None:
+    def __init__(self, func: TYPE__FUNC, args: TYPE__ARGS = None, kwargs: Dict[str, Any] = None, run_on_init: bool = None):
+        self.RUN_ON_INIT = run_on_init
+
+        self.FUNC = func
+        self.ARGS = args or ()
+        self.KWARGS = kwargs or {}
+
+        if self.RUN_ON_INIT:
+            self.run()
+
+    def __call__(self, *args, **kwargs) -> Self:
+        return self.run(*args, **kwargs)
+
+    def run(self, *args, **kwargs) -> Self:
         # init ---------------
-        self.OK = None
-        self.RESULT = None
-        self.EXX = None
+        self._clear_result()
 
-        self.ARGS = args        # FIXME: resolve work with args!
-        self.KWARGS = kwargs    # FIXME:
+        if args:
+            self.ARGS = args
+        if kwargs:
+            self.KWARGS = kwargs
 
         # WORK ---------------
         try:
-            self.RESULT = self.FUNC(*args, **kwargs)
-            self.OK = True
+            self.RESULT_VALUE = self.FUNC(*self.ARGS, **self.KWARGS)
         except Exception as exx:
-            self.EXX = exx
-            self.OK = False
+            self.RESULT_EXX = exx
+
+        return self
+
+    def _clear_result(self) -> None:
+        self.RESULT_VALUE = None
+        self.RESULT_EXX = None
+
+    @property
+    def RESULT_OK(self) -> bool:
+        return self.RESULT_EXX is None
+
+
+# =====================================================================================================================
+class ChainManager:
+    pass
+
 
 # =====================================================================================================================

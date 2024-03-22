@@ -1,18 +1,35 @@
-from funcs_aux import ResultValue, ResultFunc
+from funcs_aux import ResultValue, ResultFunc, ResultExpectStep
 
 
 # =====================================================================================================================
-def test__ResultSucceed():
-    assert ResultValue(123)() == 123
+class Test__ResultValue:
+    # @classmethod
+    # def setup_class(cls):
+    #     # cls.Victim = ResultFunc
+    #     pass
+    #
+    # @classmethod
+    # def teardown_class(cls):
+    #     pass
+    #
+    # def setup_method(self, method):
+    #     pass
+    #
+    # def teardown_method(self, method):
+    #     pass
 
-    assert ResultValue(123).RESULT_VALUE == 123
-    assert ResultValue([123]).RESULT_VALUE == [123]
-    assert ResultValue({123}).RESULT_VALUE == {123}
-    assert ResultValue({123: 123}).RESULT_VALUE == {123: 123}
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__1(self):
+        assert ResultValue(123)() == 123
+
+        assert ResultValue(123).RESULT_VALUE == 123
+        assert ResultValue([123]).RESULT_VALUE == [123]
+        assert ResultValue({123}).RESULT_VALUE == {123}
+        assert ResultValue({123: 123}).RESULT_VALUE == {123: 123}
 
 
 # =====================================================================================================================
-class Test__ResultFull:
+class Test__ResultFunc:
     # @classmethod
     # def setup_class(cls):
     #     # cls.Victim = ResultFunc
@@ -97,6 +114,55 @@ class Test__ResultFull:
         assert victim.RESULT_VALUE is None
         assert victim.RESULT_EXX is not None
         assert victim.RESULT_OK is False
+
+
+# =====================================================================================================================
+class Test__ResultExpectStep:
+    # @classmethod
+    # def setup_class(cls):
+    #     # cls.Victim = ResultFunc
+    #     pass
+    #
+    # @classmethod
+    # def teardown_class(cls):
+    #     pass
+    #
+    def setup_method(self, method):
+        self.Victim = ResultExpectStep
+        pass
+
+    # def teardown_method(self, method):
+    #     pass
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__bool_1(self):
+        victim = self.Victim(bool)
+
+        assert victim.VALUE == bool
+        assert victim.ARGS == ()
+        assert victim.KWARGS == {}
+
+        assert victim.STEP_RESULT is None
+        assert victim.STEP_EXX is None
+
+        # ------------------------------
+        victim(1)
+        assert victim.VALUE == bool
+        assert victim.ARGS == (1, )
+        assert victim.KWARGS == {}
+
+        assert victim.STEP_RESULT is True
+        assert victim.STEP_EXX is None
+
+        # ------------------------------
+        victim.VALUE_EXPECTED = False
+        victim.run()
+        assert victim.VALUE == bool
+        assert victim.ARGS == (1, )
+        assert victim.KWARGS == {}
+
+        assert victim.STEP_RESULT is False
+        assert victim.STEP_EXX is None
 
 
 # =====================================================================================================================

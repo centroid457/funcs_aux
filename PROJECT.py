@@ -65,9 +65,12 @@ Designed to collect useful funcs in one place!
     NEWS: List[str] = [
 
 
+
+
         ["[RESULTS]",
-         "rename ResultValue"
+         "rename ResultValue",
          "add ResultFunc + tests",
+         "add ResultExpectStep + some tests",
          ]
     ]
 

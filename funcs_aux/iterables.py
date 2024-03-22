@@ -31,7 +31,7 @@ class Iterables:
         get FIRST original item from any collection by comparing str(expected).lower()==str(original).lower().
 
         NOTE:
-        1. NONE RESULT_VALUE - RESOLVED!!!
+        1. NONE RESULT__VALUE - RESOLVED!!!
         2. SEVERAL VALUES - not used! by now it is just FIRST matched!
             several items? - it is not useful!!! returning first is most expected!
 

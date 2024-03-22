@@ -70,7 +70,8 @@ Designed to collect useful funcs in one place!
         ["[RESULTS]",
          "rename ResultValue",
          "add ResultFunc + tests",
-         "add ResultExpectStep + some tests",
+         "add ResultExpect_Step + some tests",
+         "add ResultExpect_Chain + need tests",
          ]
     ]
 

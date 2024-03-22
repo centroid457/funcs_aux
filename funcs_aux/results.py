@@ -35,7 +35,7 @@ class ResultValue(NamedTuple):
     assert result == ResultValue(None)
 
     if result:
-        print(result.RESULT_VALUE)
+        print(result.RESULT__VALUE)
         print(result())
     """
     RESULT_VALUE: Any
@@ -65,9 +65,9 @@ class ResultFunc:
     KWARGS: TYPE__KWARGS = None
 
     # RESULT --------------------------------
-    RESULT_VALUE: Optional[Any] = None
-    RESULT_EXX: Optional[Exception] = None
-    RESULT_OK: bool
+    RESULT__VALUE: Optional[Any] = None
+    RESULT__EXX: Optional[Exception] = None
+    RESULT__CORRECT: bool
 
     def __init__(self, func: TYPE__FUNC, args: TYPE__ARGS = None, kwargs: TYPE__KWARGS = None, run_on_init: bool = None):
         self.RUN_ON_INIT = run_on_init
@@ -84,7 +84,7 @@ class ResultFunc:
 
     def run(self, *args, **kwargs) -> Self:
         # init ---------------
-        self._clear_result()
+        self._result__clear()
 
         if args:
             self.ARGS = args
@@ -93,19 +93,19 @@ class ResultFunc:
 
         # WORK ---------------
         try:
-            self.RESULT_VALUE = self.FUNC(*self.ARGS, **self.KWARGS)
+            self.RESULT__VALUE = self.FUNC(*self.ARGS, **self.KWARGS)
         except Exception as exx:
-            self.RESULT_EXX = exx
+            self.RESULT__EXX = exx
 
         return self
 
-    def _clear_result(self) -> None:
-        self.RESULT_VALUE = None
-        self.RESULT_EXX = None
+    def _result__clear(self) -> None:
+        self.RESULT__VALUE = None
+        self.RESULT__EXX = None
 
     @property
-    def RESULT_OK(self) -> bool:
-        return self.RESULT_EXX is None
+    def RESULT__CORRECT(self) -> bool:
+        return self.RESULT__EXX is None
 
 
 # =====================================================================================================================
@@ -155,22 +155,8 @@ def _explore_and_why_it_need():
 
 
 # =====================================================================================================================
-# class FailRepresentation(Enum):
-#     AS_FAIL = auto()
-#     AS_TRUE = auto()
-#
-#
-# class FailContinuation(Enum):
-#     STOP = auto()
-#     CONTINUE = auto()
-
-
-class ResultExpectStep:
-    # SETTINGS --------------------------------
-    VALUE: Union[Any, Callable]
-    VALUE_AS_FUNC: bool = True
-    VALUE_UNDER_FUNC: TYPE__FUNC_UNDER_VALUE = None
-    VALUE_EXPECTED: Union[bool, Any] = True
+class _ResultExpect_Base:
+    TITLE: Optional[str] = None
 
     ARGS: TYPE__ARGS = None
     KWARGS: TYPE__KWARGS = None
@@ -179,28 +165,23 @@ class ResultExpectStep:
     CHAIN__USE_RESULT: bool = True
     CHAIN__STOP_ON_FAIL: bool = True
 
-    # STEP_RESULT ----------------------------------
-    STEP_RESULT: Optional[bool] = None
-    STEP_EXX: Optional[bool] = None
+    # RESULT ----------------------------------
+    STEP__RESULT: Optional[bool] = None
+    STEP__EXX: Optional[bool] = None
 
     def __init__(
             self,
-            value: Union[Any, Callable],
-            value_as_func: bool = True,
-            value_under_func: TYPE__FUNC_UNDER_VALUE = None,
-            value_expected: Any = True,
+            # _ResultExpect_Base ---------------------
+            title: Optional[str] = None,
 
             args: TYPE__ARGS = None,
             kwargs: TYPE__KWARGS = None,
 
             chain__use_result: bool = True,
             chain__stop_on_fail: bool = True,
-
     ):
-        self.VALUE = value
-        self.VALUE_AS_FUNC = value_as_func
-        self.VALUE_UNDER_FUNC = value_under_func
-        self.VALUE_EXPECTED = value_expected
+        # _ResultExpect_Base ---------------------
+        self.TITLE = title
 
         self.ARGS = args or ()
         self.KWARGS = kwargs or {}
@@ -211,43 +192,102 @@ class ResultExpectStep:
     def __call__(self, *args, **kwargs) -> Self:
         return self.run(*args, **kwargs)
 
-    def _clear_result(self) -> None:
-        self.STEP_RESULT = None
-        self.STEP_EXX = None
+    def _result__clear(self) -> None:
+        self.STEP__RESULT = False
+        self.STEP__EXX = None
 
-    def run(self, *args, **kwargs) -> Self:
-        self._clear_result()
+    def run(self, *args, **kwargs) -> bool:
+        self._result__clear()
 
         if args:
             self.ARGS = args
         if kwargs:
             self.KWARGS = kwargs
 
-        # CALLS --------------------------------------------------------------
+        # WORK -----------------------
         try:
-            # callable ----------------------------
-            if self.VALUE_AS_FUNC:
-                value = self.VALUE(*self.ARGS, **self.KWARGS)
-            else:
-                value = self.VALUE
-
-            # VALUE_UNDER_FUNC -----------------------
-            if self.VALUE_UNDER_FUNC:
-                value = self.VALUE_UNDER_FUNC(value)
+            self.STEP__RESULT = self._run__wrapped()
         except Exception as exx:
-            self.STEP_EXX = exx
-            result = False
+            self.STEP__EXX = exx
+
+        print(self.MSG)
+        return self.STEP__RESULT
+
+    def _run__wrapped(self) -> Union[bool, NoReturn]:
+        pass
+
+    @property
+    def MSG(self) -> str:
+        result = f"[result={self.STEP__RESULT}]{self.TITLE or ''}"
+        return result
+
+
+class ResultExpect_Step(_ResultExpect_Base):
+    # SETTINGS --------------------------------
+    VALUE: Union[Any, Callable]
+    VALUE_AS_FUNC: bool = True
+    VALUE_UNDER_FUNC: TYPE__FUNC_UNDER_VALUE = None
+    VALUE_EXPECTED: Union[bool, Any] = True
+
+    def __init__(
+            self,
+            value: Union[Any, Callable],
+            value_as_func: bool = True,
+            value_under_func: TYPE__FUNC_UNDER_VALUE = None,
+            value_expected: Any = True,
+            **kwargs,
+    ):
+        super().__init__(**kwargs)
+
+        self.VALUE = value
+        self.VALUE_AS_FUNC = value_as_func
+        self.VALUE_UNDER_FUNC = value_under_func
+        self.VALUE_EXPECTED = value_expected
+
+    def _run__wrapped(self) -> Union[bool, NoReturn]:
+        # CALLS ----------------------------------
+        if self.VALUE_AS_FUNC:
+            value = self.VALUE(*self.ARGS, **self.KWARGS)
         else:
-            result = value == self.VALUE_EXPECTED
+            value = self.VALUE
+
+        # VALUE_UNDER_FUNC -----------------------
+        if self.VALUE_UNDER_FUNC:
+            value = self.VALUE_UNDER_FUNC(value)
+
+        result = value == self.VALUE_EXPECTED
 
         # FINISH --------------------------------------------------------------
-        self.STEP_RESULT = result
-        return self
+        return result
 
 
 # =====================================================================================================================
-class ResultChain:
-    pass
+class ResultExpect_Chain(_ResultExpect_Base):
+    # SETTINGS --------------------------------
+    CHAINS: List[Union[_ResultExpect_Base]] = None
+
+    def __init__(
+            self,
+            chains: List[Union[ResultExpect_Step, Self]],
+            **kwargs,
+    ):
+        super().__init__(**kwargs)
+
+        self.CHAINS = chains
+
+    def _run__wrapped(self) -> bool:
+        result = True
+        for step in self.CHAINS:
+            if isinstance(step, _ResultExpect_Base):
+                step.run(*self.ARGS, **self.KWARGS)
+
+                if step.CHAIN__USE_RESULT:
+                    result &= bool(step.STEP__RESULT)
+
+                if not step.STEP__RESULT and step.CHAIN__STOP_ON_FAIL:
+                    break
+
+        return result
 
 
 # =====================================================================================================================

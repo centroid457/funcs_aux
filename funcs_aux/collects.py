@@ -169,6 +169,9 @@ class NamesIndexed_Base:
         """
         return item in self._DATA or item in self._DATA.values()
 
+    def count(self) -> int:
+        return len(self._DATA)
+
 
 # =====================================================================================================================
 class NamesIndexed_Example(NamesIndexed_Base):

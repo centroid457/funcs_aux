@@ -161,5 +161,21 @@ class Test__NamesIndexed_Base:
         assert "4" not in self.victim.TAIL
         assert "5" not in self.victim.TAIL
 
+    def test__count(self):
+        class Victim(NamesIndexed_Base):
+            name0 = 0
+            name1 = 1
+            TAIL = NamesIndexed_Templated(2, 2, "%s")
+
+        assert Victim().count() == 4
+
+        class Victim(NamesIndexed_Base):
+            name0 = 0
+            name1 = 1
+            TAIL = NamesIndexed_Templated(2, 2, "%s")
+            TAIL2 = NamesIndexed_Templated(4, 2, "%s")
+
+        assert Victim().count() == 6
+
 
 # =====================================================================================================================

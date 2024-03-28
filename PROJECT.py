@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 0, 10)
+    VERSION: Tuple[int, int, int] = (0, 1, 0)
     TODO: List[str] = [
         "..."
     ]
@@ -63,9 +63,11 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        ["[RESULTS]",
-         "return back for ResultValue attr VALUE",
-         ]
+        ["[COLLECTS]",
+         "add COLLECTS",
+         "add NamesIndexed_Base",
+         ],
+        "[PYPI] apply last ver"
     ]
 
     # FINALIZE -----------------------------------------------

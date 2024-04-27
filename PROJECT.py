@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 1, 1)
+    VERSION: Tuple[int, int, int] = (0, 1, 3)
     TODO: List[str] = [
         "..."
     ]
@@ -63,7 +63,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[COLLECTS.NamesIndexed] add count"
+        "[RESULTS] zero extenв msg + add index in stack msg"
     ]
 
     # FINALIZE -----------------------------------------------

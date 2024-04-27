@@ -169,6 +169,8 @@ class _ResultExpect_Base:
     STEP__RESULT: Optional[bool] = None
     STEP__EXX: Optional[bool] = None
 
+    STEP__INDEX: int = None
+
     def __init__(
             self,
             # _ResultExpect_Base ---------------------
@@ -194,7 +196,7 @@ class _ResultExpect_Base:
 
     @property
     def MSG(self) -> str:
-        result = f"[result={self.STEP__RESULT}]{self.TITLE or ''}"
+        result = f"ResultExpect[result={self.STEP__RESULT}/title={self.TITLE or ''}/index={self.STEP__INDEX}]"
         return result
 
     def _result__clear(self) -> None:
@@ -214,7 +216,7 @@ class _ResultExpect_Base:
             self.STEP__RESULT = self._run__wrapped()
         except Exception as exx:
             self.STEP__EXX = exx
-
+        #
         print(self.MSG)
         return self.STEP__RESULT
 
@@ -285,6 +287,7 @@ class ResultExpect_Chain(_ResultExpect_Base):
         for step in self.CHAINS:
             self.STEP__INDEX += 1
             if isinstance(step, _ResultExpect_Base):
+                step.STEP__INDEX = self.STEP__INDEX
                 step.run(*self.ARGS, **self.KWARGS)
 
                 if step.CHAIN__USE_RESULT:

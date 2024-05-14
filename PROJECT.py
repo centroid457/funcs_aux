@@ -57,7 +57,7 @@ Designed to collect useful funcs in one place!
     # HISTORY -----------------------------------------------
     VERSION: Tuple[int, int, int] = (0, 1, 3)
     TODO: List[str] = [
-        "..."
+        "[NamesIndexed_Base] add auto()"
     ]
     FIXME: List[str] = [
         "..."

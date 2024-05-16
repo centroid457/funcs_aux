@@ -197,10 +197,19 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
     def __bool__(self):
         return self.STEP__RESULT
 
+    def __str__(self) -> str:
+        return "\n".join(self.MSGS)
+
     @property
     def MSG(self) -> str:
-        result = f"ResultExpect[result={self.STEP__RESULT}/title={self.TITLE or ''}/index={self.STEP__INDEX}]"
+        result = f"ResultExpect[index={self.STEP__INDEX}/result={self.STEP__RESULT}//title={self.TITLE}]"
         return result
+
+    @property
+    def MSGS(self) -> list[str]:
+        """here it is useful to keep universal access to MSGS both to STEP/CHAIN
+        """
+        return [self.MSG, ]
 
     def _result__clear(self) -> None:
         self.STEP__RESULT = None
@@ -304,6 +313,13 @@ class ResultExpect_Chain(ResultExpect_Base):
     @property
     def CHAINS_COUNT(self) -> int:
         return len(self.CHAINS or [])
+
+    @property
+    def MSGS(self) -> list[str]:
+        result = []
+        for step in self.CHAINS:
+            result.append(step.MSG)
+        return result
 
 
 # =====================================================================================================================

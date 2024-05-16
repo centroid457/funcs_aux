@@ -155,7 +155,7 @@ def _explore_and_why_it_need():
 
 
 # =====================================================================================================================
-class _ResultExpect_Base:
+class ResultExpect_Base:    # dont hide it cause of need ability to detect both of ResultExpect_Step/Chain
     TITLE: Optional[str] = None
 
     ARGS: TYPE__ARGS = None
@@ -173,7 +173,7 @@ class _ResultExpect_Base:
 
     def __init__(
             self,
-            # _ResultExpect_Base ---------------------
+            # ResultExpect_Base ---------------------
             title: Optional[str] = None,
 
             args: TYPE__ARGS = None,
@@ -182,7 +182,7 @@ class _ResultExpect_Base:
             chain__use_result: bool = True,
             chain__stop_on_fail: bool = True,
     ):
-        # _ResultExpect_Base ---------------------
+        # ResultExpect_Base ---------------------
         self.TITLE = title
 
         self.ARGS = args or ()
@@ -194,13 +194,16 @@ class _ResultExpect_Base:
     def __call__(self, *args, **kwargs) -> Self:
         return self.run(*args, **kwargs)
 
+    def __bool__(self):
+        return self.STEP__RESULT
+
     @property
     def MSG(self) -> str:
         result = f"ResultExpect[result={self.STEP__RESULT}/title={self.TITLE or ''}/index={self.STEP__INDEX}]"
         return result
 
     def _result__clear(self) -> None:
-        self.STEP__RESULT = False
+        self.STEP__RESULT = None
         self.STEP__EXX = None
 
     def run(self, *args, **kwargs) -> bool:
@@ -224,7 +227,8 @@ class _ResultExpect_Base:
         pass
 
 
-class ResultExpect_Step(_ResultExpect_Base):
+# =====================================================================================================================
+class ResultExpect_Step(ResultExpect_Base):
     # SETTINGS --------------------------------
     VALUE: Union[Any, Callable]
     VALUE_AS_FUNC: bool = True
@@ -265,9 +269,9 @@ class ResultExpect_Step(_ResultExpect_Base):
 
 
 # =====================================================================================================================
-class ResultExpect_Chain(_ResultExpect_Base):
+class ResultExpect_Chain(ResultExpect_Base):
     # SETTINGS --------------------------------
-    CHAINS: List[Union[_ResultExpect_Base]] = None
+    CHAINS: List[Union[ResultExpect_Base]] = None
 
     # AUX --------------------------------
     STEP__INDEX: int = -1
@@ -286,7 +290,7 @@ class ResultExpect_Chain(_ResultExpect_Base):
         result = True
         for step in self.CHAINS:
             self.STEP__INDEX += 1
-            if isinstance(step, _ResultExpect_Base):
+            if isinstance(step, ResultExpect_Base):
                 step.STEP__INDEX = self.STEP__INDEX
                 step.run(*self.ARGS, **self.KWARGS)
 

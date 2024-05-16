@@ -11,6 +11,12 @@
 ********************************************************************************
 ## NEWS
 
+0.1.7 (2024/05/16 18:11:46)
+------------------------------
+- [COLLECTS]:  
+	- add Test__NamesIndexed_Templated  
+	- add get_listed_index__by_outer/get_listed_index__by_value  
+
 0.1.6 (2024/05/16 14:37:12)
 ------------------------------
 - [RESULTS] add STEP__EXX into MSG  
@@ -29,7 +35,7 @@
 
 0.1.3 (2024/04/27 16:31:41)
 ------------------------------
-- [RESULTS] zero extenР В Р вЂ  msg + add index in stack msg  
+- [RESULTS] zero extenР В Р’В Р В РІР‚В  msg + add index in stack msg  
 
 0.1.1 (2024/03/28 17:44:47)
 ------------------------------

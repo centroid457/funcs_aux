@@ -19,14 +19,19 @@ class Exx__ItemNotExists(Exception):
 
 # =====================================================================================================================
 class NamesIndexed_Templated(NamedTuple):
+    """
+    PATTERN FOR BREEDING ONE TYPE OF TEMPLATE STYLE
+    used and created special for NamesIndexed_Base
+    """
     START_OUTER: int
     COUNT: int
     TEMPLATE: str = "%s"
-    START_INNER: int = 1
+    START_INNER: int = 1    # just a starting number in values!
 
     def __contains__(self, item: Union[int, str]) -> bool:
         """
-        :param item: OUTER INDEX (not self INNER!!!) or inner value NAME
+        :param item: one of: 1=OUTER_INDEX (not self-INNER!!!) or 2=ORIGINAL value_NAME
+            couse of we usually need to compare OUTER indexes or original VALUES!
         :return:
         """
         if isinstance(item, int):
@@ -35,7 +40,7 @@ class NamesIndexed_Templated(NamedTuple):
         elif isinstance(item, str):
             return item in self.get_dict__outer().values()
 
-    def __getitem__(self, item: Union[int, str]) -> Union[int, str]:
+    def __getitem__(self, item: Union[int, str]) -> Union[int, str, NoReturn]:
         """
 
         :param item: INTERNAL INDEX! NOT OUTER!!!
@@ -47,9 +52,9 @@ class NamesIndexed_Templated(NamedTuple):
             return _DATA[item]
 
         if item in _DATA.values():
-            for name, value in _DATA.items():
+            for key, value in _DATA.items():
                 if item == value:
-                    return name
+                    return key
 
         msg = f"{item=}"
         raise Exx__ItemNotExists(msg)
@@ -72,6 +77,34 @@ class NamesIndexed_Templated(NamedTuple):
 
             result_inner.update({pos: value})
         return result_inner
+
+    def get_listed_index__by_outer(self, index: int) -> int | NoReturn:
+        """
+        usually we have outer index and need to be able get from other list value according to listed index fom this template!
+
+        :param index:
+        :return:
+        """
+        result = 0
+        if index in self:
+            for _key in self.get_dict__outer():
+                if _key == index:
+                    return result
+                else:
+                    result += 1
+        else:
+            raise Exx__ItemNotExists()
+
+    def get_listed_index__by_value(self, value: str) -> int | NoReturn:
+        result = 0
+        if value in self:
+            for _value in self.get_dict__outer().values():
+                if _value == value:
+                    return result
+                else:
+                    result += 1
+        else:
+            raise Exx__ItemNotExists()
 
 
 # =====================================================================================================================

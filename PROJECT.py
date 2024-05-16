@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 1, 4)
+    VERSION: Tuple[int, int, int] = (0, 1, 5)
     TODO: List[str] = [
         "[NamesIndexed_Base] add auto()"
     ]
@@ -64,9 +64,7 @@ Designed to collect useful funcs in one place!
     ]
     NEWS: List[str] = [
         ["[RESULTS]",
-            "add __bool__ + unhide BASE",
-            "add MSGS",
-            "add __str__",
+            "add ResultExpect_Base into root import",
         ]
     ]
 

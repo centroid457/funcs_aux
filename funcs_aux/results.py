@@ -202,7 +202,7 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
 
     @property
     def MSG(self) -> str:
-        result = f"ResultExpect[index={self.STEP__INDEX}/result={self.STEP__RESULT}//title={self.TITLE}]"
+        result = f"ResultExpect[index={self.STEP__INDEX}/result={self.STEP__RESULT}/exx={self.STEP__EXX}//title={self.TITLE}]"
         return result
 
     @property

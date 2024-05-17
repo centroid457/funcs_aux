@@ -73,15 +73,17 @@ class BreederObjectList:
 
     def __init__(self, index: int):
         """
-        you can use just a simple init (by calling class without index) for generate all instances!
+        init only when you need to do access to exact items!
         """
         super().__init__()
         self.INDEX = index
-        self.generate__objects()
+        # self.generate__objects()
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
     def generate__objects(cls) -> None:
+        """exact and only one method to Gen all objects - dont forget to call it!
+        """
         if cls._GROUPS:
             return
 
@@ -137,6 +139,13 @@ class BreederObjectList:
         raise Exx__BreederObjectList_GroupNotExists(msg)
 
     # -----------------------------------------------------------------------------------------------------------------
+    @classmethod
+    def groups_count__existed(cls) -> int:
+        """
+        work only after called generate__objects()
+        """
+        return len(cls._GROUPS)
+
     @classmethod
     def group_get__type(cls, name: str) -> BreederObjectList_GroupType:
         if f"{cls._STARTSWITH__DEFINE__CLS_SINGLE}{name}" in dir(cls):

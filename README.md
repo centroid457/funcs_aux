@@ -1,4 +1,4 @@
-# funcs_aux (v0.1.7)
+# funcs_aux (v0.1.8)
 
 ## DESCRIPTION_SHORT
 useful funcs in one place

@@ -63,7 +63,10 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[RESULTS] deprecate value_as_func - used auto!",
+
+
+
+        "[breeders] move here BreederObjectList"
     ]
 
     # FINALIZE -----------------------------------------------

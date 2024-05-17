@@ -240,14 +240,12 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
 class ResultExpect_Step(ResultExpect_Base):
     # SETTINGS --------------------------------
     VALUE: Union[Any, Callable]
-    VALUE_AS_FUNC: bool = True
     VALUE_UNDER_FUNC: TYPE__FUNC_UNDER_VALUE = None
     VALUE_EXPECTED: Union[bool, Any] = True
 
     def __init__(
             self,
             value: Union[Any, Callable],
-            value_as_func: bool = True,
             value_under_func: TYPE__FUNC_UNDER_VALUE = None,
             value_expected: Any = True,
 
@@ -256,13 +254,12 @@ class ResultExpect_Step(ResultExpect_Base):
         super().__init__(**kwargs)
 
         self.VALUE = value
-        self.VALUE_AS_FUNC = value_as_func
         self.VALUE_UNDER_FUNC = value_under_func
         self.VALUE_EXPECTED = value_expected
 
     def _run__wrapped(self) -> Union[bool, NoReturn]:
         # CALLS ----------------------------------
-        if self.VALUE_AS_FUNC:
+        if callable(self.VALUE):
             value = self.VALUE(*self.ARGS, **self.KWARGS)
         else:
             value = self.VALUE

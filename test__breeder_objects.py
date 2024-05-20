@@ -104,7 +104,7 @@ class Test__BreederObjectList:
         assert isinstance(Victim.ITEM_SINGLE, ItemSingle)
 
         try:
-            assert isinstance(Victim.ITEM_SINGLE_222222, ItemSingle)
+            assert isinstance(Victim.ITEM_LIST, ItemList)
             assert False
         except AttributeError:
             assert True
@@ -164,8 +164,10 @@ class Test__BreederObjectList:
         assert isinstance(Victim._GROUPS["ITEM_LIST"][0], ItemList)
         assert isinstance(Victim.LIST__ITEM_LIST[0], ItemList)
 
+        assert len(Victim.group_get__objects("ITEM_LIST")) == len(Victim._GROUPS["ITEM_LIST"]) == Victim.COUNT
+
         try:
-            assert isinstance(Victim.ITEM_LIST_22222, ItemList)
+            assert isinstance(Victim.ITEM_SINGLE, ItemList)
             assert False
         except AttributeError:
             assert True

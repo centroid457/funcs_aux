@@ -156,6 +156,11 @@ class BreederObjectList:
         if cls.groups_check__generated():
             return len(cls._GROUPS)
 
+    # -----------------------------------------------------------------------------------------------------------------
+    @classmethod
+    def group_check__exists(cls, name: str) -> bool:
+        return cls.group_get__type(name) != BreederObjectList_GroupType.NOT_EXISTS
+
     @classmethod
     def group_get__type(cls, name: str) -> BreederObjectList_GroupType:
         if f"{cls._STARTSWITH__DEFINE__CLS_SINGLE}{name}" in dir(cls):
@@ -165,10 +170,6 @@ class BreederObjectList:
             return BreederObjectList_GroupType.LIST
 
         return BreederObjectList_GroupType.NOT_EXISTS
-
-    @classmethod
-    def group_check__exists(cls, name: str) -> bool:
-        return cls.group_get__type(name) != BreederObjectList_GroupType.NOT_EXISTS
 
     @classmethod
     def group_get__objects(cls, name: str) -> Union[None, Any, list[Any]]:

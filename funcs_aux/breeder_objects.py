@@ -50,6 +50,7 @@ class BreederObjectList:
     # SETTINGS ----------------------
     COUNT: int = 1
 
+    # usage EXAMPLES ------------------------------------------------------
     # CLS_LIST__DUT: Type[DutBase] = DutBase
     # LIST__DUT: List[DutBase]
     # DUT: DutBase
@@ -66,7 +67,7 @@ class BreederObjectList:
     _STARTSWITH__ACCESS__OBJECT_LIST: str = "LIST__"
 
     # -----------------
-    _GROUPS: dict[str, Union[Any, list[Any]]] = {}
+    _GROUPS: dict[str, Union[Any, list[Any]]]
 
     # instance ---
     INDEX: int | None = None    # index used only in OBJECT INSTANCE
@@ -84,7 +85,7 @@ class BreederObjectList:
     def generate__objects(cls) -> None:
         """exact and only one method to Gen all objects - dont forget to call it!
         """
-        if cls._GROUPS:
+        if cls.groups_count__existed():
             return
 
         # WORK --------------------------------------
@@ -140,11 +141,20 @@ class BreederObjectList:
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
-    def groups_count__existed(cls) -> int:
+    def groups_check__generated(cls) -> bool:
         """
-        work only after called generate__objects()
+        check if objects/groups was generated
         """
-        return len(cls._GROUPS)
+        return hasattr(cls, "_GROUPS")
+
+    @classmethod
+    def groups_count__existed(cls) -> int | None:
+        """
+        work only after called generate__objects(),
+        so if you wasnot call generate__objects it will return None!
+        """
+        if cls.groups_check__generated():
+            return len(cls._GROUPS)
 
     @classmethod
     def group_get__type(cls, name: str) -> BreederObjectList_GroupType:
@@ -162,11 +172,23 @@ class BreederObjectList:
 
     @classmethod
     def group_get__objects(cls, name: str) -> Union[None, Any, list[Any]]:
-        if cls.group_check__exists(name):
+        if cls.group_check__exists(name) and cls.groups_check__generated():
             return cls._GROUPS[name]
 
     @classmethod
     def group_call__(cls, meth: str, group: str | None = None, *args, **kwargs) -> Union[NoReturn, TYPE__BREED_RESULT__GROUP, TYPE__BREED_RESULT__GROUPS]:
+        """
+        call one method on exact group (every object in group) or all groups (every object in all groups).
+        created specially for call connect/disconnect for devices in TP.
+
+        :param meth:
+        :param group:
+
+        :param args:
+        :param kwargs:
+        :return:
+            RAISE only if passed group and group is not exists!
+        """
         # CALL ON ALL GROUPS -------------------------------------------------
         if group is None:
             results = {}

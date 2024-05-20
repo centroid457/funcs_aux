@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 1, 8)
+    VERSION: Tuple[int, int, int] = (0, 1, 9)
     TODO: List[str] = [
         "[NamesIndexed_Base] add auto()"
     ]
@@ -63,10 +63,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-
-
-
-        "[breeders] move here BreederObjectList"
+        "[breeders] move here BreederObjectList + add tests"
     ]
 
     # FINALIZE -----------------------------------------------

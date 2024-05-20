@@ -13,11 +13,15 @@ TYPE__BREED_RESULT__GROUPS = dict[str, TYPE__BREED_RESULT__GROUP]
 
 
 # =====================================================================================================================
-class Exx__BreederObjectList_ObjCantAccessIndex(Exception):
+class Exx__BreederObjectList_GroupsNotGenerated(Exception):
     pass
 
 
 class Exx__BreederObjectList_GroupNotExists(Exception):
+    pass
+
+
+class Exx__BreederObjectList_ObjCantAccessIndex(Exception):
     pass
 
 
@@ -188,18 +192,21 @@ class BreederObjectList:
         :param args:
         :param kwargs:
         :return:
-            RAISE only if passed group and group is not exists!
+            RAISE only if passed group and group is not exists! or groups are not generated
         """
+        if not cls.groups_check__generated():
+            raise Exx__BreederObjectList_GroupsNotGenerated()
+
         # CALL ON ALL GROUPS -------------------------------------------------
         if group is None:
             results = {}
             for group_name in cls._GROUPS:
-                results.update({group_name: cls.group_call__(meth, group_name)})
+                results.update({group_name: cls.group_call__(meth, group_name, *args, **kwargs)})
             return results
 
         # if group is not exists ---------------------------------------------
         if not cls.group_check__exists(group):
-            raise Exx__BreederObjectList_GroupNotExists()
+            raise Exx__BreederObjectList_GroupNotExists(group)
 
         # EXACT ONE GROUP ----------------------------------------------------
         group_objs = cls._GROUPS[group]
@@ -208,7 +215,7 @@ class BreederObjectList:
             results = []
             for obj in group_objs:
                 try:
-                    obj_meth = getattr(obj, "meth")
+                    obj_meth = getattr(obj, meth)
                     obj_result = obj_meth(*args, **kwargs)
                 except Exception as exx:
                     obj_result = exx
@@ -216,19 +223,13 @@ class BreederObjectList:
         else:
             obj = group_objs
             try:
-                obj_meth = getattr(obj, "meth")
+                obj_meth = getattr(obj, meth)
                 obj_result = obj_meth(*args, **kwargs)
             except Exception as exx:
                 obj_result = exx
             results = obj_result
 
         return results
-
-
-# =====================================================================================================================
-
-
-# =====================================================================================================================
 
 
 # =====================================================================================================================

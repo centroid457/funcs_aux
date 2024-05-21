@@ -237,6 +237,19 @@ class Test__BreederStrStack:
     #     pass
 
     # -----------------------------------------------------------------------------------------------------------------
+
+    def test__auto_index(self):
+        class BreederStrStack_IndexAuto(BreederStrStack):
+            name0 = 0
+            name1 = None
+            series23 = BreederStrSeries(None, 2, "%s")
+            series45 = BreederStrSeries(None, 2, "%s")
+            name6 = None
+
+        victim = BreederStrStack_IndexAuto()
+        # FIXME: FINISH!!!
+
+
     def test__exx_1__overlayd_1(self):
         class BreederStrStack_Example2(BreederStrStack):
             name0 = 0

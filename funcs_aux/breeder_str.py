@@ -161,6 +161,7 @@ class BreederStrStack:
     _DATA: Dict[int, str] = {}
 
     def __init__(self):
+        index_last = 0
         result = {}
 
         # ATTRS ------------------
@@ -170,20 +171,35 @@ class BreederStrStack:
                 attrs.append(attr)
 
         # WORK -------------------
-        for value in attrs:
-            index = getattr(self, value)
+        for attr in attrs:
+            index = getattr(self, attr)
+
+            # apply AUTO ----------
+            if index is None:
+                index = index_last + 1
+
             if isinstance(index, int):
                 if index in result:
                     msg = f"{index=} from {result=}"
                     raise Exx__IndexOverlayed(msg)
-                result.update({index: value})
-            elif isinstance(index, BreederStrSeries):
-                result_sub = index.get_dict__outer()
-                for index in result_sub:
+                result.update({index: attr})
+                index_last = index
+
+            if isinstance(index, BreederStrSeries):
+                # apply AUTO by recreation
+                if index.START_OUTER is None:
+                    index = BreederStrSeries(index_last, index.COUNT, index.TEMPLATE, index.START_INNER)
+                    setattr(self, attr, index)
+
+                # work
+                result_sub_dict = index.get_dict__outer()
+                for index in result_sub_dict:
                     if index in result:
-                        msg = f"{index=} from {result_sub=}"
+                        msg = f"{index=} from {result_sub_dict=}"
                         raise Exx__IndexOverlayed(msg)
-                result.update(result_sub)
+                    index_last = index
+
+                result.update(result_sub_dict)
 
         # CHECK SKIPPED -----------
         index_prev = None

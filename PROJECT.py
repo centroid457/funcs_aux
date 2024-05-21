@@ -66,9 +66,11 @@ Designed to collect useful funcs in one place!
 
 
 
-        "[breeder_str] renames",
-            "NamesIndexed_Templated -> BreederStrSeries",
-            "NamesIndexed_Base -> BreederStrStack",
+        "[breeder_str]",
+            "rename NamesIndexed_Templated -> BreederStrSeries",
+            "rename NamesIndexed_Base -> BreederStrStack",
+            "[BreederStrSeries] add START_OUTER=0 and _raise_if_start_outer_none",
+            "[STACK] try resolve AUTO index! need to fix order of attrs by annotations!!!"
     ]
 
     # FINALIZE -----------------------------------------------

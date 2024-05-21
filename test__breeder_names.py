@@ -1,7 +1,7 @@
 import pytest
 
 from funcs_aux import *
-from funcs_aux import NamesIndexed_Base
+from funcs_aux import BreederStrStack
 
 
 # =====================================================================================================================
@@ -199,7 +199,7 @@ class Test__NamesIndexed_Templated:
 class Test__NamesIndexed_Base:
     @classmethod
     def setup_class(cls):
-        class NamesIndexed_Example(NamesIndexed_Base):
+        class NamesIndexed_Example(BreederStrStack):
             name0 = 0
             name1 = 1
             TAIL = BreederStrSeries(2, 2, "%s")
@@ -220,7 +220,7 @@ class Test__NamesIndexed_Base:
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__exx_1__overlayd_1(self):
-        class NamesIndexed_Example2(NamesIndexed_Base):
+        class NamesIndexed_Example2(BreederStrStack):
             name0 = 0
             name1 = 1
             name2 = 1
@@ -233,7 +233,7 @@ class Test__NamesIndexed_Base:
             pass
 
     def test__exx_1__overlayd_2(self):
-        class NamesIndexed_Example2(NamesIndexed_Base):
+        class NamesIndexed_Example2(BreederStrStack):
             name0 = 0
             name1 = 1
             TAIL = BreederStrSeries(1, 2, "%s")
@@ -245,7 +245,7 @@ class Test__NamesIndexed_Base:
             pass
 
     def test__exx_1__skipped_1(self):
-        class NamesIndexed_Example2(NamesIndexed_Base):
+        class NamesIndexed_Example2(BreederStrStack):
             name0 = 0
             name1 = 1
             TAIL = BreederStrSeries(2, 2, "%s")
@@ -258,7 +258,7 @@ class Test__NamesIndexed_Base:
             pass
 
     def test__exx_1__skipped_2(self):
-        class NamesIndexed_Example2(NamesIndexed_Base):
+        class NamesIndexed_Example2(BreederStrStack):
             name0 = 0
             # name1 = 1
             TAIL = BreederStrSeries(2, 2, "%s")
@@ -353,14 +353,14 @@ class Test__NamesIndexed_Base:
         assert "5" not in self.victim.TAIL
 
     def test__count(self):
-        class Victim(NamesIndexed_Base):
+        class Victim(BreederStrStack):
             name0 = 0
             name1 = 1
             TAIL = BreederStrSeries(2, 2, "%s")
 
         assert Victim().count() == 4
 
-        class Victim(NamesIndexed_Base):
+        class Victim(BreederStrStack):
             name0 = 0
             name1 = 1
             TAIL = BreederStrSeries(2, 2, "%s")

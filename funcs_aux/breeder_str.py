@@ -21,7 +21,7 @@ class Exx__ItemNotExists(Exception):
 class BreederStrSeries(NamedTuple):
     """
     PATTERN FOR BREEDING ONE TYPE OF TEMPLATE STYLE
-    used and created special for NamesIndexed_Base
+    used and created special for BreederStrStack
     """
     START_OUTER: int
     COUNT: int
@@ -108,18 +108,18 @@ class BreederStrSeries(NamedTuple):
 
 
 # =====================================================================================================================
-class NamesIndexed_Base:
+class BreederStrStack:
     """
     created specially for applying in Gui tableModels (PyQt5) as header structure
 
     VULNERABILITIES # FIXME:
     ------------------------
     1. if exists same names cause of patterns - it would return always first index!
-        class NamesIndexed_Example2(NamesIndexed_Base):
+        class BreederStrStack_Example2(BreederStrStack):
             TAIL = BreederStrSeries(2, 2, "%s")
             TAIL2 = BreederStrSeries(4, 2, "%s")
 
-        NamesIndexed_Example2()["2"] = 1
+        BreederStrStack_Example2()["2"] = 1
 
     DEFINE
     ------
@@ -207,13 +207,13 @@ class NamesIndexed_Base:
 
 
 # =====================================================================================================================
-class NamesIndexed_Example(NamesIndexed_Base):
+class BreederStrStack_Example(BreederStrStack):
     name0 = 0
     name1 = 1
     TAIL = BreederStrSeries(2, 2, "%s")
 
 
-class NamesIndexed_Example__BestUsage(NamesIndexed_Base):
+class BreederStrStack_Example__BestUsage(BreederStrStack):
     INDEX = 0
     TESTCASE = 1
     ASYNC = 2

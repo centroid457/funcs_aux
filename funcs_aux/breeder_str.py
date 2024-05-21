@@ -166,7 +166,7 @@ class BreederStrStack:
 
         # ATTRS ------------------
         attrs: List[str] = []
-        for attr in dir(self):
+        for attr in self.annotations__get_nested():
             if not attr.startswith("_") and not callable(getattr(self, attr)):
                 attrs.append(attr)
 
@@ -177,7 +177,9 @@ class BreederStrStack:
             # apply AUTO ----------
             if index is None:
                 index = index_last + 1
+                index_last = index
 
+            # work INT ----------
             if isinstance(index, int):
                 if index in result:
                     msg = f"{index=} from {result=}"
@@ -185,21 +187,21 @@ class BreederStrStack:
                 result.update({index: attr})
                 index_last = index
 
+            # work BreederStrSeries ----------
             if isinstance(index, BreederStrSeries):
                 # apply AUTO by recreation
                 if index.START_OUTER is None:
-                    index = BreederStrSeries(index_last, index.COUNT, index.TEMPLATE, index.START_INNER)
+                    index = BreederStrSeries(index_last + 1, index.COUNT, index.TEMPLATE, index.START_INNER)
                     setattr(self, attr, index)
 
                 # work
                 result_sub_dict = index.get_dict__outer()
-                for index in result_sub_dict:
-                    if index in result:
-                        msg = f"{index=} from {result_sub_dict=}"
+                for key, value in result_sub_dict.items():
+                    if key in result:
+                        msg = f"{key=} from {result_sub_dict=}"
                         raise Exx__IndexOverlayed(msg)
-                    index_last = index
-
-                result.update(result_sub_dict)
+                    result.update({key: value})
+                    index_last = key
 
         # CHECK SKIPPED -----------
         index_prev = None
@@ -238,20 +240,33 @@ class BreederStrStack:
     def count(self) -> int:
         return len(self._DATA)
 
+    @classmethod
+    def annotations__get_nested(cls) -> dict[str, Any]:
+        """
+        get all annotations in correct order!
+        """
+        result = {}
+        for cls_i in cls.__mro__:
+            if cls_i == BreederStrStack:
+                break
+
+            result = dict(**cls_i.__annotations__, **result)
+        return result
+
 
 # =====================================================================================================================
 class BreederStrStack_Example(BreederStrStack):
-    name0 = 0
-    name1 = 1
-    TAIL = BreederStrSeries(2, 2, "%s")
+    name0: int = 0
+    name1: int = 1
+    TAIL: BreederStrSeries = BreederStrSeries(2, 2, "%s")
 
 
 class BreederStrStack_Example__BestUsage(BreederStrStack):
-    INDEX = 0
-    TESTCASE = 1
-    ASYNC = 2
-    STARTUP = 3
-    DUTS = BreederStrSeries(4, 10, "TC_DUT_%s")
+    INDEX: int = 0
+    TESTCASE: int = 1
+    ASYNC: int = 2
+    STARTUP: int = 3
+    DUTS: BreederStrSeries = BreederStrSeries(4, 10, "TC_DUT_%s")
 
 
 # =====================================================================================================================

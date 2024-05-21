@@ -218,9 +218,9 @@ class Test__BreederStrStack:
     @classmethod
     def setup_class(cls):
         class BreederStrStack_Example(BreederStrStack):
-            name0 = 0
-            name1 = 1
-            TAIL = BreederStrSeries(2, 2, "%s")
+            name0: int = 0
+            name1: int = 1
+            TAIL: BreederStrSeries = BreederStrSeries(2, 2, "%s")
 
         cls.victim = BreederStrStack_Example()
         pass
@@ -240,11 +240,11 @@ class Test__BreederStrStack:
 
     def test__auto_index(self):
         class BreederStrStack_IndexAuto(BreederStrStack):
-            name0 = 0
-            name1 = None
-            series23 = BreederStrSeries(None, 2, "%s")
-            series45 = BreederStrSeries(None, 2, "%s")
-            name6 = None
+            name0: int = 0
+            name1: int | None = None
+            series23: BreederStrSeries = BreederStrSeries(None, 2, "%s")
+            series45: BreederStrSeries = BreederStrSeries(None, 2, "%s")
+            name6: None = None
 
         victim = BreederStrStack_IndexAuto()
         # FIXME: FINISH!!!
@@ -252,10 +252,10 @@ class Test__BreederStrStack:
 
     def test__exx_1__overlayd_1(self):
         class BreederStrStack_Example2(BreederStrStack):
-            name0 = 0
-            name1 = 1
-            name2 = 1
-            TAIL = BreederStrSeries(2, 2, "%s")
+            name0: int = 0
+            name1: int = 1
+            name2: int = 1
+            TAIL: BreederStrSeries = BreederStrSeries(2, 2, "%s")
 
         try:
             victim = BreederStrStack_Example2()
@@ -265,9 +265,9 @@ class Test__BreederStrStack:
 
     def test__exx_1__overlayd_2(self):
         class BreederStrStack_Example2(BreederStrStack):
-            name0 = 0
-            name1 = 1
-            TAIL = BreederStrSeries(1, 2, "%s")
+            name0: int = 0
+            name1: int = 1
+            TAIL: BreederStrSeries = BreederStrSeries(1, 2, "%s")
 
         try:
             victim = BreederStrStack_Example2()
@@ -277,10 +277,10 @@ class Test__BreederStrStack:
 
     def test__exx_1__skipped_1(self):
         class BreederStrStack_Example2(BreederStrStack):
-            name0 = 0
-            name1 = 1
-            TAIL = BreederStrSeries(2, 2, "%s")
-            TAIL2 = BreederStrSeries(20, 2, "%s")
+            name0: int = 0
+            name1: int = 1
+            TAIL: BreederStrSeries = BreederStrSeries(2, 2, "%s")
+            TAIL2: BreederStrSeries = BreederStrSeries(20, 2, "%s")
 
         try:
             victim = BreederStrStack_Example2()
@@ -290,9 +290,9 @@ class Test__BreederStrStack:
 
     def test__exx_1__skipped_2(self):
         class BreederStrStack_Example2(BreederStrStack):
-            name0 = 0
-            # name1 = 1
-            TAIL = BreederStrSeries(2, 2, "%s")
+            name0: int = 0
+            # name1: int = 1
+            TAIL: BreederStrSeries = BreederStrSeries(2, 2, "%s")
 
         try:
             victim = BreederStrStack_Example2()
@@ -385,17 +385,17 @@ class Test__BreederStrStack:
 
     def test__count(self):
         class Victim(BreederStrStack):
-            name0 = 0
-            name1 = 1
-            TAIL = BreederStrSeries(2, 2, "%s")
+            name0: int = 0
+            name1: int = 1
+            TAIL: BreederStrSeries = BreederStrSeries(2, 2, "%s")
 
         assert Victim().count() == 4
 
         class Victim(BreederStrStack):
-            name0 = 0
-            name1 = 1
-            TAIL = BreederStrSeries(2, 2, "%s")
-            TAIL2 = BreederStrSeries(4, 2, "%s")
+            name0: int = 0
+            name1: int = 1
+            TAIL: BreederStrSeries = BreederStrSeries(2, 2, "%s")
+            TAIL2: BreederStrSeries = BreederStrSeries(4, 2, "%s")
 
         assert Victim().count() == 6
 

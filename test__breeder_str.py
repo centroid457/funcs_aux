@@ -239,14 +239,14 @@ class Test__BreederStrStack:
     # -----------------------------------------------------------------------------------------------------------------
 
     def test__auto_index(self):
-        class BreederStrStack_IndexAuto(BreederStrStack):
+        class Victim(BreederStrStack):
             name0: int = 0
             name1: int | None = None
             series23: BreederStrSeries = BreederStrSeries(None, 2, "series23_%s")
             series45: BreederStrSeries = BreederStrSeries(None, 2, "series45_%s")
             name6: None = None
 
-        victim = BreederStrStack_IndexAuto()
+        victim = Victim()
         assert victim[0] == "name0"
         assert victim[1] == "name1"
         assert victim[2] == "series23_1"
@@ -255,27 +255,44 @@ class Test__BreederStrStack:
         assert victim[5] == "series45_2"
         assert victim[6] == "name6"
 
+    def test__sorted(self):
+        class Victim(BreederStrStack):
+            name0: int = 0
+            name2: int = 2
+            name1: int = 1
+
+        victim = Victim()
+        assert victim[0] == "name0"
+        assert victim[1] == "name1"
+        assert victim[2] == "name2"
+
+        assert victim._DATA == {
+            0: "name0",
+            1: "name1",
+            2: "name2",
+        }
+
     def test__exx_1__overlayd_1(self):
-        class BreederStrStack_Example2(BreederStrStack):
+        class Victim(BreederStrStack):
             name0: int = 0
             name1: int = 1
             name2: int = 1
             TAIL: BreederStrSeries = BreederStrSeries(2, 2, "%s")
 
         try:
-            victim = BreederStrStack_Example2()
+            victim = Victim()
             assert False
         except:
             pass
 
     def test__exx_1__overlayd_2(self):
-        class BreederStrStack_Example2(BreederStrStack):
+        class Victim(BreederStrStack):
             name0: int = 0
             name1: int = 1
             TAIL: BreederStrSeries = BreederStrSeries(1, 2, "%s")
 
         try:
-            victim = BreederStrStack_Example2()
+            victim = Victim()
             assert False
         except:
             pass
@@ -294,13 +311,13 @@ class Test__BreederStrStack:
             pass
 
     def test__exx_1__skipped_2(self):
-        class BreederStrStack_Example2(BreederStrStack):
+        class Victim(BreederStrStack):
             name0: int = 0
             # name1: int = 1
             TAIL: BreederStrSeries = BreederStrSeries(2, 2, "%s")
 
         try:
-            victim = BreederStrStack_Example2()
+            victim = Victim()
             assert False
         except:
             pass

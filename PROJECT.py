@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 1, 9)
+    VERSION: Tuple[int, int, int] = (0, 2, 0)
     TODO: List[str] = [
         "[BreederStrStack] add auto()"
     ]
@@ -63,15 +63,12 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-
-
-
         "[breeder_str]",
             "rename NamesIndexed_Templated -> BreederStrSeries",
             "rename NamesIndexed_Base -> BreederStrStack",
-            "[BreederStrSeries] add START_OUTER=0 and _raise_if_start_outer_none",
+            "[Series] add START_OUTER=0 and _raise_if_start_outer_none",
             "[STACK] resolve AUTO index!",
-            "sort _DATA"
+            "[STACK] sort _DATA"
     ]
 
     # FINALIZE -----------------------------------------------

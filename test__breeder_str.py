@@ -1,7 +1,6 @@
 import pytest
 
 from funcs_aux import *
-from funcs_aux import BreederStrStack
 
 
 # =====================================================================================================================
@@ -21,6 +20,25 @@ class Test__BreederStrSeries:
     #     pass
 
     # -----------------------------------------------------------------------------------------------------------------
+    def test__START_OUTER_None(self):
+        victim = self.Victim(None, 1, "test_%s", 1)
+        assert victim.START_OUTER == None
+        assert victim.COUNT == 1
+        assert victim.TEMPLATE == "test_%s"
+        assert victim.START_INNER == 1
+
+        try:
+            assert victim.get_dict__inner()
+            assert False
+        except Exx__StartOuterNONE_UsedInStackByRecreation:
+            assert True
+
+        try:
+            assert victim.get_dict__outer()
+            assert False
+        except Exx__StartOuterNONE_UsedInStackByRecreation:
+            assert True
+
     def test__init_params(self):
         victim = self.Victim(0, 1, "test_%s", 1)
         assert victim.START_OUTER == 0

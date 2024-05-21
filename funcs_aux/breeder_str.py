@@ -17,23 +17,36 @@ class Exx__ItemNotExists(Exception):
     pass
 
 
+class Exx__StartOuterNONE_UsedInStackByRecreation(Exception):
+    """
+    in stack it will be recreate automatically! so dont use in pure single BreederStrSeries!
+    """
+    pass
+
+
 # =====================================================================================================================
 class BreederStrSeries(NamedTuple):
     """
     PATTERN FOR BREEDING ONE TYPE OF TEMPLATE STYLE
     used and created special for BreederStrStack
     """
-    START_OUTER: int
+    START_OUTER: int | None  # None used only for recreation in Stack!!! for auto
     COUNT: int
     TEMPLATE: str = "%s"
     START_INNER: int = 1    # just a starting number in values!
 
-    def __contains__(self, item: Union[int, str]) -> bool:
+    def _raise_if_start_outer_none(self) -> NoReturn | None:
+        if self.START_OUTER is None:
+            raise Exx__StartOuterNONE_UsedInStackByRecreation()
+
+    def __contains__(self, item: Union[int, str]) -> Union[bool, NoReturn]:
         """
         :param item: one of: 1=OUTER_INDEX (not self-INNER!!!) or 2=ORIGINAL value_NAME
             couse of we usually need to compare OUTER indexes or original VALUES!
         :return:
         """
+        self._raise_if_start_outer_none()
+
         if isinstance(item, int):
             return self.START_OUTER <= item < (self.START_OUTER + self.COUNT)
 
@@ -59,7 +72,9 @@ class BreederStrSeries(NamedTuple):
         msg = f"{item=}"
         raise Exx__ItemNotExists(msg)
 
-    def get_dict__outer(self) -> Dict[int, str]:
+    def get_dict__outer(self) -> Dict[int, str] | NoReturn:
+        self._raise_if_start_outer_none()
+
         result_outer_sub = {}
         for index in range(self.COUNT):
             pos = index + self.START_INNER
@@ -69,7 +84,9 @@ class BreederStrSeries(NamedTuple):
             result_outer_sub.update({index_outer: value})
         return result_outer_sub
 
-    def get_dict__inner(self) -> Dict[int, str]:
+    def get_dict__inner(self) -> Dict[int, str] | NoReturn:
+        self._raise_if_start_outer_none()
+
         result_inner = {}
         for index in range(self.COUNT):
             pos = index + self.START_INNER

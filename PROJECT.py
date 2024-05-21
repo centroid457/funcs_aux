@@ -63,7 +63,12 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[breeders] move here BreederObjectList + add tests"
+
+
+
+        "[breeder_str] renames",
+            "NamesIndexed_Templated -> BreederStrSeries",
+            "NamesIndexed_Base -> BreederStrStack",
     ]
 
     # FINALIZE -----------------------------------------------

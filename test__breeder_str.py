@@ -5,7 +5,7 @@ from funcs_aux import BreederStrStack
 
 
 # =====================================================================================================================
-class Test__NamesIndexed_Templated:
+class Test__BreederStrSeries:
     @classmethod
     def setup_class(cls):
         cls.Victim = BreederStrSeries
@@ -196,15 +196,15 @@ class Test__NamesIndexed_Templated:
 
 
 # =====================================================================================================================
-class Test__NamesIndexed_Base:
+class Test__BreederStrStack:
     @classmethod
     def setup_class(cls):
-        class NamesIndexed_Example(BreederStrStack):
+        class BreederStrStack_Example(BreederStrStack):
             name0 = 0
             name1 = 1
             TAIL = BreederStrSeries(2, 2, "%s")
 
-        cls.victim = NamesIndexed_Example()
+        cls.victim = BreederStrStack_Example()
         pass
 
     # @classmethod
@@ -220,51 +220,51 @@ class Test__NamesIndexed_Base:
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__exx_1__overlayd_1(self):
-        class NamesIndexed_Example2(BreederStrStack):
+        class BreederStrStack_Example2(BreederStrStack):
             name0 = 0
             name1 = 1
             name2 = 1
             TAIL = BreederStrSeries(2, 2, "%s")
 
         try:
-            victim = NamesIndexed_Example2()
+            victim = BreederStrStack_Example2()
             assert False
         except:
             pass
 
     def test__exx_1__overlayd_2(self):
-        class NamesIndexed_Example2(BreederStrStack):
+        class BreederStrStack_Example2(BreederStrStack):
             name0 = 0
             name1 = 1
             TAIL = BreederStrSeries(1, 2, "%s")
 
         try:
-            victim = NamesIndexed_Example2()
+            victim = BreederStrStack_Example2()
             assert False
         except:
             pass
 
     def test__exx_1__skipped_1(self):
-        class NamesIndexed_Example2(BreederStrStack):
+        class BreederStrStack_Example2(BreederStrStack):
             name0 = 0
             name1 = 1
             TAIL = BreederStrSeries(2, 2, "%s")
             TAIL2 = BreederStrSeries(20, 2, "%s")
 
         try:
-            victim = NamesIndexed_Example2()
+            victim = BreederStrStack_Example2()
             assert False
         except:
             pass
 
     def test__exx_1__skipped_2(self):
-        class NamesIndexed_Example2(BreederStrStack):
+        class BreederStrStack_Example2(BreederStrStack):
             name0 = 0
             # name1 = 1
             TAIL = BreederStrSeries(2, 2, "%s")
 
         try:
-            victim = NamesIndexed_Example2()
+            victim = BreederStrStack_Example2()
             assert False
         except:
             pass

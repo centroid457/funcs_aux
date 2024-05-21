@@ -8,7 +8,7 @@ from funcs_aux import NamesIndexed_Base
 class Test__NamesIndexed_Templated:
     @classmethod
     def setup_class(cls):
-        cls.Victim = NamesIndexed_Templated
+        cls.Victim = BreederStrSeries
 
     # # @classmethod
     # # def teardown_class(cls):
@@ -202,7 +202,7 @@ class Test__NamesIndexed_Base:
         class NamesIndexed_Example(NamesIndexed_Base):
             name0 = 0
             name1 = 1
-            TAIL = NamesIndexed_Templated(2, 2, "%s")
+            TAIL = BreederStrSeries(2, 2, "%s")
 
         cls.victim = NamesIndexed_Example()
         pass
@@ -224,7 +224,7 @@ class Test__NamesIndexed_Base:
             name0 = 0
             name1 = 1
             name2 = 1
-            TAIL = NamesIndexed_Templated(2, 2, "%s")
+            TAIL = BreederStrSeries(2, 2, "%s")
 
         try:
             victim = NamesIndexed_Example2()
@@ -236,7 +236,7 @@ class Test__NamesIndexed_Base:
         class NamesIndexed_Example2(NamesIndexed_Base):
             name0 = 0
             name1 = 1
-            TAIL = NamesIndexed_Templated(1, 2, "%s")
+            TAIL = BreederStrSeries(1, 2, "%s")
 
         try:
             victim = NamesIndexed_Example2()
@@ -248,8 +248,8 @@ class Test__NamesIndexed_Base:
         class NamesIndexed_Example2(NamesIndexed_Base):
             name0 = 0
             name1 = 1
-            TAIL = NamesIndexed_Templated(2, 2, "%s")
-            TAIL2 = NamesIndexed_Templated(20, 2, "%s")
+            TAIL = BreederStrSeries(2, 2, "%s")
+            TAIL2 = BreederStrSeries(20, 2, "%s")
 
         try:
             victim = NamesIndexed_Example2()
@@ -261,7 +261,7 @@ class Test__NamesIndexed_Base:
         class NamesIndexed_Example2(NamesIndexed_Base):
             name0 = 0
             # name1 = 1
-            TAIL = NamesIndexed_Templated(2, 2, "%s")
+            TAIL = BreederStrSeries(2, 2, "%s")
 
         try:
             victim = NamesIndexed_Example2()
@@ -356,15 +356,15 @@ class Test__NamesIndexed_Base:
         class Victim(NamesIndexed_Base):
             name0 = 0
             name1 = 1
-            TAIL = NamesIndexed_Templated(2, 2, "%s")
+            TAIL = BreederStrSeries(2, 2, "%s")
 
         assert Victim().count() == 4
 
         class Victim(NamesIndexed_Base):
             name0 = 0
             name1 = 1
-            TAIL = NamesIndexed_Templated(2, 2, "%s")
-            TAIL2 = NamesIndexed_Templated(4, 2, "%s")
+            TAIL = BreederStrSeries(2, 2, "%s")
+            TAIL2 = BreederStrSeries(4, 2, "%s")
 
         assert Victim().count() == 6
 

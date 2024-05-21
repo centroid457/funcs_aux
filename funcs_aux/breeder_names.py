@@ -18,7 +18,7 @@ class Exx__ItemNotExists(Exception):
 
 
 # =====================================================================================================================
-class NamesIndexed_Templated(NamedTuple):
+class BreederStrSeries(NamedTuple):
     """
     PATTERN FOR BREEDING ONE TYPE OF TEMPLATE STYLE
     used and created special for NamesIndexed_Base
@@ -116,8 +116,8 @@ class NamesIndexed_Base:
     ------------------------
     1. if exists same names cause of patterns - it would return always first index!
         class NamesIndexed_Example2(NamesIndexed_Base):
-            TAIL = NamesIndexed_Templated(2, 2, "%s")
-            TAIL2 = NamesIndexed_Templated(4, 2, "%s")
+            TAIL = BreederStrSeries(2, 2, "%s")
+            TAIL2 = BreederStrSeries(4, 2, "%s")
 
         NamesIndexed_Example2()["2"] = 1
 
@@ -127,7 +127,7 @@ class NamesIndexed_Base:
         - dont use underscore as first simble
         - it will be as value for index
     1. dont keep SKIPPED indexes - use all final range!
-    2. NamesIndexed_Templated
+    2. BreederStrSeries
      - use if need template for some range
      - use any count of such items
 
@@ -160,7 +160,7 @@ class NamesIndexed_Base:
                     msg = f"{index=} from {result=}"
                     raise Exx__IndexOverlayed(msg)
                 result.update({index: value})
-            elif isinstance(index, NamesIndexed_Templated):
+            elif isinstance(index, BreederStrSeries):
                 result_sub = index.get_dict__outer()
                 for index in result_sub:
                     if index in result:
@@ -210,7 +210,7 @@ class NamesIndexed_Base:
 class NamesIndexed_Example(NamesIndexed_Base):
     name0 = 0
     name1 = 1
-    TAIL = NamesIndexed_Templated(2, 2, "%s")
+    TAIL = BreederStrSeries(2, 2, "%s")
 
 
 class NamesIndexed_Example__BestUsage(NamesIndexed_Base):
@@ -218,7 +218,7 @@ class NamesIndexed_Example__BestUsage(NamesIndexed_Base):
     TESTCASE = 1
     ASYNC = 2
     STARTUP = 3
-    DUTS = NamesIndexed_Templated(4, 10, "TC_DUT_%s")
+    DUTS = BreederStrSeries(4, 10, "TC_DUT_%s")
 
 
 # =====================================================================================================================

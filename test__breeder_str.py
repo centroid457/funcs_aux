@@ -242,13 +242,18 @@ class Test__BreederStrStack:
         class BreederStrStack_IndexAuto(BreederStrStack):
             name0: int = 0
             name1: int | None = None
-            series23: BreederStrSeries = BreederStrSeries(None, 2, "%s")
-            series45: BreederStrSeries = BreederStrSeries(None, 2, "%s")
+            series23: BreederStrSeries = BreederStrSeries(None, 2, "series23_%s")
+            series45: BreederStrSeries = BreederStrSeries(None, 2, "series45_%s")
             name6: None = None
 
         victim = BreederStrStack_IndexAuto()
-        # FIXME: FINISH!!!
-
+        assert victim[0] == "name0"
+        assert victim[1] == "name1"
+        assert victim[2] == "series23_1"
+        assert victim[3] == "series23_2"
+        assert victim[4] == "series45_1"
+        assert victim[5] == "series45_2"
+        assert victim[6] == "name6"
 
     def test__exx_1__overlayd_1(self):
         class BreederStrStack_Example2(BreederStrStack):

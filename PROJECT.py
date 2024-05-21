@@ -70,7 +70,8 @@ Designed to collect useful funcs in one place!
             "rename NamesIndexed_Templated -> BreederStrSeries",
             "rename NamesIndexed_Base -> BreederStrStack",
             "[BreederStrSeries] add START_OUTER=0 and _raise_if_start_outer_none",
-            "[STACK] resolve AUTO index!"
+            "[STACK] resolve AUTO index!",
+            "sort _DATA"
     ]
 
     # FINALIZE -----------------------------------------------

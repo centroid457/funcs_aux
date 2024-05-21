@@ -157,8 +157,34 @@ class BreederStrStack:
     2. GET HEADER NAME BY INDEX or INDEX by NAME!
     headerName = MyHeders[colIndex]
     headerIndex = MyHeders[colName]
+
+    RULES
+    -----
+    1. use always any ANNOTATIONS for your indexes!!
+    2. hide names by using underscore!
+    3. use None for AUTOINDEX!!!
+    4. nesting available with correct order!
+        class ClsFirst(BreederStrStack):
+            atr1: int
+            atr3: int = None
+
+        class ClsLast(BreederStrStack):
+            atr2: int = None
+            atr4: int
+
+        for key, value in ClsLast.annotations__get_nested_list().items():
+            print(f"{key}:{value}")
+
+        # atr1:<class 'int'>
+        # atr3:<class 'int'>
+        # atr2:<class 'int'>
+        # atr4:<class 'int'>
     """
-    _DATA: Dict[int, str] = {}
+    # settings ----------------------
+    _RAISE_IF_INDEX_SKIPPED: bool = True
+
+    # aux ----------------------
+    _DATA: dict[int, str] = {}
 
     def __init__(self):
         index_last = 0
@@ -178,6 +204,7 @@ class BreederStrStack:
             if index is None:
                 index = index_last + 1
                 index_last = index
+                setattr(self, attr, index)
 
             # work INT ----------
             if isinstance(index, int):
@@ -203,20 +230,12 @@ class BreederStrStack:
                     result.update({key: value})
                     index_last = key
 
-        # CHECK SKIPPED -----------
-        index_prev = None
-        for index in sorted(result):
-            if index_prev is None:
-                index_prev = index
-                continue
-
-            if index - index_prev != 1:
-                msg = f"index [{index-1}]"
-                raise Exx__IndexNotSet(msg)
-            index_prev = index
-
         # RESULT -------------------
-        self._DATA = result
+        self._DATA = dict(sorted(result.items()))
+
+        # CHECK SKIPPED -----------
+        if self._RAISE_IF_INDEX_SKIPPED:
+            self.raise_if_index_skipped()
 
     def __getitem__(self, item: Union[int, str]) -> Union[int, str]:
         if item in self._DATA:
@@ -241,6 +260,19 @@ class BreederStrStack:
         return len(self._DATA)
 
     @classmethod
+    def raise_if_index_skipped(cls) -> None | NoReturn:
+        index_prev = None
+        for index in cls._DATA:
+            if index_prev is None:
+                index_prev = index
+                continue
+
+            if index - index_prev != 1:
+                msg = f"index [{index-1}]"
+                raise Exx__IndexNotSet(msg)
+            index_prev = index
+
+    @classmethod
     def annotations__get_nested(cls) -> dict[str, Any]:
         """
         get all annotations in correct order!
@@ -263,10 +295,10 @@ class BreederStrStack_Example(BreederStrStack):
 
 class BreederStrStack_Example__BestUsage(BreederStrStack):
     INDEX: int = 0
-    TESTCASE: int = 1
-    ASYNC: int = 2
-    STARTUP: int = 3
-    DUTS: BreederStrSeries = BreederStrSeries(4, 10, "TC_DUT_%s")
+    TESTCASE: int = None
+    ASYNC: int = None
+    STARTUP: int = None
+    DUTS: BreederStrSeries = BreederStrSeries(None, 10, "TC_DUT_%s")
 
 
 # =====================================================================================================================

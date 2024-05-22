@@ -1,4 +1,5 @@
 from typing import *
+from annot_attrs import AnnotsNested
 
 
 # =====================================================================================================================
@@ -125,7 +126,7 @@ class BreederStrSeries(NamedTuple):
 
 
 # =====================================================================================================================
-class BreederStrStack:
+class BreederStrStack(AnnotsNested):
     """
     created specially for applying in Gui tableModels (PyQt5) as header structure
 
@@ -271,19 +272,6 @@ class BreederStrStack:
                 msg = f"index [{index-1}]"
                 raise Exx__IndexNotSet(msg)
             index_prev = index
-
-    @classmethod
-    def annotations__get_nested(cls) -> dict[str, Any]:
-        """
-        get all annotations in correct order!
-        """
-        result = {}
-        for cls_i in cls.__mro__:
-            if cls_i == BreederStrStack:
-                break
-
-            result = dict(**cls_i.__annotations__, **result)
-        return result
 
 
 # =====================================================================================================================

@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 0)
+    VERSION: Tuple[int, int, int] = (0, 2, 1)
     TODO: List[str] = [
         "[BreederStrStack] add auto()"
     ]
@@ -63,12 +63,10 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[breeder_str]",
-            "rename NamesIndexed_Templated -> BreederStrSeries",
-            "rename NamesIndexed_Base -> BreederStrStack",
-            "[Series] add START_OUTER=0 and _raise_if_start_outer_none",
-            "[STACK] resolve AUTO index!",
-            "[STACK] sort _DATA"
+        "[breeder_str] move AnnotsNested into separated module!"
+
+        "[__INIT__.py] fix import",
+        "apply last pypi template",
     ]
 
     # FINALIZE -----------------------------------------------

@@ -3,10 +3,10 @@ from funcs_aux.results import ResultValue
 
 
 # =====================================================================================================================
-Type__IterablePath_Key = Union[str, int]
-Type__IterablePath_Original = List[Type__IterablePath_Key]
-Type__IterablePath_Expected = Union[Type__IterablePath_Key, Type__IterablePath_Original]
-Type__Iterable = Union[dict, list, tuple, set, Iterable]
+TYPE__ITERABLE_PATH_KEY = Union[str, int]
+TYPE__ITERABLE_PATH_ORIGINAL = List[TYPE__ITERABLE_PATH_KEY]
+TYPE__ITERABLE_PATH_EXPECTED = Union[TYPE__ITERABLE_PATH_KEY, TYPE__ITERABLE_PATH_ORIGINAL]
+TYPE__ITERABLE = Union[dict, list, tuple, set, Iterable]
 
 
 # =====================================================================================================================
@@ -15,17 +15,17 @@ class Iterables:
     collect universal funcs which work with collections
     """
     # AUX ---------------------
-    DATA: Type__Iterable
-    PATH: List[Type__IterablePath_Key]
+    DATA: TYPE__ITERABLE
+    PATH: List[TYPE__ITERABLE_PATH_KEY]
 
-    def __init__(self, data: Optional[Type__Iterable] = None):
+    def __init__(self, data: Optional[TYPE__ITERABLE] = None):
         self.DATA = data or {}
         self.PATH = []
 
     def item__get_original__case_insensitive(
             self,
             item_expected: Any,
-            data: Optional[Type__Iterable] = None
+            data: Optional[TYPE__ITERABLE] = None
     ) -> Optional[ResultValue]:
         """
         get FIRST original item from any collection by comparing str(expected).lower()==str(original).lower().
@@ -52,8 +52,8 @@ class Iterables:
 
     def path__get_original(
             self,
-            path_expected: Type__IterablePath_Expected,
-            data: Optional[Type__Iterable] = None,
+            path_expected: TYPE__ITERABLE_PATH_EXPECTED,
+            data: Optional[TYPE__ITERABLE] = None,
     ) -> Optional[ResultValue]:
         """
         NOTES:
@@ -104,8 +104,8 @@ class Iterables:
 
     def value_by_path__get(
             self,
-            path_expected: Type__IterablePath_Expected,
-            data: Optional[Type__Iterable] = None
+            path_expected: TYPE__ITERABLE_PATH_EXPECTED,
+            data: Optional[TYPE__ITERABLE] = None
     ) -> Optional[ResultValue]:
         if data is None:
             data = self.DATA
@@ -122,9 +122,9 @@ class Iterables:
 
     def value_by_path__set(
             self,
-            path_expected: Type__IterablePath_Expected,
+            path_expected: TYPE__ITERABLE_PATH_EXPECTED,
             value: Any,
-            data: Optional[Type__Iterable] = None
+            data: Optional[TYPE__ITERABLE] = None
     ) -> bool:
         if data is None:
             data = self.DATA

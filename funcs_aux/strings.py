@@ -14,7 +14,7 @@ TYPES_ELEMENTARY_COLLECTION: tuple = (
 )
 TYPES_ELEMENTARY: tuple = (*TYPES_ELEMENTARY_SINGLE, *TYPES_ELEMENTARY_COLLECTION,)
 
-TYPE__ELEMENTARY = Union[*TYPES_ELEMENTARY]
+TYPE_ELEMENTARY = Union[*TYPES_ELEMENTARY]
 
 
 # =====================================================================================================================
@@ -24,7 +24,7 @@ class Strings:
     def __init__(self, source: Optional[str] = None):
         self.SOURCE = source
 
-    def try_convert_to__elementary(self, source: Optional[Any] = None) -> TYPE__ELEMENTARY:
+    def try_convert_to__elementary(self, source: Optional[Any] = None) -> TYPE_ELEMENTARY:
         """
         by now it works correct only with single elementary values like INT/FLOAT/BOOL/NONE
         for collections it may work but may not work correctly!!! so use it by your own risk and conscious choice!!

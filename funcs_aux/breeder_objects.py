@@ -80,8 +80,8 @@ class BreederObjectList:
         """
         init only when you need to do access to exact items!
         """
+        self.INDEX = index      # need first!
         super().__init__()
-        self.INDEX = index
         # self.generate__objects()
 
     # -----------------------------------------------------------------------------------------------------------------

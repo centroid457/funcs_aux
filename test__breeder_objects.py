@@ -40,62 +40,6 @@ class Test__BreederObjectList:
     #     pass
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__with_groups__single(self):
-        class Victim(self.Victim):
-            CLS_SINGLE__ITEM_SINGLE = ItemSingle
-            # CLS_LIST__ITEM_LIST = ItemList
-
-        # BLANC --------------------
-        try:
-            assert isinstance(Victim.ITEM_SINGLE, ItemSingle)
-            assert False
-        except AttributeError:
-            assert True
-
-        # GENERATE --------------------
-        Victim.generate__objects()
-
-        assert isinstance(Victim.ITEM_SINGLE, ItemSingle)
-
-        try:
-            assert isinstance(Victim.ITEM_LIST, ItemList)
-            assert False
-        except AttributeError:
-            assert True
-
-        # INSTANCE -------------------
-        assert Victim(0).ITEM_SINGLE is ItemSingle.INSTS
-        assert isinstance(Victim(0).ITEM_SINGLE, ItemSingle)
-
-    # -----------------------------------------------------------------------------------------------------------------
-    def test__with_groups__list(self):
-        class Victim(self.Victim):
-            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
-            CLS_LIST__ITEM_LIST = ItemList
-
-        # BLANC --------------------
-        try:
-            assert isinstance(Victim.ITEM_LIST, ItemList)
-            assert False
-        except AttributeError:
-            assert True
-
-        # GENERATE --------------------
-        Victim.generate__objects()
-
-        assert isinstance(Victim.LIST__ITEM_LIST[0], ItemList)
-
-        try:
-            assert isinstance(Victim.ITEM_SINGLE, ItemList)
-            assert False
-        except AttributeError:
-            assert True
-
-        # INSTANCE -------------------
-        assert Victim(0).ITEM_LIST is Victim.group_get__insts("ITEM_LIST")[0]
-        assert isinstance(Victim(0).ITEM_LIST, ItemList)
-
-    # -----------------------------------------------------------------------------------------------------------------
     pass    # ---------------------------------------------------------------------------------------------------------
     pass    # ---------------------------------------------------------------------------------------------------------
     pass    # ---------------------------------------------------------------------------------------------------------
@@ -437,7 +381,7 @@ class Test__BreederObjectList:
             CLS_LIST__ITEM_LIST = ItemList
 
         Victim.generate__objects()
-        assert Victim(0).ITEM_SINGLE is Victim(1).ITEM_SINGLE is Victim(3).ITEM_SINGLE
+        assert Victim.ITEM_SINGLE is ItemSingle.INSTS is Victim(0).ITEM_SINGLE is Victim(1).ITEM_SINGLE is Victim(3).ITEM_SINGLE
 
         for index in range(Victim.COUNT):
             assert Victim(index).ITEM_SINGLE is Victim.ITEM_SINGLE is Victim.ITEM_SINGLE.INSTS
@@ -471,12 +415,19 @@ class Test__BreederObjectList:
         assert Victim(0).ITEM_SINGLE is Victim(0).ITEM_LIST.BREEDER.ITEM_SINGLE is Victim(1).ITEM_LIST.BREEDER.ITEM_SINGLE
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__gen_objects(self):
+    def test__generate_objects(self):
         class Victim(self.Victim):
             CLS_SINGLE__ITEM_SINGLE = ItemSingle
             CLS_LIST__ITEM_LIST = ItemList
 
-        assert True     # already tested above
+        Victim.generate__objects()
+        victim_single = Victim.ITEM_SINGLE
+
+        Victim.generate__objects()
+        assert Victim.ITEM_SINGLE is victim_single
+
+        Victim.generate__objects(True)  # regen instances!
+        assert not Victim.ITEM_SINGLE is victim_single
 
 
 # =====================================================================================================================

@@ -92,10 +92,10 @@ class BreederObjectList:
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
-    def generate__objects(cls) -> None:
+    def generate__objects(cls, force: bool | None = None) -> None:
         """exact and only one method to Gen all objects - dont forget to call it!
         """
-        if cls.__groups__are_generated:
+        if not force and cls.__groups__are_generated:
             return
 
         # WORK --------------------------------------

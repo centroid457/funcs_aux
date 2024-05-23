@@ -69,22 +69,73 @@ class BreederObjectList:
 
     # access ----------
     _STARTSWITH__ACCESS__OBJECT_LIST__IN_BREEDER: str = "LIST__"
-    _STARTSWITH__ACCESS__OBJECT_LIST__IN_CLS: str = "INSTS"
+    _STARTSWITH__ACCESS__OBJECT_LIST__IN_SOURCE: str = "INSTS"
+    _STARTSWITH__ACCESS__BREEDER_IN__SOURCE: str = "BREEDER"    # SINGLE:Type[Breeder] // LIST:Breeder
 
     # AUX --------
-    groups__generated: bool | None = None   # used only in class!????
+    __groups__are_generated: bool = False
 
     # instance ---
     INDEX: int | None = None    # index used only in OBJECT INSTANCE
 
-    def __init__(self, index: int):
+    def __init__(self, index: int, *args, **kwargs):
         """
         init only when you need to do access to exact items!
         """
         self.INDEX = index      # need first!
-        super().__init__()
+        super().__init__(*args, **kwargs)
         # self.generate__objects()
 
+    @classmethod
+    def groups_check__generated(cls) -> bool | None:
+        return cls.__groups__are_generated
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @classmethod
+    def generate__objects(cls) -> None:
+        """exact and only one method to Gen all objects - dont forget to call it!
+        """
+        if cls.__groups__are_generated:
+            return
+
+        # WORK --------------------------------------
+        for attr_name in dir(cls):
+            # LIST --------------------------------------
+            if attr_name.startswith(cls._STARTSWITH__DEFINE__CLS_LIST):
+                group_name = attr_name.removeprefix(cls._STARTSWITH__DEFINE__CLS_LIST)
+                obj_cls = getattr(cls, attr_name)
+
+                obj_list__name = f"{cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_BREEDER}{group_name}"
+                obj_list__value = []
+                for index in range(cls.COUNT):
+                    try:
+                        obj_instance = obj_cls(index)
+                        setattr(obj_instance, cls._STARTSWITH__ACCESS__BREEDER_IN__SOURCE, cls(index=index))
+                    except Exception as exx:
+                        obj_instance = exx
+                    obj_list__value.append(obj_instance)
+
+
+                # apply GROUP to class -------
+                setattr(cls, obj_list__name, obj_list__value)
+                setattr(obj_cls, cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_SOURCE, obj_list__value)
+
+            # SINGLE --------------------------------------
+            if attr_name.startswith(cls._STARTSWITH__DEFINE__CLS_SINGLE):
+                group_name = attr_name.removeprefix(cls._STARTSWITH__DEFINE__CLS_SINGLE)
+                obj_cls = getattr(cls, attr_name)
+                try:
+                    obj_instance = obj_cls()
+                except Exception as exx:
+                    obj_instance = exx
+                # apply -------
+                setattr(cls, group_name, obj_instance)
+                setattr(obj_cls, cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_SOURCE, obj_instance)
+                setattr(obj_cls, cls._STARTSWITH__ACCESS__BREEDER_IN__SOURCE, cls)
+
+        cls.__groups__are_generated = True
+
+    # -----------------------------------------------------------------------------------------------------------------
     @classmethod
     def groups__get_names(cls) -> set[str]:
         result = set()
@@ -100,54 +151,12 @@ class BreederObjectList:
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
-    def generate__objects(cls) -> None:
-        """exact and only one method to Gen all objects - dont forget to call it!
-        """
-        if cls.groups__generated:
-            return
-
-        # WORK --------------------------------------
-        for attr_name in dir(cls):
-            # LIST --------------------------------------
-            if attr_name.startswith(cls._STARTSWITH__DEFINE__CLS_LIST):
-                group_name = attr_name.removeprefix(cls._STARTSWITH__DEFINE__CLS_LIST)
-                obj_cls = getattr(cls, attr_name)
-
-                obj_list__name = f"{cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_BREEDER}{group_name}"
-                obj_list__value = []
-                for index in range(cls.COUNT):
-                    try:
-                        obj_instance = obj_cls(index)
-                    except Exception as exx:
-                        obj_instance = exx
-                    obj_list__value.append(obj_instance)
-
-                # apply GROUP to class -------
-                setattr(cls, obj_list__name, obj_list__value)
-                setattr(obj_cls, cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_CLS, obj_list__value)
-
-            # SINGLE --------------------------------------
-            if attr_name.startswith(cls._STARTSWITH__DEFINE__CLS_SINGLE):
-                group_name = attr_name.removeprefix(cls._STARTSWITH__DEFINE__CLS_SINGLE)
-                obj_cls = getattr(cls, attr_name)
-                try:
-                    obj_instance = obj_cls()
-                except Exception as exx:
-                    obj_instance = exx
-                # apply -------
-                setattr(cls, group_name, obj_instance)
-                setattr(obj_cls, cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_CLS, obj_instance)
-
-        cls.groups__generated = True
-
-    # -----------------------------------------------------------------------------------------------------------------
-    @classmethod
-    def groups_count__existed(cls) -> int | None:
+    def groups_count__generated(cls) -> int | None:
         """
         work only after called generate__objects(),
         so if you wasnot call generate__objects it will return None!
         """
-        if cls.groups__generated:
+        if cls.__groups__are_generated:
             return len(cls.groups__get_names())
 
     # GROUP -----------------------------------------------------------------------------------------------------------
@@ -169,9 +178,6 @@ class BreederObjectList:
     def group_get__cls(cls, name: str) -> Any | None:
         group_type = cls.group_get__type(name)
 
-        if group_type == BreederObjectList_GroupType.NOT_EXISTS:
-            return
-
         if group_type == BreederObjectList_GroupType.SINGLE:
             attr = f"{cls._STARTSWITH__DEFINE__CLS_SINGLE}{name}"
             return getattr(cls, attr)
@@ -182,9 +188,9 @@ class BreederObjectList:
 
     @classmethod
     def group_get__insts(cls, name: str) -> Union[None, Any, list[Any]]:
-        if cls.group_check__exists(name) and cls.groups__generated:
+        if cls.group_check__exists(name) and cls.__groups__are_generated:
             group_cls = cls.group_get__cls(name)
-            result = getattr(group_cls, cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_CLS)
+            result = getattr(group_cls, cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_SOURCE)
             return result
 
     @classmethod
@@ -201,7 +207,7 @@ class BreederObjectList:
         :return:
             RAISE only if passed group and group is not exists! or groups are not generated
         """
-        if not cls.groups__generated:
+        if not cls.__groups__are_generated:
             raise Exx__BreederObjectList_GroupsNotGenerated()
 
         args = args or ()

@@ -1,7 +1,6 @@
 from typing import *
 import pytest
 
-from funcs_aux import *
 from funcs_aux import BreederObjectList, BreederObjectList_GroupType, Exx__BreederObjectList_GroupNotExists
 
 
@@ -41,43 +40,12 @@ class Test__BreederObjectList:
     #     pass
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__wo_groups(self):
-        class Victim(self.Victim):
-            COUNT = 2
-
-        # BLANC --------------------
-        assert Victim.INDEX is None
-        assert Victim.groups_count__existed() is None
-
-        # GENERATE --------------------
-        Victim.generate__objects()
-        assert Victim.INDEX is None
-        assert Victim.groups_count__existed() == 0
-
-        assert Victim.group_get__insts("ITEM_SINGLE") is None
-        assert Victim.group_get__insts("ITEM_LIST") is None
-
-    # -----------------------------------------------------------------------------------------------------------------
     def test__with_groups__single(self):
         class Victim(self.Victim):
-            COUNT = 2
             CLS_SINGLE__ITEM_SINGLE = ItemSingle
             # CLS_LIST__ITEM_LIST = ItemList
 
         # BLANC --------------------
-        assert Victim.INDEX is None
-
-        assert Victim.groups_count__existed() is None
-
-        assert Victim.group_get__type("ITEM_SINGLE") == BreederObjectList_GroupType.SINGLE
-        assert Victim.group_get__type("ITEM_LIST") == BreederObjectList_GroupType.NOT_EXISTS
-
-        assert Victim.group_check__exists("ITEM_SINGLE") is True
-        assert Victim.group_check__exists("ITEM_LIST") is False
-
-        assert Victim.group_get__insts("ITEM_SINGLE") is None
-        assert Victim.group_get__insts("ITEM_LIST") is None
-
         try:
             assert isinstance(Victim.ITEM_SINGLE, ItemSingle)
             assert False
@@ -86,19 +54,6 @@ class Test__BreederObjectList:
 
         # GENERATE --------------------
         Victim.generate__objects()
-        assert Victim.INDEX is None
-        assert Victim.groups_count__existed() == 1
-
-        assert Victim.group_get__type("ITEM_SINGLE") == BreederObjectList_GroupType.SINGLE
-        assert Victim.group_get__type("ITEM_LIST") == BreederObjectList_GroupType.NOT_EXISTS
-
-        assert Victim.group_check__exists("ITEM_SINGLE") is True
-        assert Victim.group_check__exists("ITEM_LIST") is False
-
-        assert Victim.group_get__insts("ITEM_SINGLE") is ItemSingle.INSTS
-        assert Victim.group_get__insts("ITEM_LIST") is None
-
-        assert Victim.groups__get_names() == {"ITEM_SINGLE", }
 
         assert isinstance(Victim.ITEM_SINGLE, ItemSingle)
 
@@ -115,23 +70,10 @@ class Test__BreederObjectList:
     # -----------------------------------------------------------------------------------------------------------------
     def test__with_groups__list(self):
         class Victim(self.Victim):
-            COUNT = 2
             # CLS_SINGLE__ITEM_SINGLE = ItemSingle
             CLS_LIST__ITEM_LIST = ItemList
 
         # BLANC --------------------
-        assert Victim.INDEX is None
-        assert Victim.groups_count__existed() is None
-
-        assert Victim.group_get__type("ITEM_SINGLE") == BreederObjectList_GroupType.NOT_EXISTS
-        assert Victim.group_get__type("ITEM_LIST") == BreederObjectList_GroupType.LIST
-
-        assert Victim.group_check__exists("ITEM_SINGLE") is False
-        assert Victim.group_check__exists("ITEM_LIST") is True
-
-        assert Victim.group_get__insts("ITEM_SINGLE") is None
-        assert Victim.group_get__insts("ITEM_LIST") is None
-
         try:
             assert isinstance(Victim.ITEM_LIST, ItemList)
             assert False
@@ -140,24 +82,7 @@ class Test__BreederObjectList:
 
         # GENERATE --------------------
         Victim.generate__objects()
-        assert Victim.INDEX is None
 
-        assert Victim.groups_count__existed() == 1
-
-        assert Victim.group_get__type("ITEM_SINGLE") == BreederObjectList_GroupType.NOT_EXISTS
-        assert Victim.group_get__type("ITEM_LIST") == BreederObjectList_GroupType.LIST
-
-        assert Victim.group_check__exists("ITEM_SINGLE") is False
-        assert Victim.group_check__exists("ITEM_LIST") is True
-
-        assert Victim.group_get__insts("ITEM_SINGLE") is None
-        assert Victim.group_get__insts("ITEM_LIST") == ItemList.INSTS
-
-        assert Victim.groups__get_names() == {"ITEM_LIST", }
-        assert len(Victim.group_get__insts("ITEM_LIST")) == Victim.COUNT
-        assert len(Victim.group_get__insts("ITEM_LIST")) == len(ItemList.INSTS) == Victim.COUNT
-
-        assert isinstance(Victim.group_get__insts("ITEM_LIST")[0], ItemList)
         assert isinstance(Victim.LIST__ITEM_LIST[0], ItemList)
 
         try:
@@ -171,6 +96,250 @@ class Test__BreederObjectList:
         assert isinstance(Victim(0).ITEM_LIST, ItemList)
 
     # -----------------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__groups_check__generated(self):
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.groups_check__generated() is False
+        Victim.generate__objects()
+        assert Victim.groups_check__generated() is True
+
+        class Victim2(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim2.groups_check__generated() is False
+        Victim2.generate__objects()
+        assert Victim2.groups_check__generated() is True
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__count(self):
+        for count in range(5):
+            class Victim(self.Victim):
+                COUNT = count
+                CLS_SINGLE__ITEM_SINGLE = ItemSingle
+                CLS_LIST__ITEM_LIST = ItemList
+
+            Victim.generate__objects()
+            assert Victim.group_get__insts("ITEM_SINGLE") is ItemSingle.INSTS
+            assert Victim.group_get__insts("ITEM_LIST") is ItemList.INSTS
+
+            assert isinstance(Victim.group_get__insts("ITEM_SINGLE"), ItemSingle)
+            assert isinstance(Victim.group_get__insts("ITEM_LIST"), list)
+
+            if count > 0:
+                assert isinstance(Victim.group_get__insts("ITEM_LIST")[0], ItemList)
+                assert len(Victim.group_get__insts("ITEM_LIST")) == len(ItemList.INSTS) == Victim.COUNT == count
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__groups__get_names(self):
+        class Victim(self.Victim):
+            pass
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.groups__get_names() == set()
+
+        class Victim(self.Victim):
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.groups__get_names() == {"ITEM_LIST"}
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.groups__get_names() == {"ITEM_SINGLE"}
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.groups__get_names() == {"ITEM_SINGLE", "ITEM_LIST"}
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__groups_count__generated(self):
+        class Victim(self.Victim):
+            pass
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.groups_count__generated() is None
+        Victim.generate__objects()
+        assert Victim.groups_count__generated() is 0
+
+        class Victim(self.Victim):
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.groups_count__generated() is None
+        Victim.generate__objects()
+        assert Victim.groups_count__generated() == 1
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.groups_count__generated() is None
+        Victim.generate__objects()
+        assert Victim.groups_count__generated() == 1
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.groups_count__generated() is None
+        Victim.generate__objects()
+        assert Victim.groups_count__generated() == 2
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__group_get__type(self):
+        class Victim(self.Victim):
+            COUNT = 2
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_get__type("ITEM_SINGLE") is BreederObjectList_GroupType.SINGLE
+        assert Victim.group_get__type("ITEM_LIST") is BreederObjectList_GroupType.LIST
+        assert Victim.group_get__type("COUNT") is BreederObjectList_GroupType.NOT_EXISTS
+        assert Victim.group_get__type("NOT_EXISTS") is BreederObjectList_GroupType.NOT_EXISTS
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__group_check__exists(self):
+        class Victim(self.Victim):
+            pass
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_check__exists("ITEM_SINGLE") is False
+        assert Victim.group_check__exists("ITEM_LIST") is False
+
+        class Victim(self.Victim):
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_check__exists("ITEM_SINGLE") is False
+        assert Victim.group_check__exists("ITEM_LIST") is True
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_check__exists("ITEM_SINGLE") is True
+        assert Victim.group_check__exists("ITEM_LIST") is False
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_check__exists("ITEM_SINGLE") is True
+        assert Victim.group_check__exists("ITEM_LIST") is True
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__group_get__cls(self):
+        class Victim(self.Victim):
+            pass
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_get__cls("ITEM_SINGLE") is None
+        assert Victim.group_get__cls("ITEM_LIST") is None
+
+        class Victim(self.Victim):
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_get__cls("ITEM_SINGLE") is None
+        assert Victim.group_get__cls("ITEM_LIST") is ItemList
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_get__cls("ITEM_SINGLE") is ItemSingle
+        assert Victim.group_get__cls("ITEM_LIST") is None
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_get__cls("ITEM_SINGLE") is ItemSingle
+        assert Victim.group_get__cls("ITEM_LIST") is ItemList
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__group_get__insts(self):
+        class Victim(self.Victim):
+            pass
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_get__insts("ITEM_SINGLE") is None
+        assert Victim.group_get__insts("ITEM_LIST") is None
+
+        # assert isinstance(Victim.group_get__insts("ITEM_SINGLE"), ItemSingle)
+        # assert isinstance(Victim.group_get__insts("ITEM_LIST"), list)
+        # assert isinstance(Victim.group_get__insts("ITEM_LIST")[0], ItemList)
+
+        class Victim(self.Victim):
+            # CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_get__insts("ITEM_SINGLE") is None
+        assert Victim.group_get__insts("ITEM_LIST") is None
+
+        Victim.generate__objects()
+        assert Victim.group_get__insts("ITEM_SINGLE") is None
+        assert Victim.group_get__insts("ITEM_LIST") is ItemList.INSTS
+
+        # assert isinstance(Victim.group_get__insts("ITEM_SINGLE"), ItemSingle)
+        assert isinstance(Victim.group_get__insts("ITEM_LIST"), list)
+        assert isinstance(Victim.group_get__insts("ITEM_LIST")[0], ItemList)
+        assert len(Victim.group_get__insts("ITEM_LIST")) == Victim.COUNT
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            # CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_get__insts("ITEM_SINGLE") is None
+        assert Victim.group_get__insts("ITEM_LIST") is None
+
+        Victim.generate__objects()
+        assert Victim.group_get__insts("ITEM_SINGLE") is ItemSingle.INSTS
+        assert Victim.group_get__insts("ITEM_LIST") is None
+
+        assert isinstance(Victim.group_get__insts("ITEM_SINGLE"), ItemSingle)
+        # assert isinstance(Victim.group_get__insts("ITEM_LIST"), list)
+        # assert isinstance(Victim.group_get__insts("ITEM_LIST")[0], ItemList)
+        # assert len(Victim.group_get__insts("ITEM_LIST")) == Victim.COUNT
+
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert Victim.group_get__insts("ITEM_SINGLE") is None
+        assert Victim.group_get__insts("ITEM_LIST") is None
+
+        Victim.generate__objects()
+        assert Victim.group_get__insts("ITEM_SINGLE") is ItemSingle.INSTS
+        assert Victim.group_get__insts("ITEM_LIST") is ItemList.INSTS
+
+        assert isinstance(Victim.group_get__insts("ITEM_SINGLE"), ItemSingle)
+        assert isinstance(Victim.group_get__insts("ITEM_LIST"), list)
+        assert isinstance(Victim.group_get__insts("ITEM_LIST")[0], ItemList)
+        assert len(Victim.group_get__insts("ITEM_LIST")) == Victim.COUNT
+
+    # -----------------------------------------------------------------------------------------------------------------
     def test__group_call(self):
         class Victim(self.Victim):
             COUNT = 2
@@ -178,9 +347,6 @@ class Test__BreederObjectList:
             CLS_LIST__ITEM_LIST = ItemList
 
         # BLANC --------------------
-        assert Victim.INDEX is None
-        assert Victim.groups_count__existed() is None
-
         try:
             assert Victim.group_call__("set_result", "ITEM_SINGLE", [123, ])
             assert False
@@ -189,8 +355,6 @@ class Test__BreederObjectList:
 
         # GENERATE --------------------
         Victim.generate__objects()
-        assert Victim.INDEX is None
-        assert Victim.groups_count__existed() == 2
 
         # SINGLE --------------------
         assert Victim.group_call__("set_result", "ITEM_SINGLE", [111, ]) == 111
@@ -219,6 +383,100 @@ class Test__BreederObjectList:
         assert Victim.ITEM_SINGLE.result == 444
         for index in range(Victim.COUNT):
             assert Victim(index).ITEM_LIST.result == Victim.LIST__ITEM_LIST[index].result == 444
+
+    # -----------------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+    pass    # ---------------------------------------------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__breeder_cls__and_getattr(self):
+        class Victim(self.Victim):
+            COUNT = 2
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        try:
+            assert Victim.ITEM_SINGLE
+            assert False
+        except:
+            assert True
+        try:
+            assert Victim.ITEM_LIST
+            assert False
+        except:
+            assert True
+        try:
+            assert Victim.LIST__ITEM_LIST
+            assert False
+        except:
+            assert True
+
+        Victim.generate__objects()
+        assert Victim.ITEM_SINGLE
+        try:
+            assert Victim.ITEM_LIST
+            assert False
+        except:
+            assert True
+        assert Victim.LIST__ITEM_LIST
+
+        assert isinstance(Victim.ITEM_SINGLE, ItemSingle)
+        assert isinstance(Victim.LIST__ITEM_LIST, list)
+        assert isinstance(Victim.LIST__ITEM_LIST[0], ItemList)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__breeder_inst__and_getattr(self):
+        class Victim(self.Victim):
+            COUNT = 3
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        Victim.generate__objects()
+        assert Victim(0).ITEM_SINGLE is Victim(1).ITEM_SINGLE is Victim(3).ITEM_SINGLE
+
+        for index in range(Victim.COUNT):
+            assert Victim(index).ITEM_SINGLE is Victim.ITEM_SINGLE is Victim.ITEM_SINGLE.INSTS
+            assert Victim(index).ITEM_LIST is Victim.LIST__ITEM_LIST[index]
+            assert Victim(index).ITEM_LIST is Victim(0).LIST__ITEM_LIST[index]
+            assert Victim(index).ITEM_LIST is Victim(0).ITEM_LIST.INSTS[index]
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__breeder_inst__deep(self):
+        class Victim(self.Victim):
+            COUNT = 3
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        Victim.generate__objects()
+
+        # SINGLE -----------------
+        assert Victim is Victim(0).ITEM_SINGLE.BREEDER
+
+        assert Victim.ITEM_SINGLE is Victim(0).ITEM_SINGLE
+        assert Victim.ITEM_SINGLE is Victim.ITEM_SINGLE.BREEDER.ITEM_SINGLE
+        assert Victim.ITEM_SINGLE is Victim(0).ITEM_SINGLE.BREEDER.ITEM_SINGLE
+        assert Victim.ITEM_SINGLE is Victim(0).ITEM_LIST.BREEDER.ITEM_SINGLE
+
+        # LIST -------------------
+        assert not Victim(0) is Victim.ITEM_SINGLE.BREEDER(0)   # just not same UID but same instances inside!
+        assert Victim(0).ITEM_SINGLE is Victim.ITEM_SINGLE.BREEDER(0).ITEM_SINGLE
+
+        assert not Victim(0) is Victim(0).ITEM_LIST.BREEDER   # just not same UID but same instances inside!
+        assert Victim(0).INDEX is Victim(0).ITEM_LIST.BREEDER.INDEX
+        assert Victim(0).ITEM_SINGLE is Victim(0).ITEM_LIST.BREEDER.ITEM_SINGLE is Victim(1).ITEM_LIST.BREEDER.ITEM_SINGLE
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__gen_objects(self):
+        class Victim(self.Victim):
+            CLS_SINGLE__ITEM_SINGLE = ItemSingle
+            CLS_LIST__ITEM_LIST = ItemList
+
+        assert True     # already tested above
 
 
 # =====================================================================================================================

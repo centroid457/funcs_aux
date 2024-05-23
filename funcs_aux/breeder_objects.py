@@ -95,7 +95,10 @@ class BreederObjectList:
     def generate__objects(cls, force: bool | None = None) -> None:
         """exact and only one method to Gen all objects - dont forget to call it!
         """
-        if not force and cls.__groups__are_generated:
+        if force:
+            cls.__groups__are_generated = False
+
+        if cls.__groups__are_generated:
             return
 
         # WORK --------------------------------------

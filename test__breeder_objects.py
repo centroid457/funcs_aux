@@ -417,17 +417,26 @@ class Test__BreederObjectList:
     # -----------------------------------------------------------------------------------------------------------------
     def test__generate_objects(self):
         class Victim(self.Victim):
+            COUNT = 2
             CLS_SINGLE__ITEM_SINGLE = ItemSingle
             CLS_LIST__ITEM_LIST = ItemList
 
         Victim.generate__objects()
-        victim_single = Victim.ITEM_SINGLE
+        victim_single_old = Victim.ITEM_SINGLE
+        victim_list0_old = Victim(0).ITEM_LIST
+        assert len(Victim.LIST__ITEM_LIST) == 2
 
+        Victim.COUNT = 3
         Victim.generate__objects()
-        assert Victim.ITEM_SINGLE is victim_single
+        assert Victim.ITEM_SINGLE is victim_single_old
+        assert Victim(0).ITEM_LIST is victim_list0_old
+        assert len(Victim.LIST__ITEM_LIST) == 2
 
-        Victim.generate__objects(True)  # regen instances!
-        assert not Victim.ITEM_SINGLE is victim_single
+        Victim.COUNT = 4
+        Victim.generate__objects(True)          # regen instances!
+        assert not Victim.ITEM_SINGLE is victim_single_old
+        assert not Victim(0).ITEM_LIST is victim_list0_old
+        assert len(Victim.LIST__ITEM_LIST) == 4
 
 
 # =====================================================================================================================

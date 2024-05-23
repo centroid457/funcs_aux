@@ -48,20 +48,14 @@ class Test__BreederObjectList:
         # BLANC --------------------
         assert Victim.INDEX is None
         assert Victim.groups_count__existed() is None
-        try:
-            assert Victim._GROUPS == {}
-            assert False
-        except:
-            assert True
 
         # GENERATE --------------------
         Victim.generate__objects()
         assert Victim.INDEX is None
-        assert Victim._GROUPS == {}
         assert Victim.groups_count__existed() == 0
 
-        assert Victim.group_get__objects("ITEM_SINGLE") is None
-        assert Victim.group_get__objects("ITEM_LIST") is None
+        assert Victim.group_get__insts("ITEM_SINGLE") is None
+        assert Victim.group_get__insts("ITEM_LIST") is None
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__with_groups__single(self):
@@ -81,13 +75,8 @@ class Test__BreederObjectList:
         assert Victim.group_check__exists("ITEM_SINGLE") is True
         assert Victim.group_check__exists("ITEM_LIST") is False
 
-        assert Victim.group_get__objects("ITEM_SINGLE") is None
-        assert Victim.group_get__objects("ITEM_LIST") is None
-        try:
-            assert Victim._GROUPS == {}
-            assert False
-        except:
-            assert True
+        assert Victim.group_get__insts("ITEM_SINGLE") is None
+        assert Victim.group_get__insts("ITEM_LIST") is None
 
         try:
             assert isinstance(Victim.ITEM_SINGLE, ItemSingle)
@@ -106,11 +95,10 @@ class Test__BreederObjectList:
         assert Victim.group_check__exists("ITEM_SINGLE") is True
         assert Victim.group_check__exists("ITEM_LIST") is False
 
-        assert Victim.group_get__objects("ITEM_SINGLE") is Victim._GROUPS["ITEM_SINGLE"]
-        assert Victim.group_get__objects("ITEM_LIST") is None
+        assert Victim.group_get__insts("ITEM_SINGLE") is ItemSingle.INSTS
+        assert Victim.group_get__insts("ITEM_LIST") is None
 
-        assert list(Victim._GROUPS) == ["ITEM_SINGLE", ]
-        assert isinstance(Victim._GROUPS["ITEM_SINGLE"], ItemSingle)
+        assert Victim.groups__get_names() == {"ITEM_SINGLE", }
 
         assert isinstance(Victim.ITEM_SINGLE, ItemSingle)
 
@@ -121,7 +109,7 @@ class Test__BreederObjectList:
             assert True
 
         # INSTANCE -------------------
-        assert Victim(0).ITEM_SINGLE is Victim._GROUPS["ITEM_SINGLE"]
+        assert Victim(0).ITEM_SINGLE is ItemSingle.INSTS
         assert isinstance(Victim(0).ITEM_SINGLE, ItemSingle)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -141,14 +129,8 @@ class Test__BreederObjectList:
         assert Victim.group_check__exists("ITEM_SINGLE") is False
         assert Victim.group_check__exists("ITEM_LIST") is True
 
-        assert Victim.group_get__objects("ITEM_SINGLE") is None
-        assert Victim.group_get__objects("ITEM_LIST") is None
-
-        try:
-            assert Victim._GROUPS == {}
-            assert False
-        except:
-            assert True
+        assert Victim.group_get__insts("ITEM_SINGLE") is None
+        assert Victim.group_get__insts("ITEM_LIST") is None
 
         try:
             assert isinstance(Victim.ITEM_LIST, ItemList)
@@ -168,16 +150,15 @@ class Test__BreederObjectList:
         assert Victim.group_check__exists("ITEM_SINGLE") is False
         assert Victim.group_check__exists("ITEM_LIST") is True
 
-        assert Victim.group_get__objects("ITEM_SINGLE") is None
-        assert Victim.group_get__objects("ITEM_LIST") == Victim._GROUPS["ITEM_LIST"]
+        assert Victim.group_get__insts("ITEM_SINGLE") is None
+        assert Victim.group_get__insts("ITEM_LIST") == ItemList.INSTS
 
-        assert list(Victim._GROUPS) == ["ITEM_LIST", ]
-        assert len(Victim._GROUPS["ITEM_LIST"]) == Victim.COUNT
+        assert Victim.groups__get_names() == {"ITEM_LIST", }
+        assert len(Victim.group_get__insts("ITEM_LIST")) == Victim.COUNT
+        assert len(Victim.group_get__insts("ITEM_LIST")) == len(ItemList.INSTS) == Victim.COUNT
 
-        assert isinstance(Victim._GROUPS["ITEM_LIST"][0], ItemList)
+        assert isinstance(Victim.group_get__insts("ITEM_LIST")[0], ItemList)
         assert isinstance(Victim.LIST__ITEM_LIST[0], ItemList)
-
-        assert len(Victim.group_get__objects("ITEM_LIST")) == len(Victim._GROUPS["ITEM_LIST"]) == Victim.COUNT
 
         try:
             assert isinstance(Victim.ITEM_SINGLE, ItemList)
@@ -186,7 +167,7 @@ class Test__BreederObjectList:
             assert True
 
         # INSTANCE -------------------
-        assert Victim(0).ITEM_LIST is Victim._GROUPS["ITEM_LIST"][0]
+        assert Victim(0).ITEM_LIST is Victim.group_get__insts("ITEM_LIST")[0]
         assert isinstance(Victim(0).ITEM_LIST, ItemList)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -201,7 +182,7 @@ class Test__BreederObjectList:
         assert Victim.groups_count__existed() is None
 
         try:
-            assert Victim.group_call__("set_result", "ITEM_SINGLE", 123)
+            assert Victim.group_call__("set_result", "ITEM_SINGLE", [123, ])
             assert False
         except:
             assert True
@@ -212,25 +193,25 @@ class Test__BreederObjectList:
         assert Victim.groups_count__existed() == 2
 
         # SINGLE --------------------
-        assert Victim.group_call__("set_result", "ITEM_SINGLE", 111) == 111
+        assert Victim.group_call__("set_result", "ITEM_SINGLE", [111, ]) == 111
         assert Victim(0).ITEM_SINGLE.result == 111
         assert Victim.ITEM_SINGLE.result == 111
         assert Victim(0).ITEM_LIST.result is None
 
-        assert Victim(0).group_call__("set_result", "ITEM_SINGLE", 222) == 222
+        assert Victim(0).group_call__("set_result", "ITEM_SINGLE", [222, ]) == 222
         assert Victim(0).ITEM_SINGLE.result == 222
         assert Victim.ITEM_SINGLE.result == 222
         assert Victim(0).ITEM_LIST.result is None
 
         # LIST --------------------
-        assert Victim(0).group_call__("set_result", "ITEM_LIST", 333) == [333, 333, ]
+        assert Victim(0).group_call__("set_result", "ITEM_LIST", [333, ]) == [333, 333, ]
         assert Victim(0).ITEM_SINGLE.result == 222
         assert Victim.ITEM_SINGLE.result == 222
         for index in range(Victim.COUNT):
             assert Victim(index).ITEM_LIST.result == Victim.LIST__ITEM_LIST[index].result == 333
 
         # BOTH=SINGLE+LIST --------------------
-        assert Victim(0).group_call__("set_result", None, 444) == {
+        assert Victim(0).group_call__("set_result", None, [444,]) == {
             "ITEM_SINGLE": 444,
             "ITEM_LIST": [444, 444, ],
         }

@@ -68,10 +68,11 @@ class BreederObjectList:
     _STARTSWITH__DEFINE__CLS_SINGLE: str = "CLS_SINGLE__"
 
     # access ----------
-    _STARTSWITH__ACCESS__OBJECT_LIST: str = "LIST__"
+    _STARTSWITH__ACCESS__OBJECT_LIST__IN_BREEDER: str = "LIST__"
+    _STARTSWITH__ACCESS__OBJECT_LIST__IN_CLS: str = "INSTS"
 
-    # -----------------
-    _GROUPS: dict[str, Union[Any, list[Any]]]
+    # AUX --------
+    groups__generated: bool | None = None   # used only in class!????
 
     # instance ---
     INDEX: int | None = None    # index used only in OBJECT INSTANCE
@@ -84,24 +85,37 @@ class BreederObjectList:
         super().__init__()
         # self.generate__objects()
 
+    @classmethod
+    def groups__get_names(cls) -> set[str]:
+        result = set()
+        for attr_name in dir(cls):
+            if attr_name.startswith(cls._STARTSWITH__DEFINE__CLS_LIST):
+                group_name = attr_name.removeprefix(cls._STARTSWITH__DEFINE__CLS_LIST)
+                result.update([group_name, ])
+            if attr_name.startswith(cls._STARTSWITH__DEFINE__CLS_SINGLE):
+                group_name = attr_name.removeprefix(cls._STARTSWITH__DEFINE__CLS_SINGLE)
+                result.update([group_name, ])
+
+        return result
+
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
     def generate__objects(cls) -> None:
         """exact and only one method to Gen all objects - dont forget to call it!
         """
-        if cls.groups_count__existed():
+        if cls.groups__generated:
             return
 
         # WORK --------------------------------------
-        cls._GROUPS = {}
         for attr_name in dir(cls):
             # LIST --------------------------------------
             if attr_name.startswith(cls._STARTSWITH__DEFINE__CLS_LIST):
                 group_name = attr_name.removeprefix(cls._STARTSWITH__DEFINE__CLS_LIST)
-                obj_list__name = f"{cls._STARTSWITH__ACCESS__OBJECT_LIST}{group_name}"
+                obj_cls = getattr(cls, attr_name)
+
+                obj_list__name = f"{cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_BREEDER}{group_name}"
                 obj_list__value = []
                 for index in range(cls.COUNT):
-                    obj_cls = getattr(cls, attr_name)
                     try:
                         obj_instance = obj_cls(index)
                     except Exception as exx:
@@ -110,7 +124,7 @@ class BreederObjectList:
 
                 # apply GROUP to class -------
                 setattr(cls, obj_list__name, obj_list__value)
-                cls._GROUPS.update({group_name: obj_list__value})
+                setattr(obj_cls, cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_CLS, obj_list__value)
 
             # SINGLE --------------------------------------
             if attr_name.startswith(cls._STARTSWITH__DEFINE__CLS_SINGLE):
@@ -122,49 +136,21 @@ class BreederObjectList:
                     obj_instance = exx
                 # apply -------
                 setattr(cls, group_name, obj_instance)
-                cls._GROUPS.update({group_name: obj_instance})
+                setattr(obj_cls, cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_CLS, obj_instance)
+
+        cls.groups__generated = True
 
     # -----------------------------------------------------------------------------------------------------------------
-    def __getattr__(self, item: str) -> Union[None, Any, NoReturn]:
-        if self.INDEX is None:
-            return
-
-        # ACCESS TO OBJECT ----------------------------
-        if self.group_check__exists(item):
-            group_objs = self._GROUPS[item]
-            if isinstance(group_objs, list):
-                obj = group_objs[self.INDEX]
-            else:
-                obj = group_objs
-            return obj
-
-        # FINAL not found -----------------------------
-        msg = f"{item=}/{self.INDEX=}"
-        print(msg)
-        raise Exx__BreederObjectList_GroupNotExists(msg)
-
-    # -----------------------------------------------------------------------------------------------------------------
-    @classmethod
-    def groups_check__generated(cls) -> bool:
-        """
-        check if objects/groups was generated
-        """
-        return hasattr(cls, "_GROUPS")
-
     @classmethod
     def groups_count__existed(cls) -> int | None:
         """
         work only after called generate__objects(),
         so if you wasnot call generate__objects it will return None!
         """
-        if cls.groups_check__generated():
-            return len(cls._GROUPS)
+        if cls.groups__generated:
+            return len(cls.groups__get_names())
 
-    # -----------------------------------------------------------------------------------------------------------------
-    @classmethod
-    def group_check__exists(cls, name: str) -> bool:
-        return cls.group_get__type(name) != BreederObjectList_GroupType.NOT_EXISTS
-
+    # GROUP -----------------------------------------------------------------------------------------------------------
     @classmethod
     def group_get__type(cls, name: str) -> BreederObjectList_GroupType:
         if f"{cls._STARTSWITH__DEFINE__CLS_SINGLE}{name}" in dir(cls):
@@ -176,12 +162,33 @@ class BreederObjectList:
         return BreederObjectList_GroupType.NOT_EXISTS
 
     @classmethod
-    def group_get__objects(cls, name: str) -> Union[None, Any, list[Any]]:
-        if cls.group_check__exists(name) and cls.groups_check__generated():
-            return cls._GROUPS[name]
+    def group_check__exists(cls, name: str) -> bool:
+        return cls.group_get__type(name) != BreederObjectList_GroupType.NOT_EXISTS
 
     @classmethod
-    def group_call__(cls, meth: str, group: str | None = None, *args, **kwargs) -> Union[NoReturn, TYPE__BREED_RESULT__GROUP, TYPE__BREED_RESULT__GROUPS]:
+    def group_get__cls(cls, name: str) -> Any | None:
+        group_type = cls.group_get__type(name)
+
+        if group_type == BreederObjectList_GroupType.NOT_EXISTS:
+            return
+
+        if group_type == BreederObjectList_GroupType.SINGLE:
+            attr = f"{cls._STARTSWITH__DEFINE__CLS_SINGLE}{name}"
+            return getattr(cls, attr)
+
+        if group_type == BreederObjectList_GroupType.LIST:
+            attr = f"{cls._STARTSWITH__DEFINE__CLS_LIST}{name}"
+            return getattr(cls, attr)
+
+    @classmethod
+    def group_get__insts(cls, name: str) -> Union[None, Any, list[Any]]:
+        if cls.group_check__exists(name) and cls.groups__generated:
+            group_cls = cls.group_get__cls(name)
+            result = getattr(group_cls, cls._STARTSWITH__ACCESS__OBJECT_LIST__IN_CLS)
+            return result
+
+    @classmethod
+    def group_call__(cls, meth: str, group: str | None = None, args: list | None = None, kwargs: dict | None = None) -> Union[NoReturn, TYPE__BREED_RESULT__GROUP, TYPE__BREED_RESULT__GROUPS]:
         """
         call one method on exact group (every object in group) or all groups (every object in all groups).
         created specially for call connect/disconnect for devices in TP.
@@ -194,14 +201,17 @@ class BreederObjectList:
         :return:
             RAISE only if passed group and group is not exists! or groups are not generated
         """
-        if not cls.groups_check__generated():
+        if not cls.groups__generated:
             raise Exx__BreederObjectList_GroupsNotGenerated()
+
+        args = args or ()
+        kwargs = kwargs or {}
 
         # CALL ON ALL GROUPS -------------------------------------------------
         if group is None:
             results = {}
-            for group_name in cls._GROUPS:
-                results.update({group_name: cls.group_call__(meth, group_name, *args, **kwargs)})
+            for group_name in cls.groups__get_names():
+                results.update({group_name: cls.group_call__(meth, group_name, args, kwargs)})
             return results
 
         # if group is not exists ---------------------------------------------
@@ -209,7 +219,7 @@ class BreederObjectList:
             raise Exx__BreederObjectList_GroupNotExists(group)
 
         # EXACT ONE GROUP ----------------------------------------------------
-        group_objs = cls._GROUPS[group]
+        group_objs = cls.group_get__insts(group)
 
         if isinstance(group_objs, list):
             results = []
@@ -230,6 +240,25 @@ class BreederObjectList:
             results = obj_result
 
         return results
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def __getattr__(self, item: str) -> Union[None, Any, NoReturn]:
+        if self.INDEX is None:
+            return
+
+        # ACCESS TO OBJECT ----------------------------
+        group_insts = self.group_get__insts(item)
+        if group_insts is not None:
+            if isinstance(group_insts, list):
+                inst = group_insts[self.INDEX]
+            else:
+                inst = group_insts
+            return inst
+
+        # FINAL not found -----------------------------
+        msg = f"{item=}/{self.INDEX=}"
+        print(msg)
+        raise Exx__BreederObjectList_GroupNotExists(msg)
 
 
 # =====================================================================================================================

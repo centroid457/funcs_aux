@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 1)
+    VERSION: Tuple[int, int, int] = (0, 2, 2)
     TODO: List[str] = [
         "[BreederStrStack] add auto()"
     ]
@@ -63,10 +63,10 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[breeder_str] move AnnotsNested into separated module!"
-
-        "[__INIT__.py] fix import",
-        "apply last pypi template",
+        ["[breederObj] ref",
+            "del _GROUP",
+            "add INSTS in classes - place all instances in source classes"
+         ]
     ]
 
     # FINALIZE -----------------------------------------------

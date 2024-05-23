@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 2)
+    VERSION: Tuple[int, int, int] = (0, 2, 3)
     TODO: List[str] = [
         "[BreederStrStack] add auto()"
     ]
@@ -63,9 +63,10 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        ["[breederObj] ref",
-            "del _GROUP",
-            "add INSTS in classes - place all instances in source classes"
+        ["[breederObj]",
+            "add BREEDER class (for single) and instance (with index for listed) in every instance object!",
+            "separate internal tests",
+            "finish tests",
          ]
     ]
 

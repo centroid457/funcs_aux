@@ -252,6 +252,10 @@ class BreederObjectList:
 
     # -----------------------------------------------------------------------------------------------------------------
     def __getattr__(self, item: str) -> Union[None, Any, NoReturn]:
+        """
+        :param item:
+        :return: existed OBJECT from LIST or SINGLE!!!
+        """
         if self.INDEX is None:
             return
 

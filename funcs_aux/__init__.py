@@ -39,6 +39,20 @@ from .results import (
 
     # EXX
 )
+from .values import (
+    # BASE
+    Value_NotPassed,
+    Value_WithUnit,
+    Value_FromVariants,
+
+    # AUX
+
+    # TYPES
+
+    # EXX
+    Exx__ValueNotInVariants,
+    Exx__VariantsIncompatible,
+)
 from .strings import (
     # BASE
     Strings,

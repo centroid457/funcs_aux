@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 5)
+    VERSION: Tuple[int, int, int] = (0, 2, 6)
     TODO: List[str] = [
         "[BreederStrStack] add auto()"
     ]
@@ -63,9 +63,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        ["[breederObj]",
-            "add force param in generate__objects + FIX",
-         ]
+        "[Values] move here from bus_user",
     ]
 
     # FINALIZE -----------------------------------------------

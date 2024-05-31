@@ -48,6 +48,7 @@ from .values import (
     # AUX
 
     # TYPES
+    TYPE__VALUE_NOT_PASSED,
 
     # EXX
     Exx__ValueNotInVariants,

@@ -24,6 +24,9 @@ class Value_NotPassed:
     #     return ""     # it used as direct Class! without any instantiation!
 
 
+TYPE__VALUE_NOT_PASSED = Type[Value_NotPassed]
+
+
 # =====================================================================================================================
 class Value_WithUnit:
     """

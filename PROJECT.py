@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 6)
+    VERSION: Tuple[int, int, int] = (0, 2, 7)
     TODO: List[str] = [
         "[BreederStrStack] add auto()"
     ]
@@ -63,7 +63,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[Values] move here from bus_user",
+        "[Values] add TYPE__VALUE_NOT_PASSED",
     ]
 
     # FINALIZE -----------------------------------------------

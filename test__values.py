@@ -86,6 +86,27 @@ class Test__FromVariants:
     #     pass
 
     # -----------------------------------------------------------------------------------------------------------------
+    def test__double_starts(self):
+        victim1 = self.Victim(value="var1", variants=["VAR1", "VAR11"])
+        victim2 = self.Victim(value="var2", variants=["VAR2", "VAR22"])
+        assert victim1.value == "VAR1"
+        assert victim2.value == "VAR2"
+
+        assert victim1.value != "VAR2"
+        assert victim2.value != "VAR1"
+
+        victim1.value = "VAR11"
+        victim2.value = "VAR22"
+
+        assert victim1.value == "VAR11"
+        assert victim2.value == "VAR22"
+
+        try:
+            victim1.value = "VAR2"
+            assert False
+        except:
+            assert True
+
     def test__case(self):
         victim = self.Victim(value="var1", variants=["VAR1", "VAR2"])
         assert victim.value == "VAR1"
@@ -95,7 +116,7 @@ class Test__FromVariants:
             victim = self.Victim(value="var1", variants=["VAR1", "VAR2"], case_insensitive=False)
             assert False
         except:
-            pass
+            assert True
 
     def test__variants_validate(self):
         victim = self.Victim(value="var", variants=["VAR", "var"], case_insensitive=False)

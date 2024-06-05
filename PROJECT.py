@@ -63,7 +63,10 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[Values] add TYPE__VALUE_NOT_PASSED",
+
+
+        
+        "[HISTORY] fix mistakes encoding",
     ]
 
     # FINALIZE -----------------------------------------------

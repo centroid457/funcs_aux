@@ -37,7 +37,6 @@ class Value_WithUnit:
     SEPARATOR: str = ""
 
     # TODO: add arithmetic/comparing magic methods like SUM/...
-    # TODO: move to funcs_aux
 
     def __init__(self, value: Union[int, float, Any] = None, unit: str = None, separator: str = None):
         """
@@ -89,7 +88,6 @@ class Value_FromVariants:
     """
     used to keep separated value and measure unit
     """
-    # TODO: move to funcs_aux
     # TODO: combine with Value_WithUnit - just add ACCEPTABLE(*VARIANTS) and rename UNIT just as SUFFIX!
 
     # SETTINGS -----------------------
@@ -98,7 +96,7 @@ class Value_FromVariants:
     VALUE_DEFAULT: Any = Value_NotPassed
 
     # DATA ---------------------------
-    __value: Any = Value_NotPassed   # changeable   # TODO: default as first in variant! or pass exact value!
+    __value: Any = Value_NotPassed
 
     def __init__(self, value: Union[str, Any] = Value_NotPassed, variants: List[Union[str, Any]] = None, case_insensitive: bool = None):
         """

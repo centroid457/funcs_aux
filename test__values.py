@@ -102,17 +102,20 @@ class Test__FromVariants:
         assert victim.value != "VAR2"
         assert victim.VALUE_DEFAULT == "var1"
 
-    def test__double_starts(self):
+    def test__double_objects(self):
         victim1 = self.Victim(value="var1", variants=["VAR1", "VAR11"])
         victim2 = self.Victim(value="var2", variants=["VAR2", "VAR22"])
         assert victim1.value == "VAR1"
         assert victim2.value == "VAR2"
 
-        assert victim1.value != "VAR2"
-        assert victim2.value != "VAR1"
+        assert victim1.value != "VAR11"
+        assert victim2.value != "VAR22"
 
         victim1.value = "VAR11"
         victim2.value = "VAR22"
+
+        assert victim1.value != "VAR1"
+        assert victim2.value != "VAR2"
 
         assert victim1.value == "VAR11"
         assert victim2.value == "VAR22"

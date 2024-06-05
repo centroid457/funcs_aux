@@ -98,7 +98,7 @@ class Value_FromVariants:
     # DATA ---------------------------
     __value: Any = Value_NotPassed
 
-    def __init__(self, value: Union[str, Any] = Value_NotPassed, variants: List[Union[str, Any]] = None, case_insensitive: bool = None):
+    def __init__(self, value: Union[str, Any] = Value_NotPassed, variants: list[Union[str, Any]] = None, case_insensitive: bool = None):
         """
         :param value: None mean NotSelected/NotSet!
             if you need set None - use string value in any case! 'None'/NONE/none

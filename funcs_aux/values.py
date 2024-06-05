@@ -94,7 +94,8 @@ class Value_FromVariants:
 
     # SETTINGS -----------------------
     CASE_INSENSITIVE: bool = True
-    VARIANTS: List[Any] = None
+    VARIANTS: list[Any] = None
+    VALUE_DEFAULT: Any = Value_NotPassed
 
     # DATA ---------------------------
     __value: Any = Value_NotPassed   # changeable   # TODO: default as first in variant! or pass exact value!
@@ -115,6 +116,7 @@ class Value_FromVariants:
         self._variants_validate()
 
         if value != Value_NotPassed:
+            self.VALUE_DEFAULT = value
             self.value = value
 
     def __str__(self) -> str:
@@ -174,7 +176,7 @@ class Value_FromVariants:
         return self.__value
 
     @value.setter
-    def value(self, value: Any) -> None:
+    def value(self, value: Any) -> Optional[NoReturn]:
         for variant in self.VARIANTS:
             if self.CASE_INSENSITIVE:
                 result = str(variant).lower() == str(value).lower()
@@ -185,6 +187,13 @@ class Value_FromVariants:
                 return
 
         raise Exx__ValueNotInVariants()
+
+    def reset(self) -> None:
+        """
+        set value into default only if default is exists!
+        """
+        if self.VALUE_DEFAULT != Value_NotPassed:
+            self.value = self.VALUE_DEFAULT
 
 
 # =====================================================================================================================

@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 9)
+    VERSION: Tuple[int, int, int] = (0, 2, 10)
     TODO: List[str] = [
         "[BreederStrStack] add auto()"
     ]
@@ -63,7 +63,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[RESULTS] add STEP__FINISHED + run__if_not_finished",
+        "[RESULTS] fix exx on __bool__",
     ]
 
     # FINALIZE -----------------------------------------------

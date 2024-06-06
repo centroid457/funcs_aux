@@ -195,8 +195,8 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
     def __call__(self, *args, **kwargs) -> Self:
         return self.run(*args, **kwargs)
 
-    def __bool__(self):
-        return self.STEP__RESULT
+    def __bool__(self) -> bool:
+        return self.STEP__RESULT or False
 
     def __str__(self) -> str:
         return "\n".join(self.MSGS)

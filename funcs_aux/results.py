@@ -166,6 +166,7 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
     CHAIN__STOP_ON_FAIL: bool = True
 
     # RESULT ----------------------------------
+    STEP__FINISHED: Optional[bool] = None
     STEP__RESULT: Optional[bool] = None
     STEP__EXX: Optional[bool] = None
 
@@ -212,6 +213,7 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
         return [self.MSG, ]
 
     def _result__clear(self) -> None:
+        self.STEP__FINISHED = None
         self.STEP__RESULT = None
         self.STEP__EXX = None
 
@@ -228,9 +230,17 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
             self.STEP__RESULT = self._run__wrapped()
         except Exception as exx:
             self.STEP__EXX = exx
-        #
+
+        # FINISH ------------------
         print(self.MSG)
+        self.STEP__FINISHED = True
         return self.STEP__RESULT
+
+    def run__if_not_finished(self) -> bool:
+        if self.STEP__FINISHED:
+            return self.STEP__RESULT
+        else:
+            return self.run()
 
     def _run__wrapped(self) -> Union[bool, NoReturn]:
         pass

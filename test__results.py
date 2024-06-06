@@ -142,6 +142,7 @@ class Test__ResultExpect_Step:
         assert victim.ARGS == ()
         assert victim.KWARGS == {}
 
+        assert victim.STEP__FINISHED is None
         assert victim.STEP__RESULT is None
         assert victim.STEP__EXX is None
 
@@ -151,6 +152,7 @@ class Test__ResultExpect_Step:
         assert victim.ARGS == (1, )
         assert victim.KWARGS == {}
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
 
@@ -161,6 +163,7 @@ class Test__ResultExpect_Step:
         assert victim.ARGS == (1, )
         assert victim.KWARGS == {}
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
 
@@ -193,6 +196,7 @@ class Test__ResultExpect_Chain:
         assert victim.ARGS == ()
         assert victim.KWARGS == {}
 
+        assert victim.STEP__FINISHED is None
         assert victim.STEP__RESULT is None
         assert victim.STEP__EXX is None
 
@@ -202,6 +206,7 @@ class Test__ResultExpect_Chain:
         assert victim.ARGS == ()
         assert victim.KWARGS == {}
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
         assert victim.STEP__INDEX == 0
@@ -213,6 +218,7 @@ class Test__ResultExpect_Chain:
         assert victim.ARGS == (1, )
         assert victim.KWARGS == {}
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
         assert victim.STEP__INDEX == 0
@@ -227,6 +233,7 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
         assert victim.STEP__INDEX == 0
@@ -240,6 +247,7 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
         assert victim.STEP__INDEX == 0
@@ -253,6 +261,7 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
         assert victim.STEP__INDEX == 0
@@ -268,6 +277,7 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
         assert victim.STEP__INDEX == 0
@@ -282,6 +292,7 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
         assert victim.STEP__INDEX == 1
@@ -296,6 +307,7 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
+        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
         assert victim.STEP__INDEX == 1

@@ -57,7 +57,7 @@ Designed to collect useful funcs in one place!
     # HISTORY -----------------------------------------------
     VERSION: Tuple[int, int, int] = (0, 2, 12)
     TODO: List[str] = [
-        "[BreederStrStack] add auto()"
+        "..."
     ]
     FIXME: List[str] = [
         "..."

@@ -11,6 +11,10 @@
 ********************************************************************************
 ## NEWS
 
+0.2.11 (2024/06/07 10:06:54)
+------------------------------
+- [RESULTS] fix correct work by recognition callables and classes on value, not just callable  
+
 0.2.10 (2024/06/06 15:10:51)
 ------------------------------
 - [RESULTS] fix exx on __bool__  

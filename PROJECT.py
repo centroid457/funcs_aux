@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 11)
+    VERSION: Tuple[int, int, int] = (0, 2, 12)
     TODO: List[str] = [
         "[BreederStrStack] add auto()"
     ]
@@ -63,7 +63,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[RESULTS] fix correct work by recognition callables and classes on value, not just callable",
+        "[results]apply TypeChecker.check__func_or_meth for callable value",
     ]
 
     # FINALIZE -----------------------------------------------

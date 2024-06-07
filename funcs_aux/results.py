@@ -270,12 +270,7 @@ class ResultExpect_Step(ResultExpect_Base):
 
     def _run__wrapped(self) -> Union[bool, NoReturn]:
         # CALLS ----------------------------------
-        if (
-            (not TypeChecker.check__class(self.VALUE) and callable(self.VALUE))
-            # or self.VALUE in TypeChecker.TYPES__ELEMENTARY
-            or
-            (TypeChecker.check__class(self.VALUE) and issubclass(self.VALUE, TypeChecker.TYPES__ELEMENTARY))
-        ):
+        if TypeChecker.check__func_or_meth(self.VALUE):
             value = self.VALUE(*self.ARGS, **self.KWARGS)
         else:
             value = self.VALUE

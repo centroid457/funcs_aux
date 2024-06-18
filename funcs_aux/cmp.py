@@ -22,9 +22,9 @@ class Cmp:
     __ge__ = lambda self, other: self.__cmp__(other) >= 0
 
     # CMP -------------------------------------------------------------------------------------------------------------
-    def __cmp__(self, other) -> int:
+    def __cmp__(self, other) -> int | NoReturn:
         """
-        try to resolve any Exceptions!!!
+        do try to resolve Exceptions!!! sometimes it is ok to get it!!!
 
         RETURN
         ------

@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 12)
+    VERSION: Tuple[int, int, int] = (0, 2, 13)
     TODO: List[str] = [
         "..."
     ]
@@ -63,7 +63,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[results]apply TypeChecker.check__func_or_meth for callable value",
+        "[CMP] add CMP",
     ]
 
     # FINALIZE -----------------------------------------------

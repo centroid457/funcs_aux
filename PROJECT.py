@@ -55,7 +55,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 13)
+    VERSION: Tuple[int, int, int] = (0, 2, 14)
     TODO: List[str] = [
         "..."
     ]
@@ -63,7 +63,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[CMP] add CMP",
+        "[CMP] remove to separate class into classes-aux",
     ]
 
     # FINALIZE -----------------------------------------------

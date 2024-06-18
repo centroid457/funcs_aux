@@ -100,16 +100,6 @@ from .breeder_objects import (
     Exx__BreederObjectList_GroupNotExists,
     Exx__BreederObjectList_ObjCantAccessIndex,
 )
-from .cmp import (
-    # BASE
-    Cmp,
-
-    # AUX
-
-    # TYPES
-
-    # EXX
-)
 
 
 # =====================================================================================================================

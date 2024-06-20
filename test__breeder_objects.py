@@ -121,7 +121,7 @@ class Test__BreederObjectList:
 
         assert Victim.groups_count__generated() is None
         Victim.generate__objects()
-        assert Victim.groups_count__generated() is 0
+        assert Victim.groups_count__generated() == 0
 
         class Victim(self.Victim):
             # CLS_SINGLE__ITEM_SINGLE = ItemSingle

@@ -1,6 +1,6 @@
 ![GitHub Workflow Status](https://github.com/centroid457/funcs_aux/actions/workflows/tests.yml/badge.svg)
 
-# funcs_aux (v0.2.15)
+# funcs_aux (v0.2.16)
 
 ## DESCRIPTION_SHORT
 useful funcs in one place

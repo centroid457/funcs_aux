@@ -10,7 +10,8 @@ from typing import *
 # VERSION = (0, 0, 1)   # keep russian lang by using utf-8
 # VERSION = (0, 0, 2)   # reuse utf8+ del all capitalizing()
 # VERSION = (0, 0, 3)   # detach dependence from importing PRJ
-VERSION = (0, 0, 4)   # use LINE_CODE_QUATATION for examples
+# VERSION = (0, 0, 4)   # use LINE_CODE_QUATATION for examples
+VERSION = (0, 0, 5)   # add BADGES block
 
 
 # =====================================================================================================================
@@ -111,6 +112,10 @@ class ReleaseReadme(ReleaseFileBase):
 
         # SUMMARY ----------------------------------------------------
         lines = [
+            # BADGES
+            f"![GitHub Workflow Status](https://github.com/{self.PROJECT.AUTHOR_NICKNAME_GITHUB}/{self.PROJECT.NAME_IMPORT}/actions/workflows/tests.yml/badge.svg)",
+
+            "",
             f"# {self.PROJECT.NAME_IMPORT} (v{self.PROJECT.VERSION_STR})",
 
             f"",

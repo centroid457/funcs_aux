@@ -3,6 +3,8 @@
 # VERSION = (0, 0, 2)   # add funcs-aux
 # VERSION = (0, 0, 3)   # add block NESTED REQUIREMENTS
 # VERSION = (0, 0, 4)   # add logger-aux
+# VERSION = (0, 0, 5)   # add pytest-aux
+# VERSION = (0, 0, 6)   # add nested in COMMON
 
 # COMMON ===================
 pytest
@@ -10,10 +12,14 @@ requirements-checker
 object-info
 funcs-aux
 logger-aux
+pytest-aux
+
+# NESTED ---------------------------------
+annot_attrs
+numpy
 
 # ========================================
 # SPECIAL FOR THIS PROJECT - ROOT --------
-numpy
 
 # NESTED ---------------------------------
 

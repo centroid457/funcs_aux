@@ -1,6 +1,15 @@
-![GitHub Workflow Status](https://github.com/centroid457/funcs_aux/actions/workflows/tests.yml/badge.svg)
+![Ver/TestedPython](https://img.shields.io/pypi/pyversions/funcs_aux)
+![Ver/Os](https://img.shields.io/badge/os_development-Windows-blue)  
+![repo/Created](https://img.shields.io/github/created-at/centroid457/funcs_aux)
+![Commit/Last](https://img.shields.io/github/last-commit/centroid457/funcs_aux)
+![Tests/GitHubWorkflowStatus](https://github.com/centroid457/funcs_aux/actions/workflows/test_linux.yml/badge.svg)
+![Tests/GitHubWorkflowStatus](https://github.com/centroid457/funcs_aux/actions/workflows/test_windows.yml/badge.svg)  
+![repo/Size](https://img.shields.io/github/repo-size/centroid457/funcs_aux)
+![Commit/Count/t](https://img.shields.io/github/commit-activity/t/centroid457/funcs_aux)
+![Commit/Count/y](https://img.shields.io/github/commit-activity/y/centroid457/funcs_aux)
+![Commit/Count/m](https://img.shields.io/github/commit-activity/m/centroid457/funcs_aux)
 
-# funcs_aux (v0.2.16)
+# funcs_aux (current v0.3.0/![Ver/Pypi Latest](https://img.shields.io/pypi/v/funcs_aux?label=pypi%20latest))
 
 ## DESCRIPTION_SHORT
 useful funcs in one place

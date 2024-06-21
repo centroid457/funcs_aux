@@ -57,7 +57,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 2, 16)
+    VERSION: Tuple[int, int, int] = (0, 3, 0)
     TODO: List[str] = [
         "..."
     ]
@@ -65,7 +65,8 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[CICD] apply tests",
+        "[CICD] apply last",
+        "[BADGES] add last variant",
     ]
 
     # FINALIZE -----------------------------------------------

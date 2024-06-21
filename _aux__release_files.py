@@ -11,7 +11,8 @@ from typing import *
 # VERSION = (0, 0, 2)   # reuse utf8+ del all capitalizing()
 # VERSION = (0, 0, 3)   # detach dependence from importing PRJ
 # VERSION = (0, 0, 4)   # use LINE_CODE_QUATATION for examples
-VERSION = (0, 0, 5)   # add BADGES block
+# VERSION = (0, 0, 5)   # add BADGES block
+VERSION = (0, 0, 6)   # [BADGES] improve
 
 
 # =====================================================================================================================
@@ -92,10 +93,35 @@ class ReleaseReadme(ReleaseFileBase):
     # GENERATE ========================================================================================================
     def generate(self) -> None:
         self._file_clear()
+        self.append_badges()
         self.append_main()
         self.append_examples()
 
-    def append_main(self):
+    def append_badges(self) -> None:
+        lines = [
+            # VER -------------
+            f"![Ver/TestedPython](https://img.shields.io/pypi/pyversions/{self.PROJECT.NAME_IMPORT})",
+            f"![Ver/Os](https://img.shields.io/badge/os_development-Windows-blue)  ",
+
+            # -----------------
+            f"![repo/Created](https://img.shields.io/github/created-at/{self.PROJECT.AUTHOR_NICKNAME_GITHUB}/{self.PROJECT.NAME_IMPORT})",
+            f"![Commit/Last](https://img.shields.io/github/last-commit/{self.PROJECT.AUTHOR_NICKNAME_GITHUB}/{self.PROJECT.NAME_IMPORT})",
+            # f"![Tests/GitHubWorkflowStatus](https://img.shields.io/github/actions/workflow/status/{self.PROJECT.AUTHOR_NICKNAME_GITHUB}/{self.PROJECT.NAME_IMPORT}/tests.yml)",
+            f"![Tests/GitHubWorkflowStatus](https://github.com/{self.PROJECT.AUTHOR_NICKNAME_GITHUB}/{self.PROJECT.NAME_IMPORT}/actions/workflows/test_linux.yml/badge.svg)",
+            f"![Tests/GitHubWorkflowStatus](https://github.com/{self.PROJECT.AUTHOR_NICKNAME_GITHUB}/{self.PROJECT.NAME_IMPORT}/actions/workflows/test_windows.yml/badge.svg)  ",
+
+            # -----------------
+            f"![repo/Size](https://img.shields.io/github/repo-size/{self.PROJECT.AUTHOR_NICKNAME_GITHUB}/{self.PROJECT.NAME_IMPORT})",
+            *[
+                f"![Commit/Count/{period}](https://img.shields.io/github/commit-activity/{period}/{self.PROJECT.AUTHOR_NICKNAME_GITHUB}/{self.PROJECT.NAME_IMPORT})"
+                for period in ["t", "y", "m", ]
+            ],
+            f"",
+
+        ]
+        self._file_append_lines(lines)
+
+    def append_main(self) -> None:
         # FEATURES ----------------------------------------------------
         features = [
             f"",
@@ -112,11 +138,7 @@ class ReleaseReadme(ReleaseFileBase):
 
         # SUMMARY ----------------------------------------------------
         lines = [
-            # BADGES
-            f"![GitHub Workflow Status](https://github.com/{self.PROJECT.AUTHOR_NICKNAME_GITHUB}/{self.PROJECT.NAME_IMPORT}/actions/workflows/tests.yml/badge.svg)",
-
-            "",
-            f"# {self.PROJECT.NAME_IMPORT} (v{self.PROJECT.VERSION_STR})",
+            f"# {self.PROJECT.NAME_IMPORT} (current v{self.PROJECT.VERSION_STR}/![Ver/Pypi Latest](https://img.shields.io/pypi/v/{self.PROJECT.NAME_IMPORT}?label=pypi%20latest))",
 
             f"",
             f"## DESCRIPTION_SHORT",
@@ -155,7 +177,7 @@ class ReleaseReadme(ReleaseFileBase):
         ]
         self._file_append_lines(lines)
 
-    def append_examples(self):
+    def append_examples(self) -> None:
         """
         NOTE: don't skip none-python files! it could be as part of examples! just name it in appropriate way!
         """

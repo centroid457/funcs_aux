@@ -20,12 +20,19 @@ class Test__ResultValue:
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__1(self):
-        assert ResultValue(123)() == 123
+        assert ResultValue(None).VALUE is None
+        assert ResultValue(()).VALUE == ()
+        assert ResultValue([]).VALUE == []
+        assert ResultValue({}).VALUE == {}
 
-        assert ResultValue(123).VALUE == 123
-        assert ResultValue([123]).VALUE == [123]
-        assert ResultValue({123}).VALUE == {123}
-        assert ResultValue({123: 123}).VALUE == {123: 123}
+        assert ResultValue(111).VALUE == 111
+        assert ResultValue([111]).VALUE == [111]
+        assert ResultValue({111}).VALUE == {111}
+        assert ResultValue({111: 222}).VALUE == {111: 222}
+
+    def test__call(self):
+        assert ResultValue(None)() is None
+        assert ResultValue(111)() == 111
 
 
 # =====================================================================================================================

@@ -12,39 +12,45 @@ TYPE__KWARGS = Dict[str, Any]
 # =====================================================================================================================
 class ResultValue(NamedTuple):
     """
-    MAIN GOAL:
-    ----------
-    solve NONE-value as result ambiguity by simple way
+    [GOAL]
+    ------
+    1. solve NONE-value as result ambiguity by simple way
+    2. show/pass explicitly the EXACT value like None/[]/()
 
-    MAIN RULES:
-    -----------
+    [RULES]
+    -------
     return object if you get final result!
     return None if there are any errors in execution
 
-    USAGE:
-    ------
-    def func(a, b) -> Optional(ResultValue):
-        if a in b:
-            return ResultValue(a)
-        else:
-            return
+    [NamedTuple] WHY
+    ----------------
+    cause of we need to be able to compare different objects by values.
+    maybe we need just add __eq__ method instead of it!!!
 
-    result = func("None", [None, ])
-    assert result is None
+    [USAGE]
+    -------
+        from funcs_aux import *
 
-    result = func(None, [None, ])
-    assert result == ResultValue(None)
+        def func(a, b) -> Optional[ResultValue]:
+            if a in b:
+                return ResultValue(a)
+            else:
+                return
 
-    if result:
-        print(result.RESULT__VALUE)
-        print(result())
+        result = func("None", [None, ])
+        assert result is None
+
+        result = func(None, [None, ])
+        assert result == ResultValue(None)
+
+        if result:
+            print(result.VALUE)     # None
+            print(result())         # None
     """
     VALUE: Any
 
     def __call__(self, *args, **kwargs) -> Any:
-        return self.run()
-
-    def run(self) -> Any:
+        # it is not so useful! but ... in future it should be deprecated!
         return self.VALUE
 
 
@@ -68,7 +74,7 @@ class ResultFunc:
     # RESULT --------------------------------
     RESULT__VALUE: Optional[Any] = None
     RESULT__EXX: Optional[Exception] = None
-    RESULT__CORRECT: bool
+    RESULT__IS_CORRECT: bool
 
     def __init__(self, func: TYPE__FUNC, args: TYPE__ARGS = None, kwargs: TYPE__KWARGS = None, run_on_init: bool = None):
         self.RUN_ON_INIT = run_on_init
@@ -85,7 +91,7 @@ class ResultFunc:
 
     def run(self, *args, **kwargs) -> Self:
         # init ---------------
-        self._result__clear()
+        self._clear()
 
         if args:
             self.ARGS = args
@@ -100,7 +106,7 @@ class ResultFunc:
 
         return self
 
-    def _result__clear(self) -> None:
+    def _clear(self) -> None:
         self.RESULT__VALUE = None
         self.RESULT__EXX = None
 
@@ -287,6 +293,12 @@ class ResultExpect_Step(ResultExpect_Base):
 
 # =====================================================================================================================
 class ResultExpect_Chain(ResultExpect_Base):
+    """
+    [CHAINS]
+    --------
+    if no items - return True!!!
+
+    """
     # SETTINGS --------------------------------
     CHAINS: List[Union[ResultExpect_Base]] = None
 

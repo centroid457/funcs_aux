@@ -30,8 +30,6 @@ class Test__ResultExpect_Step:
         assert victim.ARGS == ()
         assert victim.KWARGS == {}
 
-        assert victim.STEP__SKIPPED is None
-        assert victim.STEP__FINISHED is None
         assert victim.STEP__RESULT is None
         assert victim.STEP__EXX is None
 
@@ -41,8 +39,6 @@ class Test__ResultExpect_Step:
         assert victim.ARGS == (1, )
         assert victim.KWARGS == {}
 
-        assert victim.STEP__SKIPPED is None
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
 
@@ -53,8 +49,6 @@ class Test__ResultExpect_Step:
         assert victim.ARGS == (1, )
         assert victim.KWARGS == {}
 
-        assert victim.STEP__SKIPPED is None
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
 
@@ -87,7 +81,6 @@ class Test__ResultExpect_Chain:
         assert victim.ARGS == ()
         assert victim.KWARGS == {}
 
-        assert victim.STEP__FINISHED is None
         assert victim.STEP__RESULT is None
         assert victim.STEP__EXX is None
 
@@ -97,11 +90,8 @@ class Test__ResultExpect_Chain:
         assert victim.ARGS == ()
         assert victim.KWARGS == {}
 
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
-        assert victim.STEP__INDEX == 0
-        assert victim.CHAINS_COUNT == 1
 
         # ------------------------------
         victim.run(1)
@@ -109,11 +99,8 @@ class Test__ResultExpect_Chain:
         assert victim.ARGS == (1, )
         assert victim.KWARGS == {}
 
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
-        assert victim.STEP__INDEX == 0
-        assert victim.CHAINS_COUNT == 1
 
     def test__single(self):
         chain = [
@@ -124,11 +111,8 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
-        assert victim.STEP__INDEX == 0
-        assert victim.CHAINS_COUNT == 1
 
         chain = [
             ResultExpect_Step(bool, value_expected=True, use_result=True, chain__stop_on_fail=True),
@@ -138,11 +122,8 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
-        assert victim.STEP__INDEX == 0
-        assert victim.CHAINS_COUNT == 1
 
         chain = [
             ResultExpect_Step(bool, value_expected=True, use_result=False, chain__stop_on_fail=False),
@@ -152,11 +133,8 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
-        assert victim.STEP__INDEX == 0
-        assert victim.CHAINS_COUNT == 1
 
     def test__double__first_fail(self):
         chain = [
@@ -168,11 +146,8 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
-        assert victim.STEP__INDEX == 0
-        assert victim.CHAINS_COUNT == 2
 
         chain = [
             ResultExpect_Step(bool, value_expected=True, use_result=True, chain__stop_on_fail=False),
@@ -183,11 +158,8 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is False
         assert victim.STEP__EXX is None
-        assert victim.STEP__INDEX == 1
-        assert victim.CHAINS_COUNT == 2
 
         chain = [
             ResultExpect_Step(bool, value_expected=True, use_result=False, chain__stop_on_fail=False),
@@ -198,22 +170,47 @@ class Test__ResultExpect_Chain:
         # ------------------------------
         victim.run()
 
-        assert victim.STEP__FINISHED is True
         assert victim.STEP__RESULT is True
         assert victim.STEP__EXX is None
-        assert victim.STEP__INDEX == 1
-        assert victim.CHAINS_COUNT == 2
 
-    def test__empty(self):
+    # -----------------------------------------------------------------------------------------------------------------
+    def test__finished(self):
         victim = self.Victim([])
+        assert victim.STEP__FINISHED is None
         victim.run()
         assert victim.STEP__FINISHED is True
-        assert victim.STEP__RESULT is True
-        assert victim.STEP__EXX is None
-        assert victim.STEP__INDEX == -1
-        assert victim.CHAINS_COUNT == 0
 
-    # ------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="chains, _EXPECTED",
+        argvalues=[
+            ((), -1),
+            ((True, ), 0),
+            ((False,), 0),
+            ((False, False), 1),
+            ((True, True), 1),
+        ]
+    )
+    def test__step_index(self, chains, _EXPECTED):
+        victim = self.Victim(chains)
+        victim.run()
+        func_link = victim.STEP__INDEX
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="chains, _EXPECTED",
+        argvalues=[
+            ((), 0),
+            ((True,), 1),
+            ((False,), 1),
+            ((False, False), 2),
+            ((True, True), 2),
+        ]
+    )
+    def test__step_count(self, chains, _EXPECTED):
+        victim = self.Victim(chains)
+        func_link = victim.CHAINS_COUNT
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
     @pytest.mark.parametrize(
         argnames="chains, _EXPECTED",
         argvalues=[
@@ -237,20 +234,29 @@ class Test__ResultExpect_Chain:
 
             ((True, lambda: False,), False),
             ((lambda: False, True), False),
+
+            ((False, ResultExpect_Step(True)), False),
+            ((True, ResultExpect_Step(True)), True),
+            ((True, ResultExpect_Step(False)), False),
         ]
     )
-    def test__steps(self, chains, _EXPECTED):
+    def test__steps_result(self, chains, _EXPECTED):
         func_link = self.Victim(chains).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
-    # def test__skip_if(self):
-    #     victim = self.Victim([])
-    #     victim.run()
-    #     assert victim.STEP__FINISHED is True
-    #     assert victim.STEP__RESULT is True
-    #     assert victim.STEP__EXX is None
-    #     assert victim.STEP__INDEX == -1
-    #     assert victim.CHAINS_COUNT == 0
+    @pytest.mark.parametrize(
+        argnames="chains, _EXPECTED",
+        argvalues=[
+            ((ResultExpect_Step(False, skip_if=None), ), False),
+            ((ResultExpect_Step(False, skip_if=False), ), False),
+            ((ResultExpect_Step(False, skip_if=True), ), True),
+            ((ResultExpect_Step(False, skip_if=lambda: True), ), True),
+            ((ResultExpect_Step(False, skip_if=lambda: False), ), False),
+        ]
+    )
+    def test__skip_if(self, chains, _EXPECTED):
+        func_link = self.Victim(chains).run
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
 
 # =====================================================================================================================

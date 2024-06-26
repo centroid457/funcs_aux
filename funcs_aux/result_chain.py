@@ -5,7 +5,7 @@ from funcs_aux import TYPE__FUNC_UNDER_VALUE, TYPE__ARGS, TYPE__KWARGS
 
 
 # =====================================================================================================================
-TYPE__SKIP_IF = Union[None, bool, Callable[[], bool | None | NoReturn]]
+TYPE__SKIP_IF = Union[None, bool, Any, Callable[[], Union[bool, None, NoReturn, Any]]]
 TYPE__CHAINS = list[Union['ResultExpect_Step', 'ResultExpect_Chain', bool, Callable[[], Any], Any]]
 
 
@@ -135,10 +135,11 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
                 self.STEP__SKIPPED = self.SKIP_IF()
             else:
                 self.STEP__SKIPPED = self.SKIP_IF
+            self.STEP__SKIPPED = bool(self.STEP__SKIPPED)
+
         except Exception as exx:
             self.STEP__EXX = exx
             self.STEP__SKIPPED = True
-            self.STEP__RESULT = True
 
             # WORK -----------------------
         if not self.STEP__SKIPPED:
@@ -147,6 +148,8 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
             except Exception as exx:
                 self.STEP__EXX = exx
                 self.STEP__RESULT = None
+        else:
+            self.STEP__RESULT = True
 
         # FINISH ------------------
         print(self.MSG)

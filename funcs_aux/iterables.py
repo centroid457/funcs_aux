@@ -1,6 +1,5 @@
 from typing import *
-from funcs_aux.results import ResultValue
-
+from funcs_aux import ResultValue
 
 # =====================================================================================================================
 TYPE__ITERABLE_PATH_KEY = Union[str, int]

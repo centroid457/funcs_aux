@@ -102,18 +102,12 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
         return self.STEP__RESULT or False
 
     def __str__(self) -> str:
-        return "\n".join(self.MSGS)
+        return self.MSG
 
     @property
     def MSG(self) -> str:
-        result = f"ResultExpect[index={self.STEP__INDEX}/result={self.STEP__RESULT}/exx={self.STEP__EXX}/skipped={self.STEP__SKIPPED}//title={self.TITLE}]"
+        result = f"{self.__class__.__name__}[index={self.STEP__INDEX}/result={self.STEP__RESULT}/exx={self.STEP__EXX}/skipped={self.STEP__SKIPPED}//title={self.TITLE}]"
         return result
-
-    @property
-    def MSGS(self) -> list[str]:
-        """here it is useful to keep universal access to MSGS both to STEP/CHAIN
-        """
-        return [self.MSG, ]
 
     def _clear(self) -> None:
         self.STEP__SKIPPED = None
@@ -252,10 +246,17 @@ class ResultExpect_Chain(ResultExpect_Base):
         return len(self.CHAINS or [])
 
     @property
-    def MSGS(self) -> list[str]:
-        result = []
+    def MSG(self) -> str:
+        # result = f"ResultExpectChain[index={self.STEP__INDEX}/result={self.STEP__RESULT}/exx={self.STEP__EXX}/skipped={self.STEP__SKIPPED}//title={self.TITLE}]"
+        result = super().MSG
+        separator = "\n----"
         for step in self.CHAINS:
-            result.append(step.MSG)
+            try:
+                step_msg = step.MSG
+            except:
+                step_msg = f"DirectValue{step}"
+
+            result += f"{separator}{step_msg}"
         return result
 
 

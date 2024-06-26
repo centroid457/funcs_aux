@@ -5,6 +5,7 @@ from funcs_aux import TYPE__FUNC_UNDER_VALUE, TYPE__ARGS, TYPE__KWARGS
 
 
 # =====================================================================================================================
+TYPE__SKIP_IF = Union[None, bool, Callable[[], bool | None | NoReturn]]
 
 
 # =====================================================================================================================
@@ -49,6 +50,7 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
     [CHAINS]
     --------
     if no items - return True!!!
+    if skip - return True!!!???
     """
     TITLE: Optional[str] = None
 
@@ -56,10 +58,12 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
     KWARGS: TYPE__KWARGS = None
 
     # markers for CHAIN -----------------------
+    SKIP_IF: TYPE__SKIP_IF = None
     USE_RESULT: bool = True
     CHAIN__STOP_ON_FAIL: bool = True
 
     # RESULT ----------------------------------
+    STEP__SKIPPED: Optional[bool] = None
     STEP__FINISHED: Optional[bool] = None
     STEP__RESULT: Optional[bool] = None
     STEP__EXX: Optional[bool] = None
@@ -74,6 +78,7 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
             args: TYPE__ARGS = None,
             kwargs: TYPE__KWARGS = None,
 
+            skip_if: bool | None = None,
             use_result: bool | None = None,
             chain__stop_on_fail: bool = True,
     ):
@@ -83,9 +88,10 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
         self.ARGS = args or ()
         self.KWARGS = kwargs or {}
 
+        if skip_if is not None:
+            self.SKIP_IF = skip_if
         if use_result is not None:
             self.USE_RESULT = use_result
-
         self.CHAIN__STOP_ON_FAIL = chain__stop_on_fail
 
     def __call__(self, *args, **kwargs) -> Self:
@@ -109,6 +115,7 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
         return [self.MSG, ]
 
     def _clear(self) -> None:
+        self.STEP__SKIPPED = None
         self.STEP__FINISHED = None
         self.STEP__RESULT = None
         self.STEP__EXX = None
@@ -121,11 +128,18 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
         if kwargs:
             self.KWARGS = kwargs
 
-        # WORK -----------------------
-        try:
-            self.STEP__RESULT = self._run__wrapped()
-        except Exception as exx:
-            self.STEP__EXX = exx
+        # SKIP -----------------------
+        if TypeChecker.check__func_or_meth(self.SKIP_IF):
+            self.STEP__SKIPPED = self.SKIP_IF()
+        else:
+            self.STEP__SKIPPED = self.SKIP_IF
+
+            # WORK -----------------------
+        if not self.STEP__SKIPPED:
+            try:
+                self.STEP__RESULT = self._run__wrapped()
+            except Exception as exx:
+                self.STEP__EXX = exx
 
         # FINISH ------------------
         print(self.MSG)

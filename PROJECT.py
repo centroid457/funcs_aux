@@ -57,7 +57,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 3, 3)
+    VERSION: Tuple[int, int, int] = (0, 3, 4)
     TODO: List[str] = [
         "..."
     ]
@@ -65,7 +65,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[FUNCS_DEBUG] add like LAMBDA_EXX/*"
+        "[ResultChain] fix MSG"
     ]
 
     # FINALIZE -----------------------------------------------

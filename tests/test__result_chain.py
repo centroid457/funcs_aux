@@ -6,8 +6,6 @@ from funcs_aux import *
 
 
 # =====================================================================================================================
-def func_exx() -> NoReturn:
-    raise Exception()
 
 
 # =====================================================================================================================
@@ -266,8 +264,8 @@ class Test__ResultExpect_Chain:
             ((ResultExpect_Step(False, skip_if=lambda: False), ), False),
 
             ((ResultExpect_Step(lambda: False, skip_if=lambda: False), ), False),
-            ((ResultExpect_Step(func_exx, skip_if=False), ), False),
-            ((ResultExpect_Step(func_exx, skip_if=True), ), True),
+            ((ResultExpect_Step(LAMBDA_EXX, skip_if=False), ), False),
+            ((ResultExpect_Step(LAMBDA_EXX, skip_if=True), ), True),
         ]
     )
     def test__skip_if(self, chains, _EXPECTED):

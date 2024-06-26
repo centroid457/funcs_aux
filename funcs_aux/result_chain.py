@@ -6,6 +6,7 @@ from funcs_aux import TYPE__FUNC_UNDER_VALUE, TYPE__ARGS, TYPE__KWARGS
 
 # =====================================================================================================================
 TYPE__SKIP_IF = Union[None, bool, Callable[[], bool | None | NoReturn]]
+TYPE__CHAINS = list[Union['ResultExpect_Step', 'ResultExpect_Chain', bool, Callable[[], Any], Any]]
 
 
 # =====================================================================================================================
@@ -129,10 +130,15 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
             self.KWARGS = kwargs
 
         # SKIP -----------------------
-        if TypeChecker.check__func_or_meth(self.SKIP_IF):
-            self.STEP__SKIPPED = self.SKIP_IF()
-        else:
-            self.STEP__SKIPPED = self.SKIP_IF
+        try:
+            if TypeChecker.check__func_or_meth(self.SKIP_IF):
+                self.STEP__SKIPPED = self.SKIP_IF()
+            else:
+                self.STEP__SKIPPED = self.SKIP_IF
+        except Exception as exx:
+            self.STEP__EXX = exx
+            self.STEP__SKIPPED = True
+            self.STEP__RESULT = True
 
             # WORK -----------------------
         if not self.STEP__SKIPPED:
@@ -140,6 +146,7 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
                 self.STEP__RESULT = self._run__wrapped()
             except Exception as exx:
                 self.STEP__EXX = exx
+                self.STEP__RESULT = None
 
         # FINISH ------------------
         print(self.MSG)
@@ -200,25 +207,24 @@ class ResultExpect_Chain(ResultExpect_Base):
     [CHAINS]
     --------
     if no items - return True!!!
-
     """
     # SETTINGS --------------------------------
-    CHAINS: List[Union[ResultExpect_Base]] = None
+    CHAINS: TYPE__CHAINS = None
 
     # AUX --------------------------------
-    STEP__INDEX: int = -1
+    STEP__INDEX: int = -1   # [0] - is the first index! [-1] - is the no one steps started!!!
 
     def __init__(
             self,
-            chains: List[Union[ResultExpect_Step, Self]],
+            chains: TYPE__CHAINS,
             **kwargs
     ):
         super().__init__(**kwargs)
-
-        self.CHAINS = chains
+        self.CHAINS = chains or []
 
     def _run__wrapped(self) -> bool:
         self.STEP__INDEX = -1
+
         result = True
         for step in self.CHAINS:
             self.STEP__INDEX += 1
@@ -231,6 +237,11 @@ class ResultExpect_Chain(ResultExpect_Base):
 
                 if not step.STEP__RESULT and step.CHAIN__STOP_ON_FAIL:
                     break
+            else:
+                if TypeChecker.check__func_or_meth(step):
+                    result = step()
+                result &= bool(step)
+
         return result
 
     @property

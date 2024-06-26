@@ -57,7 +57,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 3, 1)
+    VERSION: Tuple[int, int, int] = (0, 3, 2)
     TODO: List[str] = [
         "..."
     ]
@@ -65,7 +65,11 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[TESTS] move into separated folder",
+        ["[RESULT_CHAIN]",
+            "add direct values",
+            "add SKIP_IF param",
+            "zero separate files",
+         ]
     ]
 
     # FINALIZE -----------------------------------------------

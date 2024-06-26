@@ -1,7 +1,13 @@
+from typing import *
 import pytest
 from pytest_aux import *
 
 from funcs_aux import *
+
+
+# =====================================================================================================================
+def func_exx() -> NoReturn:
+    raise Exception()
 
 
 # =====================================================================================================================
@@ -188,6 +194,10 @@ class Test__ResultExpect_Chain:
             ((False,), 0),
             ((False, False), 1),
             ((True, True), 1),
+
+            ((True, True, True), 2),
+            ((ResultExpect_Step(False, chain__stop_on_fail=False), True, True), 2),
+            ((ResultExpect_Step(False, chain__stop_on_fail=True), True, True), 0),
         ]
     )
     def test__step_index(self, chains, _EXPECTED):
@@ -211,6 +221,7 @@ class Test__ResultExpect_Chain:
         func_link = victim.CHAINS_COUNT
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
+    # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
         argnames="chains, _EXPECTED",
         argvalues=[
@@ -240,10 +251,11 @@ class Test__ResultExpect_Chain:
             ((True, ResultExpect_Step(False)), False),
         ]
     )
-    def test__steps_result(self, chains, _EXPECTED):
+    def test__result(self, chains, _EXPECTED):
         func_link = self.Victim(chains).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
+    # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
         argnames="chains, _EXPECTED",
         argvalues=[
@@ -252,9 +264,25 @@ class Test__ResultExpect_Chain:
             ((ResultExpect_Step(False, skip_if=True), ), True),
             ((ResultExpect_Step(False, skip_if=lambda: True), ), True),
             ((ResultExpect_Step(False, skip_if=lambda: False), ), False),
+
+            ((ResultExpect_Step(lambda: False, skip_if=lambda: False), ), False),
+            ((ResultExpect_Step(func_exx, skip_if=False), ), False),
+            ((ResultExpect_Step(func_exx, skip_if=True), ), True),
         ]
     )
     def test__skip_if(self, chains, _EXPECTED):
+        func_link = self.Victim(chains).run
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
+    @pytest.mark.parametrize(
+        argnames="chains, _EXPECTED",
+        argvalues=[
+            # ((ResultExpect_Step(False, use_result=None), ), True),
+            ((ResultExpect_Step(False, use_result=False), ), True),
+            ((ResultExpect_Step(False, use_result=True), ), False),
+        ]
+    )
+    def test__use_result(self, chains, _EXPECTED):
         func_link = self.Victim(chains).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 

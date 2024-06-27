@@ -57,7 +57,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 3, 4)
+    VERSION: Tuple[int, int, int] = (0, 3, 5)
     TODO: List[str] = [
         "..."
     ]
@@ -65,7 +65,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[ResultChain] fix MSG"
+        "[testPrimitives] zero move into pytest_aux"
     ]
 
     # FINALIZE -----------------------------------------------

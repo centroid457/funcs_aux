@@ -215,9 +215,9 @@ class Test__ResultExpect_Chain:
             ((True, True), 2),
         ]
     )
-    def test__step_count(self, chains, _EXPECTED):
+    def test__len(self, chains, _EXPECTED):
         victim = self.Victim(chains)
-        func_link = victim.CHAINS_COUNT
+        func_link = len(victim)
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -250,9 +250,51 @@ class Test__ResultExpect_Chain:
             ((True, ResultExpect_Step(False)), False),
         ]
     )
-    def test__result(self, chains, _EXPECTED):
+    def test__types__step(self, chains, _EXPECTED):
         func_link = self.Victim(chains).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="chains, _EXPECTED",
+        argvalues=[
+            # TUPLE ---------------------
+            ((), True),
+            ((True,), True),
+            ((True, True), True),
+            ((True, False), False),
+
+            # LIST ---------------------
+            ([], True),
+            ([True,], True),
+            ([True, True], True),
+            ([True, False], False),
+
+            # SET ---------------------
+            ({True, }, True),
+            ({True, True}, True),
+            ({True, False}, False),
+
+            # MAP ---------------------
+            (map(bool, [1,1 ]), True),  # but it is not good!!! it will not work with one OBJECT!!! cant reIterate generators!
+            (map(bool, [0,1 ]), False),
+            (map(bool, [0,0 ]), False),
+            (map(bool, range(3)), False),
+            (map(bool, range(1, 3)), True),
+
+            # GEN ---------------------
+            ((bool(i) for i in [1,]), True),
+            ((bool(i) for i in [1,1,]), True),
+            ((bool(i) for i in [0,1,]), False),
+            ((bool(i) for i in [1,0,]), False),
+        ]
+    )
+    def test__types__chains(self, chains, _EXPECTED):
+        victim = self.Victim(chains)
+        func_link = victim.run
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+        # if victim.STEP__RESULT and not isinstance(victim.CHAINS, map):
+        #     assert (len(victim) - 1) == victim.STEP__INDEX
 
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(

@@ -6,7 +6,7 @@ from funcs_aux import TYPE__FUNC_UNDER_VALUE, TYPE__ARGS, TYPE__KWARGS
 
 # =====================================================================================================================
 TYPE__SKIP_IF = Union[None, bool, Any, Callable[[], Union[bool, None, NoReturn, Any]]]
-TYPE__CHAINS = list[Union['ResultExpect_Step', 'ResultExpect_Chain', bool, Callable[[], Any], Any]]
+TYPE__CHAINS = Iterable[Union['ResultExpect_Step', 'ResultExpect_Chain', bool, Callable[[], Any], Any]]     # dont use MAP/GEN but only Iters!!!
 
 
 # =====================================================================================================================
@@ -95,7 +95,7 @@ class ResultExpect_Base:    # dont hide it cause of need ability to detect both 
             self.USE_RESULT = use_result
         self.CHAIN__STOP_ON_FAIL = chain__stop_on_fail
 
-    def __call__(self, *args, **kwargs) -> Self:
+    def __call__(self, *args, **kwargs) -> bool:
         return self.run(*args, **kwargs)
 
     def __bool__(self) -> bool:
@@ -241,9 +241,15 @@ class ResultExpect_Chain(ResultExpect_Base):
 
         return result
 
-    @property
-    def CHAINS_COUNT(self) -> int:
-        return len(self.CHAINS or [])
+    def __len__(self) -> int:
+        """
+        IT IS NOT ACCEPTABLE FOR GENS!
+        """
+        try:
+            return len(self.CHAINS or [])
+        except Exception as exx:
+            print(f"LEN is not acceptable for such object like MAP/GEN, {exx!r}")
+            raise exx
 
     @property
     def MSG(self) -> str:

@@ -1,12 +1,18 @@
 from typing import *
-from object_info import TypeChecker
-
-from funcs_aux import TYPE__FUNC_UNDER_VALUE, TYPE__ARGS, TYPE__KWARGS
+from object_info import *
+from funcs_aux import *
 
 
 # =====================================================================================================================
 TYPE__SKIP_IF = Union[None, bool, Any, Callable[[], Union[bool, None, NoReturn, Any]]]
-TYPE__CHAINS = Iterable[Union['ResultExpect_Step', 'ResultExpect_Chain', bool, Callable[[], Any], Any]]     # dont use MAP/GEN but only Iters!!!
+TYPE__CHAINS = Iterable[
+    Union[
+        'ResultExpect_Step',
+        'ResultExpect_Chain',
+        bool,
+        Callable[[], Any],
+        Any,
+    ]]  # dont use MAP/GEN but only Iters!!!
 
 
 # =====================================================================================================================
@@ -22,7 +28,7 @@ def _explore_and_why_it_need():
     print(
         all([
             False,
-            False and Cls.hello1,  #this is OK!!!!
+            False and Cls.hello1,  # this is OK!!!!
             # True and Cls.hello2,  #this is EXX!!!! AttributeError: type object 'Cls' has no attribute 'hello2'
         ])
     )
@@ -46,7 +52,7 @@ def _explore_and_why_it_need():
 
 
 # =====================================================================================================================
-class ResultExpect_Base:    # dont hide it cause of need ability to detect both of ResultExpect_Step/Chain
+class ResultExpect_Base:  # dont hide it cause of need ability to detect both of ResultExpect_Step/Chain
     """
     [CHAINS]
     --------
@@ -166,6 +172,7 @@ class ResultExpect_Step(ResultExpect_Base):
     VALUE: Union[Any, Callable]
     VALUE_UNDER_FUNC: TYPE__FUNC_UNDER_VALUE = None
     VALUE_EXPECTED: Union[bool, Any] = True
+    VALUE_ACTUAL: Any = None
 
     def __init__(
             self,
@@ -195,6 +202,13 @@ class ResultExpect_Step(ResultExpect_Base):
         result = value == self.VALUE_EXPECTED
 
         # FINISH --------------------------------------------------------------
+        self.VALUE_ACTUAL = value
+        return result
+
+    @property
+    def MSG(self) -> str:
+        result = super().MSG
+        result += f"value_actual={self.VALUE_ACTUAL}/value_expected={self.VALUE_EXPECTED}"
         return result
 
 
@@ -209,7 +223,7 @@ class ResultExpect_Chain(ResultExpect_Base):
     CHAINS: TYPE__CHAINS = None
 
     # AUX --------------------------------
-    STEP__INDEX: int = -1   # [0] - is the first index! [-1] - is the no one steps started!!!
+    STEP__INDEX: int = -1  # [0] - is the first index! [-1] - is the no one steps started!!!
 
     def __init__(
             self,

@@ -11,6 +11,10 @@
 ********************************************************************************
 ## NEWS
 
+0.3.6 (2024/07/05 14:49:13)
+------------------------------
+- [ResultExpectStep] add VALUE_ACTUAL! with good MSG as keep logging/dump results  
+
 0.3.5 (2024/06/27 10:53:36)
 ------------------------------
 - [testPrimitives] zero move into pytest_aux  

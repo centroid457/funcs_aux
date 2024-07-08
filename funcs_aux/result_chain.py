@@ -54,6 +54,8 @@ def _explore_and_why_it_need():
 # =====================================================================================================================
 class ResultExpect_Base:  # dont hide it cause of need ability to detect both of ResultExpect_Step/Chain
     """
+    DONT USE IT DIRECTLY! this is only a base for *Step/Chain!
+
     [CHAINS]
     --------
     if no items - return True!!!
@@ -171,7 +173,7 @@ class ResultExpect_Step(ResultExpect_Base):
     # SETTINGS --------------------------------
     VALUE: Union[Any, Callable]
     VALUE_UNDER_FUNC: TYPE__FUNC_UNDER_VALUE = None
-    VALUE_EXPECTED: Union[bool, Any] = True
+    VALUE_EXPECTED: Union[bool, Text, Any] = True
     VALUE_ACTUAL: Any = None
 
     def __init__(
@@ -191,18 +193,18 @@ class ResultExpect_Step(ResultExpect_Base):
     def _run__wrapped(self) -> Union[bool, NoReturn]:
         # CALLS ----------------------------------
         if TypeChecker.check__func_or_meth(self.VALUE):
-            value = self.VALUE(*self.ARGS, **self.KWARGS)
+            value_actual = self.VALUE(*self.ARGS, **self.KWARGS)
         else:
-            value = self.VALUE
+            value_actual = self.VALUE
 
         # VALUE_UNDER_FUNC -----------------------
         if self.VALUE_UNDER_FUNC:
-            value = self.VALUE_UNDER_FUNC(value)
+            value_actual = self.VALUE_UNDER_FUNC(value_actual)
 
-        result = value == self.VALUE_EXPECTED
+        result = self.VALUE_EXPECTED == value_actual
 
         # FINISH --------------------------------------------------------------
-        self.VALUE_ACTUAL = value
+        self.VALUE_ACTUAL = value_actual
         return result
 
     @property

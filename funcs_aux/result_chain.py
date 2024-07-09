@@ -1,3 +1,4 @@
+import re
 from typing import *
 from object_info import *
 from funcs_aux import *
@@ -173,7 +174,7 @@ class ResultExpect_Step(ResultExpect_Base):
     # SETTINGS --------------------------------
     VALUE: Union[Any, Callable]
     VALUE_UNDER_FUNC: TYPE__FUNC_UNDER_VALUE = None
-    VALUE_EXPECTED: Union[bool, Text, Any] = True
+    VALUE_EXPECTED: Union[bool, str, Any] = True
     VALUE_ACTUAL: Any = None
 
     def __init__(
@@ -193,18 +194,23 @@ class ResultExpect_Step(ResultExpect_Base):
     def _run__wrapped(self) -> Union[bool, NoReturn]:
         # CALLS ----------------------------------
         if TypeChecker.check__func_or_meth(self.VALUE):
-            value_actual = self.VALUE(*self.ARGS, **self.KWARGS)
+            self.VALUE_ACTUAL = self.VALUE(*self.ARGS, **self.KWARGS)
         else:
-            value_actual = self.VALUE
+            self.VALUE_ACTUAL = self.VALUE
 
         # VALUE_UNDER_FUNC -----------------------
         if self.VALUE_UNDER_FUNC:
-            value_actual = self.VALUE_UNDER_FUNC(value_actual)
+            self.VALUE_ACTUAL = self.VALUE_UNDER_FUNC(self.VALUE_ACTUAL)
 
-        result = self.VALUE_EXPECTED == value_actual
+        match = re.fullmatch(r'eval\((.*)\)', str(self.VALUE_EXPECTED))
+        if match:
+            cmd = match[1]
+            cmd = re.sub(r"source", self.VALUE_ACTUAL, cmd)
+            self.VALUE_EXPECTED = eval(cmd)
+
+        result = self.VALUE_EXPECTED == self.VALUE_ACTUAL
 
         # FINISH --------------------------------------------------------------
-        self.VALUE_ACTUAL = value_actual
         return result
 
     @property

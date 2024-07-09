@@ -1,6 +1,7 @@
 from typing import *
 from funcs_aux import ResultValue
 
+
 # =====================================================================================================================
 TYPE__ITERABLE_PATH_KEY = Union[str, int]
 TYPE__ITERABLE_PATH_ORIGINAL = List[TYPE__ITERABLE_PATH_KEY]
@@ -41,7 +42,7 @@ class Iterables:
         :param data:
         :param item_expected:
         :return: actual item from collection
-            None - if value is unreachable
+            None - if VALUE is unreachable
         """
         if data is None:
             data = self.DATA
@@ -57,13 +58,13 @@ class Iterables:
         """
         NOTES:
         1. path used as address KEY for dicts and as INDEX for other listed data
-        2. SEPARATOR is only simple SLASH '/'!
+        2. SEPARATOR_OUTPUT is only simple SLASH '/'!
 
         :param data:
         :param path_expected:
         :return:
             None - if path is unreachable/incorrect
-            List[Any] - reachable path which could be used to get value from data by chain data[i1][i2][i3]
+            List[Any] - reachable path which could be used to get VALUE from data by chain data[i1][i2][i3]
         """
         if data is None:
             data = self.DATA

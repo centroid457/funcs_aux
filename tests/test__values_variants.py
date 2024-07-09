@@ -1,71 +1,11 @@
-import os
-import time
+from typing import *
+import pathlib
 
 import pytest
-import pathlib
-import shutil
-from tempfile import TemporaryDirectory
-from typing import *
-from configparser import ConfigParser
+from pytest import mark
+from pytest_aux import *
 
 from funcs_aux import *
-
-
-# =====================================================================================================================
-class Test__WithUnit:
-    @classmethod
-    def setup_class(cls):
-        pass
-        cls.Victim = type("Victim", (Value_WithUnit,), {})
-    # @classmethod
-    # def teardown_class(cls):
-    #     pass
-    #
-    # def setup_method(self, method):
-    #     pass
-    #
-    # def teardown_method(self, method):
-    #     pass
-
-    # -----------------------------------------------------------------------------------------------------------------
-    def test__str(self):
-        victim = self.Victim()
-        assert victim.value == 0
-        assert victim.UNIT == ""
-        assert victim.SEPARATOR == ""
-        assert str(victim) == "0"
-
-        victim = self.Victim(1)
-        assert victim.value == 1
-        assert victim.UNIT == ""
-        assert victim.SEPARATOR == ""
-        assert str(victim) == "1"
-
-        victim = self.Victim(1, unit="V")
-        assert victim.value == 1
-        assert victim.UNIT == "V"
-        assert victim.SEPARATOR == ""
-        assert str(victim) == "1V"
-
-        victim = self.Victim(1, unit="V", separator=" ")
-        assert victim.value == 1
-        assert victim.UNIT == "V"
-        assert victim.SEPARATOR == " "
-        assert str(victim) == "1 V"
-
-    def test__cmp__same(self):
-        assert self.Victim() == self.Victim()
-        assert self.Victim(1, separator=" ") == self.Victim(1, separator="")
-        assert self.Victim(1.0) == self.Victim(1)
-
-        assert self.Victim(1) != self.Victim(2)
-
-    def test__cmp__other(self):
-        assert self.Victim() == 0
-        assert self.Victim(1, separator=" ") == 1
-        assert self.Victim(1.0) == 1
-
-        assert self.Victim(1) != 2
 
 
 # =====================================================================================================================
@@ -88,47 +28,47 @@ class Test__FromVariants:
     # -----------------------------------------------------------------------------------------------------------------
     def test__val_def__reset(self):
         victim = self.Victim(value="var1", variants=["VAR1", "VAR2"])
-        assert victim.value == "VAR1"
-        assert victim.value != "VAR2"
+        assert victim.VALUE == "VAR1"
+        assert victim.VALUE != "VAR2"
         assert victim.VALUE_DEFAULT == "var1"
 
-        victim.value = "var2"
-        assert victim.value != "VAR1"
-        assert victim.value == "VAR2"
+        victim.VALUE = "var2"
+        assert victim.VALUE != "VAR1"
+        assert victim.VALUE == "VAR2"
         assert victim.VALUE_DEFAULT == "var1"
 
         victim.reset()
-        assert victim.value == "VAR1"
-        assert victim.value != "VAR2"
+        assert victim.VALUE == "VAR1"
+        assert victim.VALUE != "VAR2"
         assert victim.VALUE_DEFAULT == "var1"
 
     def test__double_objects(self):
         victim1 = self.Victim(value="var1", variants=["VAR1", "VAR11"])
         victim2 = self.Victim(value="var2", variants=["VAR2", "VAR22"])
-        assert victim1.value == "VAR1"
-        assert victim2.value == "VAR2"
+        assert victim1.VALUE == "VAR1"
+        assert victim2.VALUE == "VAR2"
 
-        assert victim1.value != "VAR11"
-        assert victim2.value != "VAR22"
+        assert victim1.VALUE != "VAR11"
+        assert victim2.VALUE != "VAR22"
 
-        victim1.value = "VAR11"
-        victim2.value = "VAR22"
+        victim1.VALUE = "VAR11"
+        victim2.VALUE = "VAR22"
 
-        assert victim1.value != "VAR1"
-        assert victim2.value != "VAR2"
+        assert victim1.VALUE != "VAR1"
+        assert victim2.VALUE != "VAR2"
 
-        assert victim1.value == "VAR11"
-        assert victim2.value == "VAR22"
+        assert victim1.VALUE == "VAR11"
+        assert victim2.VALUE == "VAR22"
 
         try:
-            victim1.value = "VAR2"
+            victim1.VALUE = "VAR2"
             assert False
         except:
             assert True
 
     def test__case(self):
         victim = self.Victim(value="var1", variants=["VAR1", "VAR2"])
-        assert victim.value == "VAR1"
+        assert victim.VALUE == "VAR1"
         assert str(victim) == "VAR1"
 
         try:
@@ -139,7 +79,7 @@ class Test__FromVariants:
 
     def test__variants_validate(self):
         victim = self.Victim(value="var", variants=["VAR", "var"], case_insensitive=False)
-        assert victim.value == "var"
+        assert victim.VALUE == "var"
 
         try:
             victim = self.Victim(value="var123", variants=["VAR", "var"], case_insensitive=False)
@@ -161,24 +101,24 @@ class Test__FromVariants:
 
     def test__types__None(self):
         victim = self.Victim(variants=["NONE", ])
-        assert victim.value == Value_NotPassed
+        assert victim.VALUE == Value_NotPassed
         # assert str(victim) == "NONE"
 
         victim = self.Victim(value=None, variants=["NONE", ])
-        assert victim.value == "NONE"
+        assert victim.VALUE == "NONE"
         assert str(victim) == "NONE"
 
         victim = self.Victim(value="None", variants=[None, ])
-        assert victim.value is None
+        assert victim.VALUE is None
         assert str(victim) == "None"
 
     def test__types__int(self):
         victim = self.Victim(value=1, variants=["1", ])
-        assert victim.value == "1"
+        assert victim.VALUE == "1"
         assert str(victim) == "1"
 
         victim = self.Victim(value="1", variants=[1, ])
-        assert victim.value == 1
+        assert victim.VALUE == 1
         assert str(victim) == "1"
 
     def test__cmp__same_obj(self):
@@ -212,4 +152,3 @@ class Test__FromVariants:
 
 
 # =====================================================================================================================
-

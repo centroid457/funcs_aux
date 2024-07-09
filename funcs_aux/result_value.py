@@ -16,8 +16,8 @@ class ResultValue(NamedTuple):
     """
     [GOAL]
     ------
-    1. solve NONE-value as result ambiguity by simple way
-    2. show/pass explicitly the EXACT value like None/[]/()
+    1. solve NONE-VALUE as result ambiguity by simple way
+    2. show/pass explicitly the EXACT VALUE like None/[]/()
 
     [RULES]
     -------

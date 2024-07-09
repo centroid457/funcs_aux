@@ -98,7 +98,7 @@ class BreederStrSeries(NamedTuple):
 
     def get_listed_index__by_outer(self, index: int) -> int | NoReturn:
         """
-        usually we have outer index and need to be able get from other list value according to listed index fom this template!
+        usually we have outer index and need to be able get from other list VALUE according to listed index fom this template!
 
         :param index:
         :return:
@@ -143,7 +143,7 @@ class BreederStrStack(AnnotsNested):
     ------
     !. names (as attributes)
         - dont use underscore as first simble
-        - it will be as value for index
+        - it will be as VALUE for index
     1. dont keep SKIPPED indexes - use all final range!
     2. BreederStrSeries
      - use if need template for some range
@@ -173,8 +173,8 @@ class BreederStrStack(AnnotsNested):
             atr2: int = None
             atr4: int
 
-        for key, value in ClsLast.annotations__get_nested_list().items():
-            print(f"{key}:{value}")
+        for key, VALUE in ClsLast.annotations__get_nested_list().items():
+            print(f"{key}:{VALUE}")
 
         # atr1:<class 'int'>
         # atr3:<class 'int'>
@@ -252,7 +252,7 @@ class BreederStrStack(AnnotsNested):
 
     def __contains__(self, item: Union[int, str]) -> bool:
         """
-        :param item: OUTER INDEX (not self INNER!!!) or inner value NAME
+        :param item: OUTER INDEX (not self INNER!!!) or inner VALUE NAME
         :return:
         """
         return item in self._DATA or item in self._DATA.values()

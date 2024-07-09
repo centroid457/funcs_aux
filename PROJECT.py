@@ -54,10 +54,19 @@ Designed to collect useful funcs in one place!
         [
             "STRINGS",
         ],
+        [
+            "ValueWithUnit",
+                "work with multipliers",
+                "work with positive/negative",
+                "full comparing",
+        ],
+        [
+            "ValueFromVariant",
+        ],
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 3, 6)
+    VERSION: Tuple[int, int, int] = (0, 3, 7)
     TODO: List[str] = [
         "..."
     ]
@@ -65,7 +74,12 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        "[ResultExpectStep] add VALUE_ACTUAL! with good MSG as keep logging/dump results",
+        ["[Value_WithUnit] big ref!",
+            "add parse(source)",
+            "add work with negative/positive",
+            "add multipliers",
+            "add full cmp",
+         ]
     ]
 
     # FINALIZE -----------------------------------------------

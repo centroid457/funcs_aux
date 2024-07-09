@@ -9,7 +9,7 @@
 ![Commit/Count/y](https://img.shields.io/github/commit-activity/y/centroid457/funcs_aux)
 ![Commit/Count/m](https://img.shields.io/github/commit-activity/m/centroid457/funcs_aux)
 
-# funcs_aux (current v0.3.6/![Ver/Pypi Latest](https://img.shields.io/pypi/v/funcs_aux?label=pypi%20latest))
+# funcs_aux (current v0.3.7/![Ver/Pypi Latest](https://img.shields.io/pypi/v/funcs_aux?label=pypi%20latest))
 
 ## DESCRIPTION_SHORT
 useful funcs in one place
@@ -26,6 +26,11 @@ Designed to collect useful funcs in one place!
 2. ITERABLES:  
 	- work with any iterable data by path/...  
 3. STRINGS:  
+4. ValueWithUnit:  
+	- work with multipliers  
+	- work with positive/negative  
+	- full comparing  
+5. ValueFromVariant:  
 
 
 ********************************************************************************

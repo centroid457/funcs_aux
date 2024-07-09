@@ -11,6 +11,14 @@
 ********************************************************************************
 ## NEWS
 
+0.3.7 (2024/07/09 16:25:22)
+------------------------------
+- [Value_WithUnit] big ref!:  
+	- add parse(source)  
+	- add work with negative/positive  
+	- add multipliers  
+	- add full cmp  
+
 0.3.6 (2024/07/05 14:49:13)
 ------------------------------
 - [ResultExpectStep] add VALUE_ACTUAL! with good MSG as keep logging/dump results  

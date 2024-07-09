@@ -38,9 +38,10 @@ UNIT_MULTIPLIER: dict[str, float | int] = {
 }
 
 
+# =====================================================================================================================
 class Value_WithUnit(CmpInst):
     """
-    used to keep separated VALUE and measure unit
+    used to keep separated/parse VALUE and measure UNIT and compare with any representation
     """
     VALUE: Union[int, float] = 0
 
@@ -53,6 +54,11 @@ class Value_WithUnit(CmpInst):
     # TODO: add arithmetic/comparing magic methods like SUM/...
 
     def __init__(self, source: Union[int, float, str, Any] = None, unit: str = None, separator_output: str = None):
+        """
+        :param source:
+        :param unit: use it only if not exists in source!
+        :param separator_output:
+        """
         if source is not None:
             self.parse(source)
         if unit is not None:

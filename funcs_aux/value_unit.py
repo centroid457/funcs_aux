@@ -34,7 +34,7 @@ UNIT_MULTIPLIER: dict[str, float | int] = {
     "G": 10 ** 9,
     "T": 10 ** 12,
 
-    "": 1,  # keep it last only or just delete!!!
+    "": 10 ** 0,  # keep it last only or just delete!!!
 }
 
 
@@ -70,6 +70,7 @@ class Value_WithUnit(CmpInst):
     def parse(self, source: Any) -> Self | NoReturn:
         source = str(source)
         source = source.strip()
+        source = source.lstrip("+")
         source = source.replace(',', ".")
         source = re.sub(r'-+\s+', '-', source)
 

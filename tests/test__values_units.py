@@ -10,10 +10,10 @@ from funcs_aux import *
 
 # =====================================================================================================================
 class Test__WithUnit:
-    @classmethod
-    def setup_class(cls):
-        pass
-        cls.Victim = type("Victim", (Value_WithUnit,), {})
+    # @classmethod
+    # def setup_class(cls):
+    #     pass
+    #     cls.Victim = type("Victim", (Value_WithUnit,), {})
     # @classmethod
     # def teardown_class(cls):
     #     pass
@@ -25,44 +25,46 @@ class Test__WithUnit:
     #     pass
 
     # -----------------------------------------------------------------------------------------------------------------
-    def test__str(self):
-        victim = self.Victim()
-        assert victim.VALUE == 0
-        assert victim.UNIT == ""
-        assert victim.SEPARATOR_OUTPUT == ""
-        assert str(victim) == "0"
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (1, "1"),
+            (1.1, "1.1"),
+            ("1", "1"),
+            ("1.1", "1.1"),
+            ("1,0", "1"),
+            ("1,0V", "1V"),
 
-        victim = self.Victim(1)
-        assert victim.VALUE == 1
-        assert victim.UNIT == ""
-        assert victim.SEPARATOR_OUTPUT == ""
-        assert str(victim) == "1"
+            ("1.1.1", Exception),
+            ("hello", Exception),
+        ]
+    )
+    def test__str(self, args, _EXPECTED):
+        func_link = lambda: str(Value_WithUnit(args))
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
-        victim = self.Victim(1, unit="V")
-        assert victim.VALUE == 1
-        assert victim.UNIT == "V"
-        assert victim.SEPARATOR_OUTPUT == ""
-        assert str(victim) == "1V"
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="source1, source2, _EXPECTED",
+        argvalues=[
+            ("-1", 1, -1),
+            ("- 1", 1, -1),
+            ("1", 1, 0),
+            ("1.0", 1, 0),
+            ("1.0V", 1, 0),
+            ("1.0V", "1 V", 0),
 
-        victim = self.Victim(1, unit="V", separator_output=" ")
-        assert victim.VALUE == 1
-        assert victim.UNIT == "V"
-        assert victim.SEPARATOR_OUTPUT == " "
-        assert str(victim) == "1 V"
+            ("0.001V", "1mV", 0),
+            ("0.002V", "1mV", 1),
+            ("0.001V", "11 mV", -1),
+            ("0.001V", "1,1mV", -1),
 
-    def test__cmp__same(self):
-        assert self.Victim() == self.Victim()
-        assert self.Victim(1, separator_output=" ") == self.Victim(1, separator_output="")
-        assert self.Victim(1.0) == self.Victim(1)
-
-        assert self.Victim(1) != self.Victim(2)
-
-    def test__cmp__other(self):
-        assert self.Victim() == 0
-        assert self.Victim(1, separator_output=" ") == 1
-        assert self.Victim(1.0) == 1
-
-        assert self.Victim(1) != 2
+            ("hello", 2, Exception),
+        ]
+    )
+    def test__cmp(self, source1, source2, _EXPECTED):
+        func_link = lambda: Value_WithUnit(source1).__cmp__(source2)
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
 
 # =====================================================================================================================

@@ -22,17 +22,17 @@ class UnitBase(AnnotsClsKeysAsValues):
 
 
 UNIT_MULTIPLIER: dict[str, float | int] = {
-    "p": 10 ^ (-12),
-    "n": 10 ^ (-9),
-    "µ": 10 ^ (-6),
-    "m": 10 ^ (-3),
-    "c": 10 ^ (-2),
-    "d": 10 ^ (-1),
+    "p": 10 ** (-12),
+    "n": 10 ** (-9),
+    "µ": 10 ** (-6),
+    "m": 10 ** (-3),
+    "c": 10 ** (-2),
+    "d": 10 ** (-1),
 
-    "k": 10 ^ 3,
-    "M": 10 ^ 6,
-    "G": 10 ^ 9,
-    "T": 10 ^ 12,
+    "k": 10 ** 3,
+    "M": 10 ** 6,
+    "G": 10 ** 9,
+    "T": 10 ** 12,
 
     "": 1,  # keep it last only or just delete!!!
 }
@@ -71,14 +71,19 @@ class Value_WithUnit(CmpInst):
         source = str(source)
         source = source.strip()
         source = source.replace(',', ".")
+        source = re.sub(r'-+\s+', '-', source)
 
         # WORK ---------------------------
-        match = re.fullmatch(r'([0-9.]+)\s*([a-zA-Z]*)', source)
+        match = re.fullmatch(r'(-?[0-9.]+)\s*([a-zA-Z]*)', source)
         if match:
-            self.VALUE = float(match[1]) if "." in match[1] else int(match[1])
+            self.VALUE = float(match[1])
+
             self.UNIT = match[2] or ""
         else:
             raise Exx__ValueNotParsed()
+
+        if int(self.VALUE) == self.VALUE:
+            self.VALUE = int(self.VALUE)
 
         # UNIT_MULTIPLIER ------------------
         for unit_multiplier, multiplier in UNIT_MULTIPLIER.items():
@@ -87,6 +92,9 @@ class Value_WithUnit(CmpInst):
                 self.UNIT_BASE = self.UNIT.removeprefix(unit_multiplier)
                 self.MULTIPLIER = multiplier
                 break
+
+        if not self.UNIT_BASE and self.UNIT:
+            self.UNIT_BASE = self.UNIT
 
         # FINISH ---------------------------
         return self

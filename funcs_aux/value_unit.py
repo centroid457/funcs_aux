@@ -60,6 +60,23 @@ UNIT_MULT__VARIANTS: dict[str, float | int] = {
 class Value_WithUnit(CmpInst):
     """
     used to keep separated/parse VALUE and measure UNIT and compare with any representation
+
+    CREATED SPECIALLY FOR
+    ---------------------
+    use in UART/SERIAl to get exact inline comparable value!
+
+    BEST USAGE
+    ----------
+    assert Value_WithUnit('0.0k') == 0
+
+    assert Value_WithUnit('1k') == 1000
+    assert Value_WithUnit('1k') == '1000'
+    assert Value_WithUnit('1kV') == 1000
+    assert Value_WithUnit('1kV') == '1k'
+    assert Value_WithUnit(1000) == '1kV'
+
+    assert Value_WithUnit(1001) > '1kV'
+    assert Value_WithUnit(1000) < '1.1kV'
     """
     SOURCE: Any = None
     VALUE: Union[int, float] = 0

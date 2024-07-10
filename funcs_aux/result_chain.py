@@ -208,7 +208,7 @@ class ResultExpect_Step(ResultExpect_Base):
             cmd = re.sub(r"source", self.VALUE_ACTUAL, cmd)
             self.VALUE_EXPECTED = eval(cmd)
 
-        result = self.VALUE_EXPECTED == self.VALUE_ACTUAL
+        result = self.VALUE_ACTUAL == self.VALUE_EXPECTED or self.VALUE_EXPECTED == self.VALUE_ACTUAL   # this is used for CMP objects
 
         # FINISH --------------------------------------------------------------
         return result

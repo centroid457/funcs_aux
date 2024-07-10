@@ -16,12 +16,16 @@ class Exx__ValueUnitsIncompatible(Exception):
 
 
 class UnitBase(AnnotsClsKeysAsValues):
+    """
+    this is just an example! it will help you to use just strings by Object
+    """
     V: str
     A: str
     C: str
 
 
 UNIT_MULT: dict[str, float | int] = {
+    # ENG/INTERNATIONAL
     "p": 10 ** (-12),
     "n": 10 ** (-9),
     "µ": 10 ** (-6),
@@ -34,6 +38,20 @@ UNIT_MULT: dict[str, float | int] = {
     "G": 10 ** 9,
     "T": 10 ** 12,
 
+    # RUS
+    "п": 10 ** (-12),
+    "н": 10 ** (-9),
+    "мк": 10 ** (-6),
+    "м": 10 ** (-3),
+    "с": 10 ** (-2),
+    "д": 10 ** (-1),
+
+    "к": 10 ** 3,
+    "М": 10 ** 6,
+    "Г": 10 ** 9,
+    "Т": 10 ** 12,
+
+    # ONE
     "": 10 ** 0,  # keep it last only or just delete!!!
 }
 

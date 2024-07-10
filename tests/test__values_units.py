@@ -26,6 +26,37 @@ class Test__WithUnit:
 
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
+        argnames="source, val_orig, val_pure, mult, unit, unit_mult, unit_base",
+        argvalues=[
+            # minus/plus/space ------------------
+            ("  - 1   k   ", -1, -1000, 1000, "k", "k", ""),
+            (" + 1 ", 1, 1, 1, "", "", ""),
+
+            # DOTS ------------------------
+            ("1,0", 1, 1, 1, "", "", ""),
+            ("1.0", 1, 1, 1, "", "", ""),
+            ("1.1", 1.1, 1.1, 1, "", "", ""),
+
+            # mult ------------------------
+            ("1k", 1, 1000, 1000, "k", "k", ""),
+            ("-1k", -1, -1000, 1000, "k", "k", ""),
+
+            # UNIT ------------------------
+            ("1kHELLO", 1, 1000, 1000, "kHELLO", "k", "HELLO"),
+            ("1kПРИВЕТ", 1, 1000, 1000, "kПРИВЕТ", "k", "ПРИВЕТ"),
+        ]
+    )
+    def test__parse(self, source, val_orig, val_pure, mult, unit, unit_mult, unit_base):
+        victim = Value_WithUnit(source)
+        assert victim.VALUE == val_orig
+        assert victim.VALUE_PURE == val_pure
+        assert victim.MULT == mult
+        assert victim.UNIT == unit
+        assert victim.UNIT_MULT == unit_mult
+        assert victim.UNIT_BASE == unit_base
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[
             (1, "1"),
@@ -64,25 +95,29 @@ class Test__WithUnit:
         ]
     )
     def test__multiplier(self, args, _EXPECTED):
-        func_link = lambda: Value_WithUnit(args).MULTIPLIER
+        func_link = lambda: Value_WithUnit(args).MULT
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
         argnames="source1, source2, _EXPECTED",
         argvalues=[
-            # minus/plus ------------------
+            # minus/plus -----------------
             ("-1", 1, -1),
             ("- 1", 1, -1),
             ("-  1", -1, 0),
             ("+1", -1, 1),
             ("+1", +1, 0),
 
-            # unit ------------------
+            # unit -----------------------
             ("1", 1, 0),
             ("1.0", 1, 0),
             ("1.0V", 1, 0),
             ("1.0V", "1 V", 0),
+
+            ("1.0HELLO", 1, 0),
+            ("1.0kHELLO", 1000, 0),
+            ("1.0kHELLO", '1k', 0),
 
             ("1V", "1A", Exception),
 
@@ -93,6 +128,11 @@ class Test__WithUnit:
             ("0.001V", "1,1mV", -1),
 
             ("hello", 2, Exception),
+
+            # baseWoUnit ------------------
+            ("0.001V", "1m", 0),
+            ("0.001", "1m", 0),
+            ("1k", "1000", 0),
         ]
     )
     def test__cmp(self, source1, source2, _EXPECTED):

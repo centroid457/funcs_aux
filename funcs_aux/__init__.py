@@ -18,7 +18,7 @@ from .value_unit import (
     Value_WithUnit,
     # AUX
     UnitBase,
-    UNIT_MULTIPLIER,
+    UNIT_MULT,
     # TYPES
     Exx__ValueNotParsed,
     Exx__ValueUnitsIncompatible,

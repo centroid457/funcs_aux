@@ -21,7 +21,7 @@ class UnitBase(AnnotsClsKeysAsValues):
     C: str
 
 
-UNIT_MULTIPLIER: dict[str, float | int] = {
+UNIT_MULT: dict[str, float | int] = {
     "p": 10 ** (-12),
     "n": 10 ** (-9),
     "µ": 10 ** (-6),
@@ -43,12 +43,13 @@ class Value_WithUnit(CmpInst):
     """
     used to keep separated/parse VALUE and measure UNIT and compare with any representation
     """
+    SOURCE: Any = None
     VALUE: Union[int, float] = 0
 
     UNIT: str = ""      # final unit with multiplier
+    UNIT_MULT: str = ""
     UNIT_BASE: str = ""
-    UNIT_MULTIPLIER: str = ""
-    MULTIPLIER: int = 1
+    MULT: int = 1
     SEPARATOR_OUTPUT: str = ""
 
     # TODO: add arithmetic/comparing magic methods like SUM/...
@@ -60,6 +61,7 @@ class Value_WithUnit(CmpInst):
         :param separator_output:
         """
         if source is not None:
+            self.SOURCE = source
             self.parse(source)
         if unit is not None:
             if self.UNIT:
@@ -71,20 +73,19 @@ class Value_WithUnit(CmpInst):
 
     @property
     def VALUE_PURE(self) -> Union[int, float]:
-        return self.VALUE * self.MULTIPLIER
+        return self.VALUE * self.MULT
 
     def parse(self, source: Any) -> Self | NoReturn:
         source = str(source)
         source = source.strip()
-        source = source.lstrip("+")
         source = source.replace(',', ".")
-        source = re.sub(r'-+\s+', '-', source)
+        source = re.sub(r'-\s*', '-', source)
+        source = re.sub(r'\+\s*', '', source)
 
         # WORK ---------------------------
-        match = re.fullmatch(r'(-?[0-9.]+)\s*([a-zA-Z]*)', source)
+        match = re.fullmatch(r'(-?[0-9.]+)\s*([a-zA-Zа-яА-Я]*)', source)
         if match:
             self.VALUE = float(match[1])
-
             self.UNIT = match[2] or ""
         else:
             raise Exx__ValueNotParsed()
@@ -92,16 +93,16 @@ class Value_WithUnit(CmpInst):
         if int(self.VALUE) == self.VALUE:
             self.VALUE = int(self.VALUE)
 
-        # UNIT_MULTIPLIER ------------------
-        for unit_multiplier, multiplier in UNIT_MULTIPLIER.items():
-            if self.UNIT.startswith(unit_multiplier):
-                self.UNIT_MULTIPLIER = unit_multiplier
-                self.UNIT_BASE = self.UNIT.removeprefix(unit_multiplier)
-                self.MULTIPLIER = multiplier
+        # UNIT_MULT ------------------
+        for unit_mult, multiplier in UNIT_MULT.items():
+            if self.UNIT.startswith(unit_mult):
+                self.UNIT_MULT = unit_mult
+                self.UNIT_BASE = self.UNIT.removeprefix(unit_mult)
+                self.MULT = multiplier
                 break
-
-        if not self.UNIT_BASE and self.UNIT:
-            self.UNIT_BASE = self.UNIT
+        #
+        # if not self.UNIT_BASE and self.UNIT:
+        #     self.UNIT_BASE = self.UNIT
 
         # FINISH ---------------------------
         return self

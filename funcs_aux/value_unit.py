@@ -83,7 +83,7 @@ class Value_WithUnit(CmpInst):
         if source is not None:
             self.parse(source)
         if unit is not None:
-            if self.UNIT:
+            if self.UNIT and unit != self.UNIT:
                 msg = f"old[{self.UNIT=}] new[{unit=}]"
                 raise Exx__ValueUnitsIncompatible(msg)
             self.UNIT = unit
@@ -93,6 +93,20 @@ class Value_WithUnit(CmpInst):
     @property
     def VALUE_PURE(self) -> Union[int, float]:
         return self.VALUE * self.MULT
+
+    @classmethod
+    def validate(cls, source: Any) -> bool:
+        """
+        CREATED SPECIALLY FOR
+        ---------------------
+        if ypu want to decide somewhere return Value_WithUnit-object or just source
+        check source before applying
+        """
+        try:
+            cls(source)
+            return True
+        except:
+            return False
 
     def clear(self) -> None:
         self.SOURCE = None

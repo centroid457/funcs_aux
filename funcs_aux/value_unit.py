@@ -24,7 +24,7 @@ class UnitBase(AnnotsClsKeysAsValues):
     C: str
 
 
-UNIT_MULT: dict[str, float | int] = {
+UNIT_MULT__VARIANTS: dict[str, float | int] = {
     # ENG/INTERNATIONAL
     "p": 10 ** (-12),
     "n": 10 ** (-9),
@@ -70,6 +70,8 @@ class Value_WithUnit(CmpInst):
     MULT: int = 1
     SEPARATOR_OUTPUT: str = ""
 
+    UNIT_MULT__VARIANTS: dict[str, float | int] = UNIT_MULT__VARIANTS
+
     # TODO: add arithmetic/comparing magic methods like SUM/...
 
     def __init__(self, source: Union[int, float, str, Any] = None, unit: str = None, separator_output: str = None):
@@ -112,7 +114,7 @@ class Value_WithUnit(CmpInst):
             self.VALUE = int(self.VALUE)
 
         # UNIT_MULT ------------------
-        for unit_mult, multiplier in UNIT_MULT.items():
+        for unit_mult, multiplier in self.UNIT_MULT__VARIANTS.items():
             if self.UNIT.startswith(unit_mult):
                 self.UNIT_MULT = unit_mult
                 self.UNIT_BASE = self.UNIT.removeprefix(unit_mult)

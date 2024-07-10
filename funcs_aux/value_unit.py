@@ -81,7 +81,6 @@ class Value_WithUnit(CmpInst):
         :param separator_output:
         """
         if source is not None:
-            self.SOURCE = source
             self.parse(source)
         if unit is not None:
             if self.UNIT:
@@ -95,7 +94,18 @@ class Value_WithUnit(CmpInst):
     def VALUE_PURE(self) -> Union[int, float]:
         return self.VALUE * self.MULT
 
+    def clear(self) -> None:
+        self.SOURCE = None
+        self.VALUE = 0
+        self.UNIT = ""
+        self.UNIT_MULT = ""
+        self.UNIT_BASE = ""
+        self.MULT = 1
+
     def parse(self, source: Any) -> Self | NoReturn:
+        self.clear()
+
+        self.SOURCE = source
         source = str(source)
         source = source.strip()
         source = source.replace(',', ".")

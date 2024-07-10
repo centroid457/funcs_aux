@@ -26,10 +26,48 @@ class Test__WithUnit:
 
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (-0, True),
+            (0, True),
+            (-1, True),
+            (1, True),
+            (1.1, True),
+            ("1", True),
+            ("1.1", True),
+            ("1,0", True),
+            ("1,0V", True),
+            ("1, 0V", False),
+            ("1 ,0V", False),
+            ("1,,0V", False),
+            ("1,.0V", False),
+
+            ("1мк", True),
+            ("1мкB", True),
+            ("1мкV", True),
+            ("1vV", True),
+            ("1vHello", True),
+            ("1vПривет", True),
+            ("1v Привет", False),
+
+            ("  -  1,0   mV   ", True),
+            ("  --  1,0   mV   ", False),
+
+            ("1.1.1", False),
+            ("hello", False),
+        ]
+    )
+    def test__validate(self, args, _EXPECTED):
+        func_link = Value_WithUnit.validate
+        pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
         argnames="source, val_orig, val_pure, mult, unit, unit_mult, unit_base",
         argvalues=[
             # minus/plus/space ------------------
             ("  - 1   k   ", -1, -1000, 1000, "k", "k", ""),
+            ("-0", 0, 0, 1, "", "", ""),
             (" + 1 ", 1, 1, 1, "", "", ""),
 
             # DOTS ------------------------

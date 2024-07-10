@@ -68,8 +68,10 @@ class Value_WithUnit(CmpInst):
     BEST USAGE
     ----------
     assert Value_WithUnit('0.0k') == 0
+    assert Value_WithUnit('0,01k') == 10
 
-    assert Value_WithUnit('1k') == 1000
+    assert Value_WithUnit('1нм') == '1n'    #RUS multipliers are acceptable! and mean the same!
+
     assert Value_WithUnit('1k') == '1000'
     assert Value_WithUnit('1kV') == 1000
     assert Value_WithUnit('1kV') == '1k'

@@ -115,7 +115,7 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
 
     @property
     def VALUE_PURE(self) -> Union[int, float]:
-        return self.VALUE * self.MULT
+        return self.number__fix_precision(self.VALUE * self.MULT)
 
     @VALUE_PURE.setter
     def VALUE_PURE(self, value_pure: Any) -> None:
@@ -124,8 +124,7 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
             value = int(value_pure)
 
         value = value_pure / self.MULT
-        if int(value) == float(value):
-            value = int(value)
+        value = self.number__fix_precision(value)
         self.VALUE = value
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -188,8 +187,7 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
         else:
             raise Exx__ValueNotParsed()
 
-        if int(self.VALUE) == self.VALUE:
-            self.VALUE = int(self.VALUE)
+        self.VALUE = self.number__fix_precision(self.VALUE)
 
         # UNIT_MULT ------------------
         for unit_mult, multiplier in self.UNIT_MULT__VARIANTS.items():

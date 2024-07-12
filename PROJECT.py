@@ -74,11 +74,14 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-        ["[Value_WithUnit] big ref!",
-            "add parse(source)",
-            "add work with negative/positive",
-            "add multipliers",
-            "add full cmp",
+
+
+
+
+        "[ResultExpect_Step] try add eval - need del!!! and apply ValueUnit",
+
+        ["[Value_WithUnit] big ref",
+            "apply NumberArithm",
          ]
     ]
 

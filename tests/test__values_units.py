@@ -227,9 +227,13 @@ def test__arithm_x3():
     assert round(victim.VALUE_PURE) == 1001
     value = round(victim)
     assert value == 1001
-    # assert int(victim) == 1001        # int(1.999) == 1!!!!
+    assert int(victim) == 1001        # int(1.999) == 1!!!!
 
-    # # ---------------------------
+def test__arithm_x3_EXPLORE():
+    victim = Value_WithUnit("1k") + 1
+    assert victim == 1001
+
+    # ---------------------------
     # victim = Value_WithUnit("1.1V")
     #
     # victim += 0.1

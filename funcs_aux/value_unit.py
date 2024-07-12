@@ -57,48 +57,87 @@ UNIT_MULT__VARIANTS: dict[str, float | int] = {
 
 
 # =====================================================================================================================
-class Value_WithUnit(CmpInst):
+class Value_WithUnit(NumberArithmTranslateToAttr):
     """
-    used to keep separated/parse VALUE and measure UNIT and compare with any representation
+    GOAL
+    ----
+    keep separated/parse VALUE and measure UNIT and compare with any representation
 
     CREATED SPECIALLY FOR
     ---------------------
-    use in UART/SERIAl to get exact inline comparable value!
+    use in UART/SERIAL to get exact inline comparable value!
+
+    NOTE
+    ----
+    DONT MESS VALUE&VALUE_PURE!!!
+    VALUE - is an original number with multiplier not applied
+    VALUE_PURE - multiplier applied
+
+    Example:
+        SOURCE = 1k
+        VALUE = 1
+        VALUE_PURE = 1000
+
+    so VALUE - is the most useful representation in your application!!!
 
     BEST USAGE
     ----------
-    assert Value_WithUnit('0.0k') == 0
-    assert Value_WithUnit('0,01k') == 10
+        assert Value_WithUnit('0.0k') == 0
+        assert Value_WithUnit('0,01k') == 10
 
-    assert Value_WithUnit('1нм') == '1n'    #RUS multipliers are acceptable! and mean the same!
+        assert Value_WithUnit('1нм') == '1n'    #RUS multipliers are acceptable! and mean the same!
 
-    assert Value_WithUnit('1k') == '1000'
-    assert Value_WithUnit('1kV') == 1000
-    assert Value_WithUnit('1kV') == '1k'
-    assert Value_WithUnit(1000) == '1kV'
+        assert Value_WithUnit('1k') == '1000'
+        assert Value_WithUnit('1kV') == 1000
+        assert Value_WithUnit('1kV') == '1k'
+        assert Value_WithUnit(1000) == '1kV'
 
-    assert Value_WithUnit(1001) > '1kV'
-    assert Value_WithUnit(1000) < '1.1kV'
+        assert Value_WithUnit(1001) > '1kV'
+        assert Value_WithUnit(1000) < '1.1kV'
     """
-    SOURCE: Any = None
-    VALUE: Union[int, float] = 0
+    # NESTED ----------------------
+    NUMBER_ARITHM__GETATTR_NAME = "VALUE_PURE"
 
+    # SETTINGS -------------------------
+    SEP_OUT: str = ""
+
+    UNIT_MULT__USE: bool = True
+    UNIT_MULT__VARIANTS: dict[str, float | int] = UNIT_MULT__VARIANTS
+
+    # NEW -------------------------
     UNIT: str = ""      # final unit with multiplier
     UNIT_MULT: str = ""
     UNIT_BASE: str = ""
     MULT: int = 1
-    SEPARATOR_OUTPUT: str = ""
 
-    UNIT_MULT__VARIANTS: dict[str, float | int] = UNIT_MULT__VARIANTS
+    SOURCE: Any = None
+    VALUE: Union[int, float] = 0    # DONT MESS VALUE&VALUE_PURE!!! see NOTES!
 
-    # TODO: add arithmetic/comparing magic methods like SUM/...
+    @property
+    def VALUE_PURE(self) -> Union[int, float]:
+        return self.VALUE * self.MULT
 
+    @VALUE_PURE.setter
+    def VALUE_PURE(self, value_pure: Any) -> None:
+        value_pure = self._other__get_float(value_pure)
+        if int(value_pure) == float(value_pure):
+            value = int(value_pure)
+
+        value = value_pure / self.MULT
+        if int(value) == float(value):
+            value = int(value)
+        self.VALUE = value
+
+    # -----------------------------------------------------------------------------------------------------------------
     def __init__(self, source: Union[int, float, str, Any] = None, unit: str = None, separator_output: str = None):
         """
         :param source:
         :param unit: use it only if not exists in source!
         :param separator_output:
         """
+        if not self.UNIT_MULT__USE:
+            self.UNIT_MULT__VARIANTS = {}
+
         if source is not None:
             self.parse(source)
         if unit is not None:
@@ -107,11 +146,7 @@ class Value_WithUnit(CmpInst):
                 raise Exx__ValueUnitsIncompatible(msg)
             self.UNIT = unit
         if separator_output is not None:
-            self.SEPARATOR_OUTPUT = separator_output
-
-    @property
-    def VALUE_PURE(self) -> Union[int, float]:
-        return self.VALUE * self.MULT
+            self.SEP_OUT = separator_output
 
     @classmethod
     def validate(cls, source: Any) -> bool:
@@ -171,13 +206,13 @@ class Value_WithUnit(CmpInst):
         return self
 
     def __str__(self) -> str:
-        return f"{self.VALUE}{self.SEPARATOR_OUTPUT}{self.UNIT}"
+        return f"{self.VALUE}{self.SEP_OUT}{self.UNIT}"
 
     def __repr__(self) -> str:
         """
         used as help
         """
-        return f"{self.VALUE}'{self.UNIT}'"
+        return f"{self.VALUE}'{self.UNIT}'/str({self})"
 
     # CMP -------------------------------------------------------------------------------------------------------------
     def __cmp__(self, other) -> int | NoReturn:

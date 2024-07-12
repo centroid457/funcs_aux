@@ -4,7 +4,6 @@ import pathlib
 import pytest
 from pytest import mark
 from pytest_aux import *
-
 from funcs_aux import *
 
 
@@ -180,6 +179,73 @@ class Test__WithUnit:
     def test__cmp(self, source1, source2, _EXPECTED):
         func_link = lambda: Value_WithUnit(source1).__cmp__(source2)
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
+
+# =====================================================================================================================
+def test__arithm_x1():
+    victim = Value_WithUnit(1)
+    assert victim.VALUE == 1
+    victim += 1
+    assert victim.VALUE == 2
+
+    # ---------------------------
+    victim = Value_WithUnit("1.1V")
+
+    victim += 0.1
+    assert str(victim) == "1.2V"
+
+    victim += 1
+    assert str(victim) == "2.2V"
+
+    victim += "1m"
+    assert str(victim) == "2.201V"
+
+    victim -= "1"
+    assert str(victim) == "1.201V"
+
+    victim -= "1001m"
+    assert str(victim) == "0.2V"
+
+
+def test__arithm_x3():
+    victim = Value_WithUnit("1k")
+    assert victim == 1000
+    assert victim.VALUE == 1
+    assert victim.VALUE_PURE == 1000
+    assert int(victim) == 1000
+    victim += "1k"
+    assert victim.VALUE == 2
+    assert victim.VALUE_PURE == 2000
+    assert int(victim) == 2000
+
+    victim = Value_WithUnit("1k")
+    assert victim == 1000
+    victim += 1
+    # assert victim == 1001
+    assert victim.VALUE == 1.001
+    # assert victim.VALUE_PURE == 1001
+    assert round(victim.VALUE_PURE) == 1001
+    value = round(victim)
+    assert value == 1001
+    # assert int(victim) == 1001        # int(1.999) == 1!!!!
+
+    # # ---------------------------
+    # victim = Value_WithUnit("1.1V")
+    #
+    # victim += 0.1
+    # assert str(victim) == "1.2V"
+    #
+    # victim += 1
+    # assert str(victim) == "2.2V"
+    #
+    # victim += "1m"
+    # assert str(victim) == "2.201V"
+    #
+    # victim -= "1"
+    # assert str(victim) == "1.201V"
+    #
+    # victim -= "1001m"
+    # assert str(victim) == "0.2V"
 
 
 # =====================================================================================================================

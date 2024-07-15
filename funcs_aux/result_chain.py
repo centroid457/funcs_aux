@@ -202,11 +202,11 @@ class ResultExpect_Step(ResultExpect_Base):
         if self.VALUE_UNDER_FUNC:
             self.VALUE_ACTUAL = self.VALUE_UNDER_FUNC(self.VALUE_ACTUAL)
 
-        match = re.fullmatch(r'eval\((.*)\)', str(self.VALUE_EXPECTED))
-        if match:
-            cmd = match[1]
-            cmd = re.sub(r"source", self.VALUE_ACTUAL, cmd)
-            self.VALUE_EXPECTED = eval(cmd)
+        # match = re.fullmatch(r'eval\((.*)\)', str(self.VALUE_EXPECTED))
+        # if match:
+        #     cmd = match[1]
+        #     cmd = re.sub(r"source", self.VALUE_ACTUAL, cmd)
+        #     self.VALUE_EXPECTED = eval(cmd)
 
         result = self.VALUE_ACTUAL == self.VALUE_EXPECTED or self.VALUE_EXPECTED == self.VALUE_ACTUAL   # this is used for CMP objects
 

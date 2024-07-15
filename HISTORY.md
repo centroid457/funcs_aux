@@ -11,6 +11,14 @@
 ********************************************************************************
 ## NEWS
 
+0.3.8 (2024/07/15 14:40:53)
+------------------------------
+- [Value_WithUnit] big ref:  
+	- apply NumberArithm  
+	- add UNIT_MULT__VARIANTS into class! so ou can extend it  
+	- add RUS multipliers  
+	- add UNIT_MULT__DISABLE  
+
 0.3.7 (2024/07/09 16:25:22)
 ------------------------------
 - [Value_WithUnit] big ref!:  

@@ -101,7 +101,7 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
     # SETTINGS -------------------------
     SEP_OUT: str = ""
 
-    UNIT_MULT__USE: bool = True
+    UNIT_MULT__DISABLE: bool | None = None
     UNIT_MULT__VARIANTS: dict[str, float | int] = UNIT_MULT__VARIANTS
 
     # NEW -------------------------
@@ -134,7 +134,7 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
         :param unit: use it only if not exists in source!
         :param separator_output:
         """
-        if not self.UNIT_MULT__USE:
+        if self.UNIT_MULT__DISABLE:
             self.UNIT_MULT__VARIANTS = {}
 
         if source is not None:

@@ -66,7 +66,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 3, 7)
+    VERSION: Tuple[int, int, int] = (0, 3, 8)
     TODO: List[str] = [
         "..."
     ]
@@ -74,14 +74,11 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: List[str] = [
-
-
-
-
-        "[ResultExpect_Step] try add eval - need del!!! and apply ValueUnit",
-
         ["[Value_WithUnit] big ref",
             "apply NumberArithm",
+            "add UNIT_MULT__VARIANTS into class! so ou can extend it",
+            "add RUS multipliers",
+            "add UNIT_MULT__DISABLE",
          ]
     ]
 

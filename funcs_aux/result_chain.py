@@ -57,8 +57,8 @@ class ResultExpect_Base:  # dont hide it cause of need ability to detect both of
     """
     DONT USE IT DIRECTLY! this is only a base for *Step/Chain!
 
-    [CHAINS]
-    --------
+    CHAINS
+    ------
     if no items - return True!!!
     if skip - return True!!!???
     """
@@ -223,8 +223,8 @@ class ResultExpect_Step(ResultExpect_Base):
 # =====================================================================================================================
 class ResultExpect_Chain(ResultExpect_Base):
     """
-    [CHAINS]
-    --------
+    CHAINS
+    ------
     if no items - return True!!!
     """
     # SETTINGS --------------------------------

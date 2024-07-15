@@ -14,23 +14,23 @@ TYPE__KWARGS = Dict[str, Any]
 # =====================================================================================================================
 class ResultValue(NamedTuple):
     """
-    [GOAL]
-    ------
+    GOAL
+    ----
     1. solve NONE-VALUE as result ambiguity by simple way
     2. show/pass explicitly the EXACT VALUE like None/[]/()
 
-    [RULES]
-    -------
+    RULES
+    -----
     return object if you get final result!
     return None if there are any errors in execution
 
-    [NamedTuple] WHY
+    WHY: NamedTuple
     ----------------
     cause of we need to be able to compare different objects by values.
     maybe we need just add __eq__ method instead of it!!!
 
-    [USAGE]
-    -------
+    USAGE
+    -----
         from funcs_aux import *
 
         def func(a, b) -> Optional[ResultValue]:
@@ -59,8 +59,8 @@ class ResultValue(NamedTuple):
 # =====================================================================================================================
 class ResultFunc:
     """
-    MAIN GOAL:
-    ----------
+    GOAL
+    ----
     use always Object as result with absolut unambiguity!
 
     it will return object in any cases (if you get final result or if there are any errors in execution)!

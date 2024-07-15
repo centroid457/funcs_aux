@@ -65,13 +65,13 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
 
     CREATED SPECIALLY FOR
     ---------------------
-    use in UART/SERIAL to get exact inline comparable value!
+    use in UART/SERIAL to get exact inline comparable numeric value!
 
     NOTE
     ----
     DONT MESS VALUE&VALUE_PURE!!!
-    VALUE - is an original number with multiplier not applied
-    VALUE_PURE - multiplier applied
+        VALUE - is an original number with multiplier not applied
+        VALUE_PURE - multiplier applied
 
     Example:
         SOURCE = 1k

@@ -13,7 +13,8 @@ from cli_user import *
 
 
 # =====================================================================================================================
-VERSION = (0, 0, 1)   # first attempt
+# VERSION = (0, 0, 1)   # first attempt
+VERSION = (0, 0, 2)   # add commented testPypi
 
 
 # =====================================================================================================================
@@ -28,6 +29,7 @@ cmds_timeout = [
     ("python -m build --wheel", 60),
 
     # share ------------
+    # ("twine upload dist/* -r testpypi --verbose", 90),
     ("twine upload dist/* --verbose", 90),
 ]
 result = cli.send(cmds_timeout) and Packages().upgrade_prj(PROJECT)

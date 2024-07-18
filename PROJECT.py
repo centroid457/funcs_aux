@@ -44,8 +44,8 @@ Designed to collect useful funcs in one place!
 
         [
             "RESULTS",
-            "ResultValue - resolved ambiguity with None-result for any method result!",
-            "ResultFunc",
+                "ResultValue - resolved ambiguity with None-result for any method result!",
+                "ResultFunc",
          ],
         [
             "ITERABLES",
@@ -58,15 +58,14 @@ Designed to collect useful funcs in one place!
             "ValueWithUnit",
                 "work with multipliers",
                 "work with positive/negative",
-                "full comparing",
+                "full comparing + arithmetics",
         ],
-        [
-            "ValueFromVariant",
-        ],
+        "ValueFromVariant",
+        "ValueValidate",
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 3, 8)
+    VERSION: tuple[int, int, int] = (0, 3, 9)
     TODO: list[str] = [
         "..."
     ]
@@ -74,15 +73,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-
-
-
-        ["[Value_WithUnit] big ref",
-            "apply NumberArithm",
-            "add UNIT_MULT__VARIANTS into class! so ou can extend it",
-            "add RUS multipliers",
-            "add UNIT_MULT__DISABLE",
-         ]
+        "[ValueValidate] add new",
     ]
 
     # FINALIZE -----------------------------------------------

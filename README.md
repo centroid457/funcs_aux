@@ -9,7 +9,7 @@
 ![Commit/Count/y](https://img.shields.io/github/commit-activity/y/centroid457/funcs_aux)
 ![Commit/Count/m](https://img.shields.io/github/commit-activity/m/centroid457/funcs_aux)
 
-# funcs_aux (current v0.3.8/![Ver/Pypi Latest](https://img.shields.io/pypi/v/funcs_aux?label=pypi%20latest))
+# funcs_aux (current v0.3.9/![Ver/Pypi Latest](https://img.shields.io/pypi/v/funcs_aux?label=pypi%20latest))
 
 ## DESCRIPTION_SHORT
 useful funcs in one place
@@ -29,8 +29,9 @@ Designed to collect useful funcs in one place!
 4. ValueWithUnit:  
 	- work with multipliers  
 	- work with positive/negative  
-	- full comparing  
-5. ValueFromVariant:  
+	- full comparing + arithmetics  
+5. ValueFromVariant  
+6. ValueValidate  
 
 
 ********************************************************************************
@@ -56,6 +57,6 @@ from funcs_aux import *
 
 ********************************************************************************
 ## USAGE EXAMPLES
-See tests and sourcecode for other examples.
+See tests, sourcecode and docstrings for other examples.  
 
 ********************************************************************************

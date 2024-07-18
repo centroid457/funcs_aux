@@ -43,6 +43,7 @@ class ValueValidate:
 
     value_last: Any | Exception = None
     validate_last: None | bool | Exception = None
+    validate_last_bool: bool = False
     log_last: str = ""
 
     def __init__(
@@ -80,15 +81,14 @@ class ValueValidate:
         except Exception as exx:
             self.validate_last = exx
 
+        self.validate_last_bool = bool(self)
+
         # FINAL ---------------------
         self.log_last = self.LOG_PATTERN.format(self)
-        return self.validate_last
+        return self.validate_last_bool
 
     def __bool__(self) -> bool:
         return self.validate_last is True
-
-    def bool_last(self) -> bool:
-        return bool(self)
 
     def __str__(self) -> str:
         return self.log_last

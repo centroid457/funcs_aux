@@ -38,8 +38,8 @@ class ValueValidate:
     COMMENT: str = ""
 
     VALUE_LINK: Any | Callable[[], Any]
-    VALIDATE_LINK: Callable[[Any], bool | Exception] = lambda val: val is True
-    LOG_PATTERN: str = "validate_last={0.validate_last}[{0.TITLE}]value_last={0.value_last}"
+    VALIDATE_LINK: Callable[[Any], bool | Exception] = lambda self, val: val is True
+    LOG_PATTERN: str = "ValueValidate(validate_last={0.validate_last},value_last={0.value_last},title=[{0.TITLE}])"
 
     value_last: Any | Exception = None
     validate_last: None | bool | Exception = None
@@ -47,17 +47,16 @@ class ValueValidate:
 
     def __init__(
             self,
-            value_link,
-            result_link: Any | Callable[[Any], bool | Exception] = True,
-            log_pattern: str = None,
+            value_link: Any | Callable[[], Any],
+            validate_link: Optional[Any | Callable[[Any], bool | Exception]] = None,
+            log_pattern: Optional[str] = None,
 
-            title: str = None,
-            comment: str = None,
+            title: Optional[str] = None,
+            comment: Optional[str] = None,
     ):
-
         self.VALUE_LINK = value_link
-        self.VALIDATE_LINK = result_link
-
+        if validate_link:
+            self.VALIDATE_LINK = validate_link
         if log_pattern:
             self.LOG_PATTERN = log_pattern
         if title:
@@ -84,6 +83,18 @@ class ValueValidate:
         # FINAL ---------------------
         self.log_last = self.LOG_PATTERN.format(self)
         return self.validate_last
+
+    def __bool__(self) -> bool:
+        return self.validate_last is True
+
+    def bool_last(self) -> bool:
+        return bool(self)
+
+    def __str__(self) -> str:
+        return self.log_last
+
+    def __repr__(self) -> str:
+        return self.log_last
 
 
 # =====================================================================================================================

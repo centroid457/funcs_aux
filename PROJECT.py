@@ -17,7 +17,7 @@ class PROJECT:
 
     # PROJECT ----------------------------------------------
     NAME_IMPORT: str = "funcs_aux"
-    KEYWORDS: List[str] = [
+    KEYWORDS: list[str] = [
         "functions",
         "auxiliary", "auxiliary funcs",
         "np funcs",
@@ -25,7 +25,7 @@ class PROJECT:
         "strings funcs",
         "result object",
     ]
-    CLASSIFIERS_TOPICS_ADD: List[str] = [
+    CLASSIFIERS_TOPICS_ADD: list[str] = [
         # "Topic :: Communications",
         # "Topic :: Communications :: Email",
     ]
@@ -38,7 +38,7 @@ class PROJECT:
 Now its just a beginning!
 Designed to collect useful funcs in one place!
 """
-    FEATURES: List[str] = [
+    FEATURES: list[str] = [
         # "feat1",
         # ["feat2", "block1", "block2"],
 
@@ -66,14 +66,17 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: Tuple[int, int, int] = (0, 3, 8)
-    TODO: List[str] = [
+    VERSION: tuple[int, int, int] = (0, 3, 8)
+    TODO: list[str] = [
         "..."
     ]
-    FIXME: List[str] = [
+    FIXME: list[str] = [
         "..."
     ]
-    NEWS: List[str] = [
+    NEWS: list[str] = [
+
+
+
         ["[Value_WithUnit] big ref",
             "apply NumberArithm",
             "add UNIT_MULT__VARIANTS into class! so ou can extend it",

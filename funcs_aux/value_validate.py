@@ -38,11 +38,11 @@ class ValueValidate:
     COMMENT: str = ""
 
     VALUE_LINK: Any | Callable[[], Any]
-    RESULT_LINK: Any | Callable[[Any], bool | Exception] = True
-    LOG_PATTERN: str = "result_last={0.result_last}[{0.TITLE}]value_last={0.value_last}"
+    VALIDATE_LINK: Callable[[Any], bool | Exception] = lambda val: val is True
+    LOG_PATTERN: str = "validate_last={0.validate_last}[{0.TITLE}]value_last={0.value_last}"
 
     value_last: Any | Exception = None
-    result_last: None | bool | Exception = None
+    validate_last: None | bool | Exception = None
     log_last: str = ""
 
     def __init__(
@@ -56,7 +56,7 @@ class ValueValidate:
     ):
 
         self.VALUE_LINK = value_link
-        self.RESULT_LINK = result_link
+        self.VALIDATE_LINK = result_link
 
         if log_pattern:
             self.LOG_PATTERN = log_pattern
@@ -76,23 +76,14 @@ class ValueValidate:
             self.value_last = self.VALUE_LINK
 
         # VALIDATE ---------------------
-        if TypeChecker.check__func_or_meth(self.RESULT_LINK):
-            try:
-                self.result_last = self.RESULT_LINK(self.value_last)
-            except Exception as exx:
-                self.result_last = exx
-        else:
-            try:
-                self.result_last = self.RESULT_LINK == self.value_last
-            except:
-                try:
-                    self.result_last = self.value_last ==  self.RESULT_LINK
-                except Exception as exx:
-                    self.result_last = exx
+        try:
+            self.validate_last = self.VALIDATE_LINK(self.value_last)
+        except Exception as exx:
+            self.validate_last = exx
 
         # FINAL ---------------------
         self.log_last = self.LOG_PATTERN.format(self)
-        return self.result_last
+        return self.validate_last
 
 
 # =====================================================================================================================

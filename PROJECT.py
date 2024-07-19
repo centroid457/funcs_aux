@@ -67,7 +67,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 3, 9)
+    VERSION: tuple[int, int, int] = (0, 3, 10)
     TODO: list[str] = [
         "..."
     ]
@@ -75,10 +75,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-
-
-
-        "[ResultCum] create"
+        "[ResultCum] create",
     ]
 
     # FINALIZE -----------------------------------------------

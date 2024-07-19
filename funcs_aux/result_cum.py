@@ -4,7 +4,7 @@ from object_info import *
 
 
 # =====================================================================================================================
-TYPE__RESULT_CUM_STEP = Union[bool, Any, 'ResultCum']
+TYPE__RESULT_CUM_STEP = Union[bool, Any, ValueValidate]
 TYPE__RESULT_CUM_STEPS = Union[TYPE__RESULT_CUM_STEP, list[TYPE__RESULT_CUM_STEP]]
 
 
@@ -26,6 +26,21 @@ class ResultCum:
 
     BEST USAGE
     ----------
+        # some example
+        def meth() -> ResultCum:
+            result_cum = ResultCum()
+
+            result_step = 1+1 == 2
+            result_cum.result__apply_step(result_step)
+            result_cum.log_lines__add('check 1+1 == 2')
+
+            result_step = 1+2 == 4
+            result_cum.result__apply_step(result_step)
+            result_cum.log_lines__add('check 1+2 == 4')
+
+            result_cum.finish()
+            return result_cum
+
     """
 
     TITLE: str = ""
@@ -35,7 +50,7 @@ class ResultCum:
     finished: bool | None = None    # as help to see if process is finished - maybe need deprecate!
 
     LOG_LINES: list[str]
-    STEP_HISTORY: list[tuple[TYPE__RESULT_CUM_STEP, bool]]     # as history!
+    STEP_HISTORY: list[tuple[TYPE__RESULT_CUM_STEP, bool]]     # as history! step+cumSettings
 
     def __init__(self, title: str = None):        #, steps=None):  #dont use steps here
         if title:
@@ -59,6 +74,7 @@ class ResultCum:
         else:
             # SINGLE ------------------------------------------
             self.STEP_HISTORY.append((step, cumulate))
+            # TODO: if isinstance(step, ResultCum):   - what do i need to do here?? decide!
             if isinstance(step, ValueValidate):
                 if not step.finished:
                     step.run()

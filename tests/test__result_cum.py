@@ -1,0 +1,124 @@
+from typing import *
+import pytest
+from pytest import mark
+from pytest_aux import *
+from funcs_aux import *
+
+
+# =====================================================================================================================
+VALUE_VALIDATE__TRUE = ValueValidate(True)
+
+
+# =====================================================================================================================
+def test__log_lines():
+    victim = ResultCum("Hello")
+    assert victim.LOG_LINES == []
+
+    # SINGLE --------------------------
+    victim.log_lines__add("line1")
+    assert victim.LOG_LINES == ["line1"]
+
+    # LIST --------------------------
+    victim.clear()
+    assert victim.LOG_LINES == []
+    victim.log_lines__add([f"line{i}" for i in range(3)])
+    assert victim.LOG_LINES == ["line0", "line1", "line2"]
+
+    # LIST --------------------------
+    victim.clear()
+    assert victim.LOG_LINES == []
+    victim.result__apply_step(VALUE_VALIDATE__TRUE)
+    assert victim.LOG_LINES == [VALUE_VALIDATE__TRUE.log_last]
+
+
+def test__step_history():
+    victim = ResultCum("Hello")
+    assert victim.STEP_HISTORY == []
+
+    victim.result__apply_step(True)
+    assert victim.STEP_HISTORY == [(True, True)]
+
+    victim.result__apply_step(False)
+    assert victim.STEP_HISTORY == [(True, True), (False, True)]
+
+    victim.result__apply_step(None)
+    assert victim.STEP_HISTORY == [(True, True), (False, True), (None, True)]
+
+    victim.result__apply_step("Hello", False)
+    assert victim.STEP_HISTORY == [(True, True), (False, True), (None, True), ("Hello", False)]
+
+    victim.result__apply_step(VALUE_VALIDATE__TRUE)
+    assert victim.STEP_HISTORY == [(True, True), (False, True), (None, True), ("Hello", False), (VALUE_VALIDATE__TRUE, True)]
+
+    victim.clear()
+    assert victim.STEP_HISTORY == []
+
+
+def test__step_last():
+    victim = ResultCum()
+    try:
+        victim.step_last__get()
+    except:
+        pass
+    else:
+        assert False
+
+    victim.result__apply_step(None)
+    assert victim.step_last__get() is None
+
+    victim.result__apply_step(True)
+    assert victim.step_last__get() is True
+
+    victim.result__apply_step("True")
+    assert victim.step_last__get() == "True"
+
+    victim.result__apply_step(VALUE_VALIDATE__TRUE)
+    assert victim.step_last__get() == VALUE_VALIDATE__TRUE
+
+    victim.clear()
+    try:
+        victim.step_last__get()
+    except:
+        pass
+    else:
+        assert False
+
+
+def test__result():
+    victim = ResultCum()
+    assert victim.result is None
+    assert bool(victim) is False
+
+    victim.result__apply_step(True)
+    assert victim.result is True
+    assert bool(victim) is True
+
+    victim.result__apply_step(False, False)
+    assert victim.result is True
+    assert bool(victim) is True
+
+    victim.result__apply_step(False)
+    assert victim.result is False
+    assert bool(victim) is False
+
+    victim.result__apply_step(True)
+    assert victim.result is False
+    assert bool(victim) is False
+
+    # ----------------------
+    victim.clear()
+    assert victim.result is None
+    assert bool(victim) is False
+
+    victim.result__apply_step(None)
+    assert victim.result is False
+    assert bool(victim) is False
+
+    # ----------------------
+    victim.clear()
+    victim.result__apply_step(VALUE_VALIDATE__TRUE)
+    assert victim.result is True
+    assert bool(victim) is True
+
+
+# =====================================================================================================================

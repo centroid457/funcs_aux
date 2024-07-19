@@ -63,9 +63,9 @@ from .value_validate import (
     # TYPES
     # EXX
 )
-from .result_log import (
+from .result_cum import (
     # BASE
-    ResultLogSteps,
+    ResultCum,
     # AUX
     # TYPES
     # EXX

@@ -24,6 +24,7 @@ class PROJECT:
         "collections funcs",
         "strings funcs",
         "result object",
+        "result cumulation", "result log steps"
     ]
     CLASSIFIERS_TOPICS_ADD: list[str] = [
         # "Topic :: Communications",
@@ -46,6 +47,7 @@ Designed to collect useful funcs in one place!
             "RESULTS",
                 "ResultValue - resolved ambiguity with None-result for any method result!",
                 "ResultFunc",
+                "ResultCum",
          ],
         [
             "ITERABLES",
@@ -76,7 +78,7 @@ Designed to collect useful funcs in one place!
 
 
 
-        "[ResultLogSteps] create"
+        "[ResultCum] create"
     ]
 
     # FINALIZE -----------------------------------------------

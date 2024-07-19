@@ -4,7 +4,7 @@ from object_info import *
 
 
 # =====================================================================================================================
-class ResultLogSteps:
+class ResultCum:
     """
     GOAL
     ----
@@ -27,12 +27,12 @@ class ResultLogSteps:
     # COMMENT: str = ""
 
     result: bool | None = None
-    finished: bool | None = None
+    finished: bool | None = None    # as help to see if process is finished - maybe need deprecate!
 
     LOG_LINES: list[str]
     STEP_HISTORY: list[tuple[Any, bool]]     # as history!
 
-    def __init__(self, title: str = None):
+    def __init__(self, title: str = None, steps=None):
         if title:
             self.TITLE = title
 
@@ -62,11 +62,11 @@ class ResultLogSteps:
         if msg:
             self.log_lines__add(msg)
 
-        if cumulate:
+        if bool(cumulate):
             if self.result is None:
                 self.result = bool(step)
             else:
-                self.result += bool(step)
+                self.result &= bool(step)
 
         return self.result
 
@@ -79,8 +79,8 @@ class ResultLogSteps:
     def finish(self) -> None:
         self.finished = True
 
-    def __bool__(self) -> bool | None:
-        return self.result
+    def __bool__(self) -> bool:
+        return bool(self.result)
 
     def __str__(self):
         result = f"{self.__class__.__name__}(result={self.result},finished={self.finished},TITLE={self.TITLE},LOG_LINES={self.LOG_LINES})"
@@ -88,6 +88,9 @@ class ResultLogSteps:
 
     def __repr__(self):
         return str(self)
+
+    def step_last__get(self) -> Any | NoReturn:
+        return self.STEP_HISTORY[-1][0]
 
 
 # =====================================================================================================================

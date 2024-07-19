@@ -21,12 +21,6 @@ class ResultLogSteps:
 
     BEST USAGE
     ----------
-
-    WHY NOT: 1?
-    ----------
-
-    WHY NOT: 2?
-    ----------
     """
 
     TITLE: str = ""
@@ -42,10 +36,16 @@ class ResultLogSteps:
         if title:
             self.TITLE = title
 
+        self.clear()
+
+    def clear(self) -> None:
+        self.result = None
+        self.finished = None
+
         self.LOG_LINES = []
         self.STEP_HISTORY = []
 
-    def result__apply_step(self, step: Union[bool, Any, Self, list], cumulate: bool = True, msg: Optional[str, list[str]] = None) -> bool:
+    def result__apply_step(self, step: Union[bool, Any, Self, list], cumulate: bool = True, msg: Union[None, str, list[str]] = None) -> bool:
         if isinstance(step, list):
             # LIST ------------------------------------------
             for step_i in step:
@@ -80,8 +80,7 @@ class ResultLogSteps:
         self.finished = True
 
     def __bool__(self) -> bool | None:
-        if self.finished:
-            return self.result
+        return self.result
 
     def __str__(self):
         result = f"{self.__class__.__name__}(result={self.result},finished={self.finished},TITLE={self.TITLE},LOG_LINES={self.LOG_LINES})"

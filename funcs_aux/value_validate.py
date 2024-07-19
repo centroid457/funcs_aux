@@ -58,6 +58,7 @@ class ValueValidate:
             comment: Optional[str] = None,
     ):
         self.VALUE_LINK = value_link
+
         if validate_link:
             self.VALIDATE_LINK = validate_link
         if log_pattern:

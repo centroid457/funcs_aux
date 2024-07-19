@@ -12,7 +12,7 @@ class ValueValidate:
     GOAL
     ----
     1. get value from somewhere and clearly validate it.
-    2. ability to log result in appropriate way
+    2. ability to log result in appropriate way by using template-pattern for msg log
 
     SAME AS: seems same as ResultExpect but maybe we need to use this instead of Expected (cause of too sophisticated!)
     DIFFERENCE: more clear understanding

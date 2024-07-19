@@ -68,6 +68,8 @@ from .result_cum import (
     ResultCum,
     # AUX
     # TYPES
+    TYPE__RESULT_CUM_STEP,
+    TYPE__RESULT_CUM_STEPS,
     # EXX
 )
 # ---------------------------------------------------------------------------------------------------------------------

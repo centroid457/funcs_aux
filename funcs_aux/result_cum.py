@@ -4,6 +4,11 @@ from object_info import *
 
 
 # =====================================================================================================================
+TYPE__RESULT_CUM_STEP = Union[bool, Any, 'ResultCum']
+TYPE__RESULT_CUM_STEPS = Union[TYPE__RESULT_CUM_STEP, list[TYPE__RESULT_CUM_STEP]]
+
+
+# =====================================================================================================================
 class ResultCum:
     """
     GOAL
@@ -30,9 +35,9 @@ class ResultCum:
     finished: bool | None = None    # as help to see if process is finished - maybe need deprecate!
 
     LOG_LINES: list[str]
-    STEP_HISTORY: list[tuple[Any, bool]]     # as history!
+    STEP_HISTORY: list[tuple[TYPE__RESULT_CUM_STEP, bool]]     # as history!
 
-    def __init__(self, title: str = None, steps=None):
+    def __init__(self, title: str = None):        #, steps=None):  #dont use steps here
         if title:
             self.TITLE = title
 
@@ -45,11 +50,11 @@ class ResultCum:
         self.LOG_LINES = []
         self.STEP_HISTORY = []
 
-    def result__apply_step(self, step: Union[bool, Any, Self, list], cumulate: bool = True, msg: Union[None, str, list[str]] = None) -> bool:
+    def result__apply_step(self, step: TYPE__RESULT_CUM_STEPS, cumulate: bool | Any = True, msg: Union[None, str, list[str]] = None) -> bool:
         if isinstance(step, list):
             # LIST ------------------------------------------
             for step_i in step:
-                if not self.result__apply_step(step_i, cumulate) and cumulate:
+                if not self.result__apply_step(step_i, cumulate):
                     break
         else:
             # SINGLE ------------------------------------------
@@ -91,6 +96,12 @@ class ResultCum:
 
     def step_last__get(self) -> Any | NoReturn:
         return self.STEP_HISTORY[-1][0]
+
+    def log_last__get(self) -> str | None:
+        try:
+            return self.LOG_LINES[-1]
+        except:
+            pass
 
 
 # =====================================================================================================================

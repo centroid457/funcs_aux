@@ -73,7 +73,10 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[ValueValidate] add new",
+
+
+
+        "[ResultLogSteps] create"
     ]
 
     # FINALIZE -----------------------------------------------

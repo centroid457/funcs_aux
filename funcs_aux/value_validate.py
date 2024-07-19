@@ -46,6 +46,8 @@ class ValueValidate:
     validate_last_bool: bool = False
     log_last: str = ""
 
+    finished: bool | None = None
+
     def __init__(
             self,
             value_link: Any | Callable[[], Any],
@@ -66,6 +68,7 @@ class ValueValidate:
             self.COMMENT = comment
 
     def run(self) -> bool:
+        self.finished = False
         # VALUE ---------------------
         if TypeChecker.check__func_or_meth(self.VALUE_LINK):
             try:
@@ -83,8 +86,9 @@ class ValueValidate:
 
         self.validate_last_bool = bool(self)
 
-        # FINAL ---------------------
+        # FINISH ---------------------
         self.log_last = self.LOG_PATTERN.format(self)
+        self.finished = True
         return self.validate_last_bool
 
     def __bool__(self) -> bool:

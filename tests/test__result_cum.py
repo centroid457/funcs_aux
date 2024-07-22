@@ -3,6 +3,7 @@ import pytest
 from pytest import mark
 from pytest_aux import *
 from funcs_aux import *
+from object_info import *
 
 
 # =====================================================================================================================
@@ -47,16 +48,16 @@ def test__step_history():
     assert victim.STEP_HISTORY == [(True, True)]
 
     victim.result__apply_step(False)
-    assert victim.STEP_HISTORY == [(True, True), (False, True)]
+    assert victim.STEP_HISTORY == [(True, True), (False, False)]
 
     victim.result__apply_step(None)
-    assert victim.STEP_HISTORY == [(True, True), (False, True), (None, True)]
+    assert victim.STEP_HISTORY == [(True, True), (False, False), (False, None)]
 
     victim.result__apply_step("Hello", False)
-    assert victim.STEP_HISTORY == [(True, True), (False, True), (None, True), ("Hello", False)]
+    assert victim.STEP_HISTORY == [(True, True), (False, False), (False, None), (True, "Hello")]
 
     victim.result__apply_step(VALUE_VALIDATE__TRUE)
-    assert victim.STEP_HISTORY == [(True, True), (False, True), (None, True), ("Hello", False), (VALUE_VALIDATE__TRUE, True)]
+    assert victim.STEP_HISTORY == [(True, True), (False, False), (False, None), (True, "Hello"), (True, VALUE_VALIDATE__TRUE)]
 
     victim.clear()
     assert victim.STEP_HISTORY == []

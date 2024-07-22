@@ -4,7 +4,7 @@ from object_info import *
 
 
 # =====================================================================================================================
-TYPE__RESULT_CUM_STEP = Union[bool, Any, ValueValidate]
+TYPE__RESULT_CUM_STEP = Union[bool, Any, ValueValidate]     # DONT USE CALLABLES!!! ValueValidate is most PREFIRED! specially in case of EXX!!
 TYPE__RESULT_CUM_STEPS = Union[TYPE__RESULT_CUM_STEP, list[TYPE__RESULT_CUM_STEP]]
 
 
@@ -50,7 +50,7 @@ class ResultCum:
     finished: bool | None = None    # as help to see if process is finished - maybe need deprecate!
 
     LOG_LINES: list[str]
-    STEP_HISTORY: list[tuple[TYPE__RESULT_CUM_STEP, bool]]     # as history! step+cumSettings
+    STEP_HISTORY: list[tuple[TYPE__RESULT_CUM_STEP, bool]]     # as history! result+step
 
     def __init__(self, title: str = None):        #, steps=None):  #dont use steps here
         if title:
@@ -66,6 +66,13 @@ class ResultCum:
         self.STEP_HISTORY = []
 
     def result__apply_step(self, step: TYPE__RESULT_CUM_STEPS, cumulate: bool | Any = True, msg: Union[None, str, list[str]] = None) -> bool:
+        """
+
+        :param step:
+        :param cumulate: False - if you dont mind step result! but want to keep it in log
+        :param msg:
+        :return:
+        """
         if isinstance(step, list):
             # LIST ------------------------------------------
             for step_i in step:
@@ -73,7 +80,6 @@ class ResultCum:
                     break
         else:
             # SINGLE ------------------------------------------
-            self.STEP_HISTORY.append((step, cumulate))
             # TODO: if isinstance(step, ResultCum):   - what do i need to do here?? decide!
             if isinstance(step, ValueValidate):
                 if not step.finished:
@@ -83,11 +89,14 @@ class ResultCum:
         if msg:
             self.log_lines__add(msg)
 
+        step_result = bool(step)
+        self.STEP_HISTORY.append((step_result, step))
+
         if bool(cumulate):
             if self.result is None:
-                self.result = bool(step)
+                self.result = step_result
             else:
-                self.result &= bool(step)
+                self.result &= step_result
 
         return self.result
 
@@ -111,7 +120,7 @@ class ResultCum:
         return str(self)
 
     def step_last__get(self) -> Any | NoReturn:
-        return self.STEP_HISTORY[-1][0]
+        return self.STEP_HISTORY[-1][1]
 
     def log_last__get(self) -> str | None:
         try:

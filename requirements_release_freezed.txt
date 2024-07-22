@@ -17,7 +17,7 @@ bus_user==0.4.1
 certifi==2024.2.2
 cffi==1.15.1
 charset-normalizer==2.1.0
-classes_aux==0.1.4
+classes_aux==0.1.5
 cli_user==0.1.3
 click==8.1.7
 colorama==0.4.6

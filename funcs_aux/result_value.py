@@ -124,6 +124,10 @@ class ResultFunc:
         else - return source.
 
         attempt to simplify result by not using try-sentence.
+
+        USEFUL IDEA
+        -----------
+        1. in gui when its enough to get str() on result and see the result
         """
         if TypeChecker.check__func_or_meth(source):
             try:

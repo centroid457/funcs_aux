@@ -58,7 +58,7 @@ class Iterables:
         """
         NOTES:
         1. path used as address KEY for dicts and as INDEX for other listed data
-        2. SEP_OUT is only simple SLASH '/'!
+        2. separator is only simple SLASH '/'!
 
         :param data:
         :param path_expected:

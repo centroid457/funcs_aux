@@ -87,7 +87,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 3, 12)
+    VERSION: tuple[int, int, int] = (0, 3, 13)
     TODO: list[str] = [
         "..."
     ]
@@ -95,7 +95,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[ValueValidate_Cum] some fix",
+        "[ResultFunc] add get_result_or_exx as cls meth universal",
     ]
 
 

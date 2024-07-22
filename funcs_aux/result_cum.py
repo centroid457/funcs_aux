@@ -23,6 +23,7 @@ class ResultCum:
 
     CONSTRAINTS
     -----------
+    dont use callables in steps! only final result (as expression) or ValueValidate as most preferred
 
     BEST USAGE
     ----------

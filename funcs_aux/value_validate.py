@@ -38,7 +38,7 @@ class ValueValidate:
     COMMENT: str = ""
 
     VALUE_LINK: Any | Callable[[], Any]
-    VALIDATE_LINK: Callable[[Any], bool | Exception] = lambda self, val: val is True
+    VALIDATE_LINK: Callable[[Any], bool | Exception] = lambda self, val: bool(val) is True
     LOG_PATTERN: str = "ValueValidate(validate_last={0.validate_last},value_last={0.value_last},title=[{0.TITLE}])"
 
     value_last: Any | Exception = None
@@ -93,7 +93,7 @@ class ValueValidate:
         return self.validate_last_bool
 
     def __bool__(self) -> bool:
-        return self.validate_last is True
+        return self.validate_last is True   # dont use validate_last_bool!
 
     def __str__(self) -> str:
         return self.log_last

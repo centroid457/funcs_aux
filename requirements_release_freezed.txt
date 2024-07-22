@@ -28,7 +28,7 @@ dummy_module==0.0.2
 fastapi==0.110.0
 freezegun==1.2.2
 frozenlist==1.4.1
-funcs_aux==0.3.9
+funcs_aux==0.3.11
 greenlet==3.0.3
 h11==0.14.0
 httptools==0.6.1

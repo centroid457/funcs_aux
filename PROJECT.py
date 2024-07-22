@@ -87,7 +87,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 3, 11)
+    VERSION: tuple[int, int, int] = (0, 3, 12)
     TODO: list[str] = [
         "..."
     ]
@@ -95,7 +95,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Value_WithUnit] some fix",
+        "[ValueValidate_Cum] some fix",
     ]
 
 

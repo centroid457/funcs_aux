@@ -1,7 +1,6 @@
 from typing import *
-from typing import Callable, Any, Tuple, Dict
-
 from funcs_aux import *
+from object_info import *
 
 
 # =====================================================================================================================
@@ -115,6 +114,25 @@ class ResultFunc:
     @property
     def RESULT__IS_CORRECT(self) -> bool:
         return self.RESULT__EXX is None
+
+    @classmethod
+    def get_result_or_exx(cls, source: Any | Callable) -> Any | Exception:
+        """
+        GOAL
+        ----
+        if callable meth/func - call and return result or Exx.
+        else - return source.
+
+        attempt to simplify result by not using try-sentence.
+        """
+        if TypeChecker.check__func_or_meth(source):
+            try:
+                result = source()
+            except Exception as exx:
+                result = exx
+        else:
+            result = source
+        return result
 
 
 # =====================================================================================================================

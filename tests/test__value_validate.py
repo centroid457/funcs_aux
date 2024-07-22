@@ -34,7 +34,10 @@ class Test__WithUnit:
             ((lambda: 1, lambda val: 0 < val < 2), True),
             ((lambda: 1, lambda val: 0 < val < 1), False),
 
-            ((lambda: "1", lambda val: 0 < val < 1), False),
+            ((lambda: "1", lambda val: 0 < val < 2), False),
+            ((lambda: "1", lambda val: 0 < int(val) < 2), True),
+            ((lambda: "1.0", lambda val: 0 < int(val) < 2), False),
+            ((lambda: "1.0", lambda val: 0 < float(val) < 2), True),
         ]
     )
     def test__validate(self, args, _EXPECTED):

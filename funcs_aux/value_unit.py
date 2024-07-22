@@ -57,24 +57,11 @@ UNIT_MULT__VARIANTS: dict[str, float | int] = {
 
 
 # =====================================================================================================================
-class __Value_WithUnit_Static:
-    """
-    this is just as parser! when you need only get number near the unit without object arithmetic acceptable.
-    but with comparing methods.
-
-    NOTE
-    ----
-    maybe it is cant be used
-    """
-    pass
-
-
-# =====================================================================================================================
 pass
 
 
 # TODO: rename to Value_WithUnit_Arithm
-class Value_WithUnit(__Value_WithUnit_Static, NumberArithmTranslateToAttr):
+class Value_WithUnit(NumberArithmTranslateToAttr):
     """
     GOAL
     ----
@@ -128,7 +115,7 @@ class Value_WithUnit(__Value_WithUnit_Static, NumberArithmTranslateToAttr):
     MULT: int = 1
 
     SOURCE: Any = None
-    VALUE: Union[int, float] = 0    # DONT MESS VALUE&VALUE_PURE!!! see NOTES!
+    VALUE: Union[int, float] = 0    # DONT MESS VALUE/VALUE_PURE!!! see NOTES! if UNIT_MULT__DISABLE all are the same!!!
 
     @property
     def VALUE_PURE(self) -> Union[int, float]:
@@ -212,12 +199,13 @@ class Value_WithUnit(__Value_WithUnit_Static, NumberArithmTranslateToAttr):
                 raise Exx__ValueNotParsed()
 
             # UNIT_MULT ------------------
-            for unit_mult, multiplier in self.UNIT_MULT__VARIANTS.items():
-                if self.UNIT.startswith(unit_mult):
-                    self.UNIT_MULT = unit_mult
-                    self.UNIT_BASE = self.UNIT.removeprefix(unit_mult)
-                    self.MULT = multiplier
-                    break
+            if not self.UNIT_MULT__DISABLE:
+                for unit_mult, multiplier in self.UNIT_MULT__VARIANTS.items():
+                    if self.UNIT.startswith(unit_mult):
+                        self.UNIT_MULT = unit_mult
+                        self.UNIT_BASE = self.UNIT.removeprefix(unit_mult)
+                        self.MULT = multiplier
+                        break
 
         # PRECISION -----------------------
         self.VALUE = self.number__fix_precision(self.VALUE)
@@ -268,6 +256,19 @@ class Value_WithUnit(__Value_WithUnit_Static, NumberArithmTranslateToAttr):
             return 1
         elif self.VALUE_PURE < other.VALUE_PURE:
             return -1
+
+
+# =====================================================================================================================
+class Value_WithUnit_NoMulty(Value_WithUnit):
+    """
+    this is just as parser! when you need only get number near the unit without object arithmetic acceptable.
+    but with comparing methods.
+
+    NOTE
+    ----
+    maybe it is cant be used
+    """
+    UNIT_MULT__DISABLE = True
 
 
 # =====================================================================================================================

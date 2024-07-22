@@ -57,7 +57,24 @@ UNIT_MULT__VARIANTS: dict[str, float | int] = {
 
 
 # =====================================================================================================================
-class Value_WithUnit(NumberArithmTranslateToAttr):
+class __Value_WithUnit_Static:
+    """
+    this is just as parser! when you need only get number near the unit without object arithmetic acceptable.
+    but with comparing methods.
+
+    NOTE
+    ----
+    maybe it is cant be used
+    """
+    pass
+
+
+# =====================================================================================================================
+pass
+
+
+# TODO: rename to Value_WithUnit_Arithm
+class Value_WithUnit(__Value_WithUnit_Static, NumberArithmTranslateToAttr):
     """
     GOAL
     ----
@@ -99,7 +116,7 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
     NUMBER_ARITHM__GETATTR_NAME = "VALUE_PURE"
 
     # SETTINGS -------------------------
-    SEP_OUT: str = ""
+    SEPARATOR: str = ""     # when parsed - used parced separator, when
 
     UNIT_MULT__DISABLE: bool | None = None
     UNIT_MULT__VARIANTS: dict[str, float | int] = UNIT_MULT__VARIANTS
@@ -121,31 +138,34 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
     def VALUE_PURE(self, value_pure: Any) -> None:
         value_pure = self._other__get_float(value_pure)
         if int(value_pure) == float(value_pure):
-            value = int(value_pure)
+            value_pure = int(value_pure)
 
         value = value_pure / self.MULT
         value = self.number__fix_precision(value)
         self.VALUE = value
 
     # -----------------------------------------------------------------------------------------------------------------
-    def __init__(self, source: Union[int, float, str, Any] = None, unit: str = None, separator_output: str = None):
+    def __init__(self, source: Union[int, float, str, Any] = None, unit: str = None, separator: str = None):
         """
         :param source:
         :param unit: use it only if not exists in source!
-        :param separator_output:
+        :param separator: if set - would overwrite parsed!
         """
         if self.UNIT_MULT__DISABLE:
             self.UNIT_MULT__VARIANTS = {}
 
+        # first parse -----------------
         if source is not None:
             self.parse(source)
+
+        # second OVERWRITE  -----------------
         if unit is not None:
-            if self.UNIT and unit != self.UNIT:
-                msg = f"old[{self.UNIT=}] new[{unit=}]"
-                raise Exx__ValueUnitsIncompatible(msg)
             self.UNIT = unit
-        if separator_output is not None:
-            self.SEP_OUT = separator_output
+            self.UNIT_BASE = unit
+            self.UNIT_MULT = ""
+            self.MULT = 1
+        if separator is not None:
+            self.SEPARATOR = separator
 
     @classmethod
     def validate(cls, source: Any) -> bool:
@@ -171,32 +191,43 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
 
     def parse(self, source: Any) -> Self | NoReturn:
         self.clear()
-
         self.SOURCE = source
-        source = str(source)
-        source = source.strip()
-        source = source.replace(',', ".")
-        source = re.sub(r'-\s*', '-', source)
-        source = re.sub(r'\+\s*', '', source)
 
-        # WORK ---------------------------
-        match = re.fullmatch(r'(-?[0-9.]+)\s*([a-zA-Zа-яА-Я]*)', source)
-        if match:
-            self.VALUE = float(match[1])
-            self.UNIT = match[2] or ""
+        if isinstance(source, (int, float)):
+            self.VALUE = source
         else:
-            raise Exx__ValueNotParsed()
+            source = str(source)
+            source = source.strip()
+            source = source.replace(',', ".")
+            source = re.sub(r'-\s*', '-', source)
+            source = re.sub(r'\+\s*', '', source)
 
+            # WORK ---------------------------
+            match = re.fullmatch(r'(-?[0-9.]+)(\s*)([a-zA-Zа-яА-Я]*)', source)
+            if match:
+                self.VALUE = float(match[1])
+                self.SEPARATOR = match[2] or ""
+                self.UNIT = match[3] or ""
+            else:
+                raise Exx__ValueNotParsed()
+
+            # UNIT_MULT ------------------
+            for unit_mult, multiplier in self.UNIT_MULT__VARIANTS.items():
+                if self.UNIT.startswith(unit_mult):
+                    self.UNIT_MULT = unit_mult
+                    self.UNIT_BASE = self.UNIT.removeprefix(unit_mult)
+                    self.MULT = multiplier
+                    break
+
+        # PRECISION -----------------------
         self.VALUE = self.number__fix_precision(self.VALUE)
 
-        # UNIT_MULT ------------------
-        for unit_mult, multiplier in self.UNIT_MULT__VARIANTS.items():
-            if self.UNIT.startswith(unit_mult):
-                self.UNIT_MULT = unit_mult
-                self.UNIT_BASE = self.UNIT.removeprefix(unit_mult)
-                self.MULT = multiplier
-                break
-        #
+        # INT -----------------------------
+        if int(self.VALUE) == self.VALUE:
+            self.VALUE = int(self.VALUE)
+        else:
+            self.VALUE = self.VALUE
+
         # if not self.UNIT_BASE and self.UNIT:
         #     self.UNIT_BASE = self.UNIT
 
@@ -204,7 +235,7 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
         return self
 
     def __str__(self) -> str:
-        return f"{self.VALUE}{self.SEP_OUT}{self.UNIT}"
+        return f"{self.VALUE}{self.SEPARATOR}{self.UNIT}"
 
     def __repr__(self) -> str:
         """

@@ -23,7 +23,8 @@ class ResultCum:
 
     CONSTRAINTS
     -----------
-    dont use callables in steps! only final result (as expression) or ValueValidate as most preferred
+    1. dont use callables in steps! only final result (as expression) or ValueValidate as most preferred
+    2. if no steps - return True!
 
     BEST USAGE
     ----------
@@ -47,7 +48,7 @@ class ResultCum:
     TITLE: str = ""
     # COMMENT: str = ""
 
-    result: bool | None = None
+    result: bool = True
     finished: bool | None = None    # as help to see if process is finished - maybe need deprecate!
 
     LOG_LINES: list[str]
@@ -60,7 +61,7 @@ class ResultCum:
         self.clear()
 
     def clear(self) -> None:
-        self.result = None
+        self.result = True
         self.finished = None
 
         self.LOG_LINES = []

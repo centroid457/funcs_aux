@@ -93,15 +93,32 @@ def test__step_last():
         assert False
 
 
-def test__result():
+def test__clear():
     victim = ResultCum()
-    assert victim.result is None
-    assert bool(victim) is False
-
-    victim.result__apply_step(True)
     assert victim.result is True
     assert bool(victim) is True
 
+    victim.result__apply_step(False, False)
+    assert victim.result is True
+    assert bool(victim) is True
+
+    victim.result__apply_step(False)
+    assert victim.result is False
+    assert bool(victim) is False
+
+    victim.clear()
+    assert victim.result is True
+    assert bool(victim) is True
+
+
+def test__result_blank():
+    victim = ResultCum()
+    assert victim.result is True
+    assert bool(victim) is True
+
+
+def test__result():
+    victim = ResultCum()
     victim.result__apply_step(False, False)
     assert victim.result is True
     assert bool(victim) is True
@@ -116,9 +133,6 @@ def test__result():
 
     # ----------------------
     victim.clear()
-    assert victim.result is None
-    assert bool(victim) is False
-
     victim.result__apply_step(None)
     assert victim.result is False
     assert bool(victim) is False

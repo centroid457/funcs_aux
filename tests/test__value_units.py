@@ -227,6 +227,7 @@ def test__arithm_x3():
     assert value == 1001
     assert int(victim) == 1001        # int(1.999) == 1!!!!
 
+
 def test__arithm_x3_EXPLORE():
     victim = Value_WithUnit("1k") + 1
     assert victim == 1001

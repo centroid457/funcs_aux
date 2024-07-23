@@ -115,7 +115,9 @@ class ResultCum:
         return bool(self.result)
 
     def __str__(self):
-        result = f"{self.__class__.__name__}(result={self.result},finished={self.finished},TITLE={self.TITLE},LOG_LINES={self.LOG_LINES})"
+        result = f"{self.__class__.__name__}(result={self.result},finished={self.finished},TITLE={self.TITLE},LOG_LINES:"
+        for i, line in enumerate(self.LOG_LINES):
+            result += f"\n{i:->5d}:{line}"
         return result
 
     def __repr__(self):

@@ -39,7 +39,7 @@ class ValueValidate:
 
     VALUE_LINK: Any | Callable[[], Any]
     VALIDATE_LINK: Callable[[Any], bool | Exception] = lambda self, val: bool(val) is True
-    LOG_PATTERN: str = "ValueValidate(validate_last={0.validate_last},value_last={0.value_last},title=[{0.TITLE}])"
+    LOG_PATTERN: str = "ValueValidate(validate_last={0.validate_last},value_last={0.value_last},title={0.TITLE})"
 
     value_last: Any | Exception = None
     validate_last: None | bool | Exception = None

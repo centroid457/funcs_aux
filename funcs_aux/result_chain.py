@@ -14,42 +14,7 @@ TYPE__CHAINS = Iterable[
         Callable[[], Any],
         Any,
     ]]  # dont use MAP/GEN but only Iters!!!
-
-
-# =====================================================================================================================
-def _explore_and_why_it_need():
-    class Cls:
-        pass
-
-    # THIS IS OK!!!!!=======
-    if False:
-        result = Cls.hello
-
-    # IT DEPANDS!!!!!=======
-    print(
-        all([
-            False,
-            False and Cls.hello1,  # this is OK!!!!
-            # True and Cls.hello2,  #this is EXX!!!! AttributeError: type object 'Cls' has no attribute 'hello2'
-        ])
-    )
-
-    # THIS IS EXX!!!!!=======
-    result = False
-    # result &= Cls.hello3,  #this is EXX!!!! AttributeError: type object 'Cls' has no attribute 'hello3'
-
-    print(
-        all([
-            False,
-            Cls,
-            # Cls.hello4, #this is EXX!!!! AttributeError: type object 'Cls' has no attribute 'hello4'
-        ])
-    )
-
-    def func():
-        return Cls.hello5  # this is OK!!!!
-
-    # func()      # AttributeError: type object 'Cls' has no attribute 'hello5'
+TYPE__VALUE_LINK = Union[Any, Callable[[], Any]]
 
 
 # =====================================================================================================================
@@ -63,6 +28,7 @@ class ResultExpect_Base:  # dont hide it cause of need ability to detect both of
     if skip - return True!!!???
     """
     TITLE: Optional[str] = None
+    # COMMENT: str = ""
 
     ARGS: TYPE__ARGS = None
     KWARGS: TYPE__KWARGS = None
@@ -172,41 +138,31 @@ class ResultExpect_Base:  # dont hide it cause of need ability to detect both of
 # =====================================================================================================================
 class ResultExpect_Step(ResultExpect_Base):
     # SETTINGS --------------------------------
-    VALUE: Union[Any, Callable]
-    VALUE_UNDER_FUNC: TYPE__FUNC_UNDER_VALUE = None
-    VALUE_EXPECTED: Union[bool, str, Any] = True
-    VALUE_ACTUAL: Any = None
+    VALUE_LINK: TYPE__VALUE_LINK
+    VALIDATE_LINK: TYPE__FUNC_UNDER_VALUE = None
 
     def __init__(
             self,
             value: Union[Any, Callable],
-            value_under_func: TYPE__FUNC_UNDER_VALUE = None,
-            value_expected: Any = True,
+            validate_link: TYPE__FUNC_UNDER_VALUE = None,
 
             **kwargs
     ):
         super().__init__(**kwargs)
 
-        self.VALUE = value
-        self.VALUE_UNDER_FUNC = value_under_func
-        self.VALUE_EXPECTED = value_expected
+        self.VALUE_LINK = value
+        self.VALIDATE_LINK = validate_link
 
     def _run__wrapped(self) -> Union[bool, NoReturn]:
         # CALLS ----------------------------------
-        if TypeChecker.check__func_or_meth(self.VALUE):
-            self.VALUE_ACTUAL = self.VALUE(*self.ARGS, **self.KWARGS)
+        if TypeChecker.check__func_or_meth(self.VALUE_LINK):
+            self.VALUE_ACTUAL = self.VALUE_LINK(*self.ARGS, **self.KWARGS)
         else:
-            self.VALUE_ACTUAL = self.VALUE
+            self.VALUE_ACTUAL = self.VALUE_LINK
 
-        # VALUE_UNDER_FUNC -----------------------
-        if self.VALUE_UNDER_FUNC:
-            self.VALUE_ACTUAL = self.VALUE_UNDER_FUNC(self.VALUE_ACTUAL)
-
-        # match = re.fullmatch(r'eval\((.*)\)', str(self.VALUE_EXPECTED))
-        # if match:
-        #     cmd = match[1]
-        #     cmd = re.sub(r"source", self.VALUE_ACTUAL, cmd)
-        #     self.VALUE_EXPECTED = eval(cmd)
+        # VALIDATE_LINK -----------------------
+        if self.VALIDATE_LINK:
+            self.VALUE_ACTUAL = self.VALIDATE_LINK(self.VALUE_ACTUAL)
 
         result = self.VALUE_ACTUAL == self.VALUE_EXPECTED or self.VALUE_EXPECTED == self.VALUE_ACTUAL   # this is used for CMP objects
 

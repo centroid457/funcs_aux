@@ -9,6 +9,27 @@ TYPE__RESULT_CUM_STEPS = Union[TYPE__RESULT_CUM_STEP, list[TYPE__RESULT_CUM_STEP
 
 
 # =====================================================================================================================
+class ResultStep:
+    """
+    # TODO: this is just as idea! but just create clear correct log msgs and this is will be enough!
+    GOAL
+    ----
+    item for steps in sequence
+
+    CREATED SPECIALLY FOR
+    ---------------------
+    for ResultCum as internal aux
+
+    CONSTRAINTS
+    -----------
+
+    BEST USAGE
+    ----------
+    """
+    pass
+
+
+# =====================================================================================================================
 class ResultCum:
     """
     GOAL

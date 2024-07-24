@@ -46,7 +46,7 @@ class ValueValidate:
     COMMENT: str = ""
 
     VALUE_LINK: TYPE__VALUE_LINK
-    VALIDATE_LINK: TYPE__VALIDATE_LINK = lambda self, val: val is True    # dont use bool(val)!!!
+    VALIDATE_LINK: TYPE__VALIDATE_LINK = lambda self, val: val is True      # dont use bool(val)!!!
     STR_PATTERN: str = "ValueValidate(validate_last={0.validate_last},value_last={0.value_last},title={0.TITLE})"
 
     value_last: Any | Exception = None

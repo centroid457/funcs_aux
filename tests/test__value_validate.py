@@ -6,23 +6,6 @@ from funcs_aux import *
 
 
 # =====================================================================================================================
-class Exx__Cmp(Exception):
-    pass
-
-
-class ClsEq:
-    def __init__(self, val):
-        self.VAL = val
-
-    def __eq__(self, other):
-        return other == self.VAL
-
-
-class ClsEqExx:
-    def __eq__(self, other):
-        raise Exx__Cmp()
-
-
 def test__1():
     assert ClsEq(1) == 1
     assert ClsEq(1) != 2
@@ -115,8 +98,8 @@ class Test__Validate:
             ((1, ClsEq(1)), True),
             ((2, ClsEq(1)), False),
 
-            ((ClsEqExx(), 1), Exx__Cmp),
-            ((1, ClsEqExx()), Exx__Cmp),
+            ((ClsEqExx(), 1), Exception),
+            ((1, ClsEqExx()), Exception),
         ]
     )
     def test__compare_doublesided(self, args, _EXPECTED):

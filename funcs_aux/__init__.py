@@ -37,7 +37,6 @@ from .value_variants import (
 from .result_value import (
     # BASE
     ResultValue,
-    ResultFunc,
     # AUX
     # TYPES
     TYPE__FUNC,

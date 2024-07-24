@@ -25,11 +25,16 @@ class Test__WithUnit:
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[
+            ((LAMBDA_TRUE,), True),
+            ((LAMBDA_FALSE,), False),
+            ((LAMBDA_EXX,), False),
+            ((LAMBDA_EXX, Exception), True),
+
             ((True, None), True),
             ((lambda: True, None), True),
 
             ((True, lambda val: val is True), True),
-            ((lambda: True, lambda val: val is True), True),
+            ((LAMBDA_TRUE, lambda val: val is True), True),
 
             ((lambda: 1, lambda val: 0 < val < 2), True),
             ((lambda: 1, lambda val: 0 < val < 1), False),
@@ -43,6 +48,21 @@ class Test__WithUnit:
     def test__validate(self, args, _EXPECTED):
         func_link = ValueValidate(*args).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (1, 1),
+            (1+1, 2),
+            (LAMBDA_TRUE, True),
+            (LAMBDA_NONE, None),
+            (LAMBDA_EXX, Exception),
+        ]
+    )
+    def test__get_result_or_exx(self, args, _EXPECTED):
+        func_link = ValueValidate.get_result_or_exx
+        pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
 
 
 # =====================================================================================================================

@@ -5,6 +5,11 @@ from funcs_aux import *
 
 
 # =====================================================================================================================
+TYPE__CALLABLE_NO_PARAMS = Callable[[], Any]
+TYPE__CALLABLE_ANY_PARAMS = Callable[..., Any]
+TYPE__VALUE_LINK = Union[Any, TYPE__CALLABLE_NO_PARAMS, TYPE__CALLABLE_ANY_PARAMS]
+TYPE__VALIDATE_LINK = Union[Any, TYPE__CALLABLE_NO_PARAMS, TYPE__CALLABLE_ANY_PARAMS]
+
 TYPE__SKIP_IF = Union[None, bool, Any, Callable[[], Union[bool, None, NoReturn, Any]]]
 TYPE__CHAINS = Iterable[
     Union[
@@ -14,7 +19,6 @@ TYPE__CHAINS = Iterable[
         Callable[[], Any],
         Any,
     ]]  # dont use MAP/GEN but only Iters!!!
-TYPE__VALUE_LINK = Union[Any, Callable[[], Any]]
 
 
 # =====================================================================================================================
@@ -42,9 +46,6 @@ class ResultExpect_Base:  # dont hide it cause of need ability to detect both of
     STEP__SKIPPED: Optional[bool] = None
     STEP__FINISHED: Optional[bool] = None
     STEP__RESULT: Optional[bool] = None
-    STEP__EXX: Optional[bool] = None
-
-    STEP__INDEX: int = None
 
     def __init__(
             self,
@@ -81,14 +82,13 @@ class ResultExpect_Base:  # dont hide it cause of need ability to detect both of
 
     @property
     def MSG(self) -> str:
-        result = f"{self.__class__.__name__}[index={self.STEP__INDEX}/result={self.STEP__RESULT}/exx={self.STEP__EXX}/skipped={self.STEP__SKIPPED}//title={self.TITLE}]"
+        result = f"{self.__class__.__name__}[result={self.STEP__RESULT}/skipped={self.STEP__SKIPPED}//title={self.TITLE}]"
         return result
 
     def _clear(self) -> None:
         self.STEP__SKIPPED = None
         self.STEP__FINISHED = None
         self.STEP__RESULT = None
-        self.STEP__EXX = None
 
     def run(self, *args, **kwargs) -> bool:
         self._clear()
@@ -107,7 +107,6 @@ class ResultExpect_Base:  # dont hide it cause of need ability to detect both of
             self.STEP__SKIPPED = bool(self.STEP__SKIPPED)
 
         except Exception as exx:
-            self.STEP__EXX = exx
             self.STEP__SKIPPED = True
 
             # WORK -----------------------
@@ -115,7 +114,6 @@ class ResultExpect_Base:  # dont hide it cause of need ability to detect both of
             try:
                 self.STEP__RESULT = self._run__wrapped()
             except Exception as exx:
-                self.STEP__EXX = exx
                 self.STEP__RESULT = None
         else:
             self.STEP__RESULT = True
@@ -130,9 +128,6 @@ class ResultExpect_Base:  # dont hide it cause of need ability to detect both of
             return self.STEP__RESULT
         else:
             return self.run()
-
-    def _run__wrapped(self) -> Union[bool, NoReturn]:
-        pass
 
 
 # =====================================================================================================================
@@ -187,8 +182,6 @@ class ResultExpect_Chain(ResultExpect_Base):
     CHAINS: TYPE__CHAINS = None
 
     # AUX --------------------------------
-    STEP__INDEX: int = -1  # [0] - is the first index! [-1] - is the no one steps started!!!
-
     def __init__(
             self,
             chains: TYPE__CHAINS,
@@ -198,13 +191,9 @@ class ResultExpect_Chain(ResultExpect_Base):
         self.CHAINS = chains or []
 
     def _run__wrapped(self) -> bool:
-        self.STEP__INDEX = -1
-
         result = True
         for step in self.CHAINS:
-            self.STEP__INDEX += 1
             if isinstance(step, ResultExpect_Base):
-                step.STEP__INDEX = self.STEP__INDEX
                 step.run(*self.ARGS, **self.KWARGS)
 
                 if step.USE_RESULT:
@@ -231,7 +220,7 @@ class ResultExpect_Chain(ResultExpect_Base):
 
     @property
     def MSG(self) -> str:
-        # result = f"ResultExpectChain[index={self.STEP__INDEX}/result={self.STEP__RESULT}/exx={self.STEP__EXX}/skipped={self.STEP__SKIPPED}//title={self.TITLE}]"
+        # result = f"ResultExpectChain[/result={self.STEP__RESULT}/skipped={self.STEP__SKIPPED}//title={self.TITLE}]"
         result = super().MSG
         separator = "\n----"
         for step in self.CHAINS:

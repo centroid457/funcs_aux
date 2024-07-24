@@ -66,7 +66,6 @@ Designed to collect useful funcs in one place!
         [
             "RESULTS",
                 "ResultValue - resolved ambiguity with None-result for any method result!",
-                "ResultFunc",
                 "ResultCum",
          ],
         [

@@ -4,10 +4,18 @@ from object_info import *
 
 
 # =====================================================================================================================
+TYPE__VALUE_LINK = Any | Callable[[], Any]
+TYPE__VALIDATE_LINK = Any | Exception | Callable[[Any], bool | Exception]
+
+
+# =====================================================================================================================
 class ValueValidate:
     """
     NOTE
     ----
+    any exception is a special state!
+    so dont try to compare Exception with any real NoExx value or validate it in validator_link!
+    if expect exception just place it directly in Validator!
 
     GOAL
     ----
@@ -37,8 +45,8 @@ class ValueValidate:
     TITLE: str = ""
     COMMENT: str = ""
 
-    VALUE_LINK: Any | Callable[[], Any]
-    VALIDATE_LINK: Any | Exception | Callable[[Any], bool | Exception] = lambda self, val: val is True    # dont use bool(val)!!!
+    VALUE_LINK: TYPE__VALUE_LINK
+    VALIDATE_LINK: TYPE__VALIDATE_LINK = lambda self, val: val is True    # dont use bool(val)!!!
     STR_PATTERN: str = "ValueValidate(validate_last={0.validate_last},value_last={0.value_last},title={0.TITLE})"
 
     value_last: Any | Exception = None
@@ -65,8 +73,8 @@ class ValueValidate:
 
     def __init__(
             self,
-            value_link: Any | Callable[[], Any],
-            validate_link: Optional[Any | Callable[[Any], bool | Exception]] = None,
+            value_link: TYPE__VALUE_LINK,
+            validate_link: TYPE__VALIDATE_LINK = None,
             str_pattern: Optional[str] = None,
 
             title: Optional[str] = None,
@@ -89,16 +97,17 @@ class ValueValidate:
         self.value_last = self.get_result_or_exx(self.VALUE_LINK)
 
         # VALIDATE ------------------
-        if TypeChecker.check__exception(self.VALIDATE_LINK):
+        if isinstance(self.value_last, Exception) and not TypeChecker.check__exception(self.VALIDATE_LINK):
+            self.validate_last = False
+
+        elif TypeChecker.check__exception(self.VALIDATE_LINK):
             self.validate_last = TypeChecker.check__nested__by_cls_or_inst(self.value_last, self.VALIDATE_LINK)
 
         elif TypeChecker.check__func_or_meth(self.VALIDATE_LINK):
             self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
+
         else:
-            try:
-                self.validate_last = self.value_last == self.VALIDATE_LINK or self.VALIDATE_LINK == self.value_last
-            except Exception as exx:
-                self.validate_last = exx
+            self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
 
         self.validate_last_bool = bool(self)
 

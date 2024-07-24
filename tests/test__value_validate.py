@@ -52,8 +52,20 @@ class Test__Validate:
         argnames="args, _EXPECTED",
         argvalues=[
             ((LAMBDA_TRUE,), True),
+            ((LAMBDA_TRUE, True), True),
+            ((LAMBDA_TRUE, False), False),
+            ((LAMBDA_TRUE, LAMBDA_TRUE), True),
+            ((LAMBDA_TRUE, LAMBDA_FALSE), False),
+
             ((LAMBDA_FALSE,), False),
+            ((LAMBDA_FALSE, False), True),
+            ((LAMBDA_FALSE, LAMBDA_TRUE), True),
+            ((LAMBDA_FALSE, LAMBDA_EXX), False),
+
+            ((LAMBDA_EXX, True), False),
+            ((LAMBDA_EXX, LAMBDA_TRUE), False),
             ((LAMBDA_EXX,), False),
+            ((LAMBDA_EXX, LAMBDA_EXX), False),
             ((LAMBDA_EXX, Exception), True),
 
             ((True, None), True),

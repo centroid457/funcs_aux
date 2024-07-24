@@ -29,14 +29,14 @@ def test__log_lines():
     victim.clear()
     assert victim.LOG_LINES == []
     victim.result__apply_step(VALUE_VALIDATE__TRUE)
-    assert victim.LOG_LINES == [VALUE_VALIDATE__TRUE.log_last]
+    assert victim.LOG_LINES == [VALUE_VALIDATE__TRUE.str_last]
 
     # msg --------------------------
     victim.clear()
     assert victim.LOG_LINES == []
     assert victim.log_last__get() is None
     victim.result__apply_step(VALUE_VALIDATE__TRUE, msg="newMsg")
-    assert victim.LOG_LINES == [VALUE_VALIDATE__TRUE.log_last, "newMsg"]
+    assert victim.LOG_LINES == [VALUE_VALIDATE__TRUE.str_last, "newMsg"]
     assert victim.log_last__get() == "newMsg"
 
 

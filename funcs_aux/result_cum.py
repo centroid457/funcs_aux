@@ -107,7 +107,7 @@ class ResultCum:
             if isinstance(step, ValueValidate):
                 if not step.finished:
                     step.run()
-                self.log_lines__add(step.log_last)
+                self.log_lines__add(step.str_last)
 
         if msg:
             self.log_lines__add(msg)

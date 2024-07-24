@@ -38,15 +38,30 @@ class ValueValidate:
     COMMENT: str = ""
 
     VALUE_LINK: Any | Callable[[], Any]
-    VALIDATE_LINK: Callable[[Any], bool | Exception] = lambda self, val: val is True    # dont use bool(val)!!!
+    VALIDATE_LINK: Any | Exception | Callable[[Any], bool | Exception] = lambda self, val: val is True    # dont use bool(val)!!!
     STR_PATTERN: str = "ValueValidate(validate_last={0.validate_last},value_last={0.value_last},title={0.TITLE})"
 
     value_last: Any | Exception = None
     validate_last: None | bool | Exception = None
     validate_last_bool: bool = False
-    log_last: str = ""
+    str_last: str = ""
 
     finished: bool | None = None
+
+    def get_finished_result_or_none(self) -> None | bool:
+        """
+        GOAL
+        ----
+        attempt to make ability to get clear result by one check (for Gui)
+
+        :return: if not finished - None
+            if finished - validate_last_bool
+        """
+        if self.finished is None:
+            result = None
+        else:
+            result = self.validate_last_bool
+        return result
 
     def __init__(
             self,
@@ -59,7 +74,7 @@ class ValueValidate:
     ):
         self.VALUE_LINK = value_link
 
-        if validate_link:
+        if validate_link is not None:
             self.VALIDATE_LINK = validate_link
         if str_pattern:
             self.STR_PATTERN = str_pattern
@@ -74,7 +89,10 @@ class ValueValidate:
         self.value_last = self.get_result_or_exx(self.VALUE_LINK)
 
         # VALIDATE ------------------
-        if TypeChecker.check__func_or_meth(self.VALIDATE_LINK):
+        if TypeChecker.check__exception(self.VALIDATE_LINK):
+            self.validate_last = TypeChecker.check__nested__by_cls_or_inst(self.value_last, self.VALIDATE_LINK)
+
+        elif TypeChecker.check__func_or_meth(self.VALIDATE_LINK):
             self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
         else:
             try:
@@ -85,7 +103,7 @@ class ValueValidate:
         self.validate_last_bool = bool(self)
 
         # FINISH ---------------------
-        self.log_last = self.STR_PATTERN.format(self)
+        self.str_last = self.STR_PATTERN.format(self)
         self.finished = True
         return self.validate_last_bool
 
@@ -93,10 +111,10 @@ class ValueValidate:
         return self.validate_last is True   # dont use validate_last_bool!
 
     def __str__(self) -> str:
-        return self.log_last
+        return self.str_last
 
     def __repr__(self) -> str:
-        return self.log_last
+        return self.str_last
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
@@ -131,17 +149,55 @@ class ValueValidate:
         """
         GOAL
         ----
-        just a direct code like
+        just a direct comparing code like
             self.validate_last = self.value_last == self.VALIDATE_LINK or self.VALIDATE_LINK == self.value_last
         will not work correctly
 
-        if get exx and false - false will be return
+        if any result is True - return True.
+        if at least one false - return False
+        if both exx - return first exx  # todo: deside return False in here!
+
+        CREATED SPECIALLY FOR
+        ---------------------
+        manipulate objects which have special methods for __cmp__
+        for cases when we can switch places
+
+        BEST USAGE
+        ----------
+            class ClsEq:
+                def __init__(self, val):
+                    self.VAL = val
+
+                def __eq__(self, other):
+                    return other == self.VAL
+
+            assert ClsEq(1) == 1
+            assert 1 == ClsEq(1)
+
+            assert compare_doublesided(1, Cls(1)) is True
+            assert compare_doublesided(Cls(1), 1) is True
+
+        example above is not clear! cause of comparison works ok if any of object has __eq__() meth even on second place!
+        but i think in one case i get Exx and with switching i get correct result!!! (maybe fake! need explore!)
         """
-        result = obj1 == obj2
+        try:
+            result12 = obj1 == obj2
+            if result12:
+                return True
+        except Exception as exx:
+            result12 = exx
 
-        # result = self.value_last == self.VALIDATE_LINK or self.VALIDATE_LINK == self.value_last
+        try:
+            result21 = obj2 == obj1
+            if result21:
+                return True
+        except Exception as exx:
+            result21 = exx
 
-        return result
+        if False in [result12, result21]:
+            return False
+        else:
+            return result12
 
 
 # =====================================================================================================================

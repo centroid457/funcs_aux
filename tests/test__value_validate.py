@@ -6,7 +6,33 @@ from funcs_aux import *
 
 
 # =====================================================================================================================
-class Test__WithUnit:
+class Exx__Cmp(Exception):
+    pass
+
+
+class ClsEq:
+    def __init__(self, val):
+        self.VAL = val
+
+    def __eq__(self, other):
+        return other == self.VAL
+
+
+class ClsEqExx:
+    def __eq__(self, other):
+        raise Exx__Cmp()
+
+
+def test__1():
+    assert ClsEq(1) == 1
+    assert ClsEq(1) != 2
+
+    assert 1 == ClsEq(1)
+    assert 2 != ClsEq(1)
+
+
+# =====================================================================================================================
+class Test__Validate:
     # @classmethod
     # def setup_class(cls):
     #     pass
@@ -62,6 +88,27 @@ class Test__WithUnit:
     )
     def test__get_result_or_exx(self, args, _EXPECTED):
         func_link = ValueValidate.get_result_or_exx
+        pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            ((1, 1), True),
+            ((1, 2), False),
+            ((LAMBDA_TRUE, True), False),
+
+            ((ClsEq(1), 1), True),
+            ((ClsEq(1), 2), False),
+            ((1, ClsEq(1)), True),
+            ((2, ClsEq(1)), False),
+
+            ((ClsEqExx(), 1), Exx__Cmp),
+            ((1, ClsEqExx()), Exx__Cmp),
+        ]
+    )
+    def test__compare_doublesided(self, args, _EXPECTED):
+        func_link = ValueValidate.compare_doublesided
         pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
 
 

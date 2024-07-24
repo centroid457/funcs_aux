@@ -136,33 +136,7 @@ class ResultExpect_Step(ResultExpect_Base):
     VALUE_LINK: TYPE__VALUE_LINK
     VALIDATE_LINK: TYPE__FUNC_UNDER_VALUE = None
 
-    def __init__(
-            self,
-            value: Union[Any, Callable],
-            validate_link: TYPE__FUNC_UNDER_VALUE = None,
 
-            **kwargs
-    ):
-        super().__init__(**kwargs)
-
-        self.VALUE_LINK = value
-        self.VALIDATE_LINK = validate_link
-
-    def _run__wrapped(self) -> Union[bool, NoReturn]:
-        # CALLS ----------------------------------
-        if TypeChecker.check__func_or_meth(self.VALUE_LINK):
-            self.VALUE_ACTUAL = self.VALUE_LINK(*self.ARGS, **self.KWARGS)
-        else:
-            self.VALUE_ACTUAL = self.VALUE_LINK
-
-        # VALIDATE_LINK -----------------------
-        if self.VALIDATE_LINK:
-            self.VALUE_ACTUAL = self.VALIDATE_LINK(self.VALUE_ACTUAL)
-
-        result = self.VALUE_ACTUAL == self.VALUE_EXPECTED or self.VALUE_EXPECTED == self.VALUE_ACTUAL   # this is used for CMP objects
-
-        # FINISH --------------------------------------------------------------
-        return result
 
     @property
     def MSG(self) -> str:

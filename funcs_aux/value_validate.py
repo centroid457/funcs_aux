@@ -74,7 +74,7 @@ class ValueValidate:
     def __init__(
             self,
             value_link: TYPE__VALUE_LINK,
-            validate_link: TYPE__VALIDATE_LINK = None,
+            validate_link: Optional[TYPE__VALIDATE_LINK] = None,
             str_pattern: Optional[str] = None,
 
             title: Optional[str] = None,
@@ -95,6 +95,13 @@ class ValueValidate:
         self.finished = False
         # VALUE ---------------------
         self.value_last = self.get_result_or_exx(self.VALUE_LINK)
+
+        # TODO: maybe add ArgsKwargs but it is too complicated! add only in critical obligatory situation!
+        # if TypeChecker.check__func_or_meth(self.VALUE_LINK):
+        #     self.VALUE_ACTUAL = self.VALUE_LINK(*self.ARGS, **self.KWARGS)
+        # else:
+        #     self.VALUE_ACTUAL = self.VALUE_LINK
+
 
         # VALIDATE ------------------
         if isinstance(self.value_last, Exception) and not TypeChecker.check__exception(self.VALIDATE_LINK):

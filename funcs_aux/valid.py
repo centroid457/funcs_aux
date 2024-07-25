@@ -48,15 +48,14 @@ class Valid:
     VALUE_LINK: TYPE__VALUE_LINK
     VALIDATE_LINK: TYPE__BOOL_LINK = True
 
-    STR_PATTERN: str = "Valid(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE},finished={0.finished})"
+    STR_PATTERN: str = "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE},finished={0.finished})"
 
     # RESULT ACTUAL ------------------------------
     skip_last: bool = False
     finished: bool | None = None
     value_last: Any | Exception = None
     validate_last: None | bool | Exception = True   # decide using only bool???
-    validate_last_bool: bool = True
-    str_last: str = ""
+    log_lines: list[str] = None
 
     # CHAINS -------------------------------------
     CHAIN__CUM: bool = True
@@ -74,7 +73,7 @@ class Valid:
         if self.finished is None:
             result = None
         else:
-            result = self.validate_last_bool
+            result = bool(self)
         return result
 
     def __init__(
@@ -82,8 +81,6 @@ class Valid:
             value_link: TYPE__VALUE_LINK,
             validate_link: Optional[TYPE__BOOL_LINK] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
-
-            str_pattern: Optional[str] = None,
 
             title: Optional[str] = None,
             comment: Optional[str] = None,
@@ -97,8 +94,6 @@ class Valid:
             self.VALIDATE_LINK = validate_link
         if skip_link is not None:
             self.SKIP_LINK = skip_link
-        if str_pattern:
-            self.STR_PATTERN = str_pattern
 
         if title:
             self.TITLE = title
@@ -115,15 +110,14 @@ class Valid:
         if not self.finished:
             return self.run()
         else:
-            return self.validate_last_bool
+            return bool(self)
 
     def clear(self):
         self.skip_last = False
         self.finished = None
-        self.value_last = None
+        self.value_last = True
         self.validate_last = True
-        self.validate_last_bool = True
-        self.str_last = ""
+        self.log_lines = []
 
     def run(self) -> bool:
         self.clear()
@@ -157,22 +151,31 @@ class Valid:
             else:
                 self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
 
-            self.validate_last_bool = bool(self)
             self.finished = True
             # ============================
 
         # FINISH ---------------------
-        self.str_last = self.STR_PATTERN.format(self)
-        return self.validate_last_bool
+        return bool(self)
+
+    @property
+    def validate_last_bool(self) -> bool:
+        return bool(self)
 
     def __bool__(self) -> bool:
         return self.validate_last is True   # dont use validate_last_bool!
 
     def __str__(self) -> str:
-        return self.str_last
+        # main ---------------
+        result_str = self.STR_PATTERN.format(self)
+
+        # log ----------------
+        for index, line in enumerate(self.log_lines):
+            result_str += "\n" + f"{index}:".rjust(5, '_') + line
+
+        return result_str
 
     def __repr__(self) -> str:
-        return self.str_last
+        return str(self)
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
@@ -299,7 +302,7 @@ class Valid:
 
 
 # =====================================================================================================================
-TYPE__CHAINS = list[Valid, 'ValidChains']
+TYPE__CHAINS = list[Valid, 'ValidChains'] | Any     # all Any will be converted to Valid!
 
 
 # =====================================================================================================================
@@ -357,12 +360,15 @@ class ValidChains(Valid):
 
             # ITER -----------
             for index, step in enumerate(self):
+                if not isinstance(step, (Valid, ValidChains)):
+                    step = Valid(step)
+
                 step_result = step.run()
-                self.str_last += "\n" + f"{index}:".rjust(5,'_') + str(step)
+                self.log_lines.append(str(step))
 
                 if not step.skip_last:
                     if step.CHAIN__CUM:
-                        self.validate_last_bool &= step_result
+                        self.validate_last &= step_result
                     if step.CHAIN__STOP_IF_FAIL and not step_result:
                         break
             # ITER -----------
@@ -370,7 +376,7 @@ class ValidChains(Valid):
             self.finished = True
             # ============================
 
-        return self.validate_last_bool
+        return bool(self)
 
 
 # =====================================================================================================================

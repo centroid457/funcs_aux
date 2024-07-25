@@ -14,8 +14,19 @@ def test__1():
     assert 2 != ClsEq(1)
 
 
+# ---------------------------------------------------------------------------------------------------------------------
+def test__str():
+    victim = Valid(True)
+    victim.run()
+    print(victim)
+
+    victim = ValidChains([True, ])
+    victim.run()
+    print(victim)
+
+
 # =====================================================================================================================
-class Test__Validate:
+class Test__Valid_ClsMethods:
     # @classmethod
     # def setup_class(cls):
     #     pass
@@ -29,46 +40,6 @@ class Test__Validate:
     #
     # def teardown_method(self, method):
     #     pass
-
-    # -----------------------------------------------------------------------------------------------------------------
-    @pytest.mark.parametrize(
-        argnames="args, _EXPECTED",
-        argvalues=[
-            ((LAMBDA_TRUE,), True),
-            ((LAMBDA_TRUE, True), True),
-            ((LAMBDA_TRUE, False), False),
-            ((LAMBDA_TRUE, LAMBDA_TRUE), True),
-            ((LAMBDA_TRUE, LAMBDA_FALSE), False),
-
-            ((LAMBDA_FALSE,), False),
-            ((LAMBDA_FALSE, False), True),
-            ((LAMBDA_FALSE, LAMBDA_TRUE), True),
-            ((LAMBDA_FALSE, LAMBDA_EXX), False),
-
-            ((LAMBDA_EXX, True), False),
-            ((LAMBDA_EXX, LAMBDA_TRUE), False),
-            ((LAMBDA_EXX,), False),
-            ((LAMBDA_EXX, LAMBDA_EXX), False),
-            ((LAMBDA_EXX, Exception), True),
-
-            ((True, None), True),
-            ((lambda: True, None), True),
-
-            ((True, lambda val: val is True), True),
-            ((LAMBDA_TRUE, lambda val: val is True), True),
-
-            ((lambda: 1, lambda val: 0 < val < 2), True),
-            ((lambda: 1, lambda val: 0 < val < 1), False),
-
-            ((lambda: "1", lambda val: 0 < val < 2), False),
-            ((lambda: "1", lambda val: 0 < int(val) < 2), True),
-            ((lambda: "1.0", lambda val: 0 < int(val) < 2), False),
-            ((lambda: "1.0", lambda val: 0 < float(val) < 2), True),
-        ]
-    )
-    def test__validate(self, args, _EXPECTED):
-        func_link = Valid(*args).run
-        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
@@ -134,6 +105,63 @@ class Test__Validate:
     def test__get_bool(self, args, _EXPECTED):
         func_link = Valid.get_bool
         pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
+
+
+# =====================================================================================================================
+class Test__ValidVariants:
+    # @classmethod
+    # def setup_class(cls):
+    #     pass
+    #     cls.Victim = type("Victim", (Value_WithUnit,), {})
+    # @classmethod
+    # def teardown_class(cls):
+    #     pass
+    #
+    # def setup_method(self, method):
+    #     pass
+    #
+    # def teardown_method(self, method):
+    #     pass
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            ((LAMBDA_TRUE,), True),
+            ((LAMBDA_TRUE, True), True),
+            ((LAMBDA_TRUE, False), False),
+            ((LAMBDA_TRUE, LAMBDA_TRUE), True),
+            ((LAMBDA_TRUE, LAMBDA_FALSE), False),
+
+            ((LAMBDA_FALSE,), False),
+            ((LAMBDA_FALSE, False), True),
+            ((LAMBDA_FALSE, LAMBDA_TRUE), True),
+            ((LAMBDA_FALSE, LAMBDA_EXX), False),
+
+            ((LAMBDA_EXX, True), False),
+            ((LAMBDA_EXX, LAMBDA_TRUE), False),
+            ((LAMBDA_EXX,), False),
+            ((LAMBDA_EXX, LAMBDA_EXX), False),
+            ((LAMBDA_EXX, Exception), True),
+
+            ((True, None), True),
+            ((lambda: True, None), True),
+
+            ((True, lambda val: val is True), True),
+            ((LAMBDA_TRUE, lambda val: val is True), True),
+
+            ((lambda: 1, lambda val: 0 < val < 2), True),
+            ((lambda: 1, lambda val: 0 < val < 1), False),
+
+            ((lambda: "1", lambda val: 0 < val < 2), False),
+            ((lambda: "1", lambda val: 0 < int(val) < 2), True),
+            ((lambda: "1.0", lambda val: 0 < int(val) < 2), False),
+            ((lambda: "1.0", lambda val: 0 < float(val) < 2), True),
+        ]
+    )
+    def test__validate(self, args, _EXPECTED):
+        func_link = Valid(*args).run
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
 
 # =====================================================================================================================

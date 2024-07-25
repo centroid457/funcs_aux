@@ -57,6 +57,7 @@ from .result_chain import (
 from .valid import (
     # BASE
     Valid,
+    ValidChains,
     # AUX
     # TYPES
     # EXX

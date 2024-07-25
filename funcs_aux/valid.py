@@ -54,9 +54,13 @@ class Valid:
     finished: bool | None = None
     skip_last: bool = False
     value_last: Any | Exception = None
-    validate_last: None | bool | Exception = True   # decide using only bool
+    validate_last: None | bool | Exception = True   # decide using only bool???
     validate_last_bool: bool = True
     str_last: str = ""
+
+    # CHAINS -------------------------------------
+    CHAIN__CUM: bool = True
+    CHAIN__STOP_IF_FAIL: bool = True
 
     def get_finished_result_or_none(self) -> None | bool:
         """
@@ -83,6 +87,9 @@ class Valid:
 
             title: Optional[str] = None,
             comment: Optional[str] = None,
+
+            chain__cum: Optional[bool] = None,
+            chain__stop_if_fail: Optional[bool] = None,
     ):
         self.VALUE_LINK = value_link
 
@@ -92,10 +99,17 @@ class Valid:
             self.SKIP_LINK = skip_link
         if str_pattern:
             self.STR_PATTERN = str_pattern
+
         if title:
             self.TITLE = title
         if comment:
             self.COMMENT = comment
+
+        # CHAINS -------------------------------------
+        if chain__cum is not None:
+            self.CHAIN__CUM = chain__cum
+        if chain__stop_if_fail is not None:
+            self.CHAIN__STOP_IF_FAIL = chain__stop_if_fail
 
     def run_if_not_finished(self) -> bool:
         if not self.finished:

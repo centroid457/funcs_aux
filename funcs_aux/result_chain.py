@@ -1,4 +1,3 @@
-import re
 from typing import *
 from object_info import *
 from funcs_aux import *
@@ -13,7 +12,6 @@ TYPE__VALIDATE_LINK = Union[Any, TYPE__CALLABLE_NO_PARAMS, TYPE__CALLABLE_ANY_PA
 TYPE__SKIP_IF = Union[None, bool, Any, Callable[[], Union[bool, None, NoReturn, Any]]]
 TYPE__CHAINS = Iterable[
     Union[
-        'ResultExpect_Step',
         'ResultExpect_Chain',
         bool,
         Callable[[], Any],
@@ -22,7 +20,7 @@ TYPE__CHAINS = Iterable[
 
 
 # =====================================================================================================================
-class ResultExpect_Base:  # dont hide it cause of need ability to detect both of ResultExpect_Step/Chain
+class ResultExpect_Base:  # dont hide it cause of need ability to detect both of ResultExpect_Chain
     """
     DONT USE IT DIRECTLY! this is only a base for *Step/Chain!
 
@@ -128,21 +126,6 @@ class ResultExpect_Base:  # dont hide it cause of need ability to detect both of
             return self.STEP__RESULT
         else:
             return self.run()
-
-
-# =====================================================================================================================
-class ResultExpect_Step(ResultExpect_Base):
-    # SETTINGS --------------------------------
-    VALUE_LINK: TYPE__VALUE_LINK
-    VALIDATE_LINK: TYPE__FUNC_UNDER_VALUE = None
-
-
-
-    @property
-    def MSG(self) -> str:
-        result = super().MSG
-        result += f"value_actual={self.VALUE_ACTUAL}/value_expected={self.VALUE_EXPECTED}"
-        return result
 
 
 # =====================================================================================================================

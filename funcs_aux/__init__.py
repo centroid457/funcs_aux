@@ -48,7 +48,6 @@ from .result_value import (
 from .result_chain import (
     # BASE
     ResultExpect_Base,
-    ResultExpect_Step,
     ResultExpect_Chain,
     # AUX
     # TYPES

@@ -77,6 +77,7 @@ class Valid:
             value_link: TYPE__VALUE_LINK,
             validate_link: Optional[TYPE__BOOL_LINK] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
+            
             str_pattern: Optional[str] = None,
 
             title: Optional[str] = None,

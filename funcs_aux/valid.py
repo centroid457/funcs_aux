@@ -45,10 +45,10 @@ class Valid:
     COMMENT: str = ""
 
     VALUE_LINK: TYPE__VALUE_LINK
-    VALIDATE_LINK: TYPE__BOOL_LINK = lambda self, val: val is True      # dont use bool(val)!!!
-    SKIP_LINK: TYPE__BOOL_LINK = False
+    VALIDATE_LINK: TYPE__BOOL_LINK = True
+    SKIP_LINK: TYPE__BOOL_LINK = None
 
-    STR_PATTERN: str = "Valid(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE})"
+    STR_PATTERN: str = "Valid(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE},finished={0.finished})"
 
     # RESULT ACTUAL ------------------------------
     finished: bool | None = None

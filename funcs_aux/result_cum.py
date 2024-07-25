@@ -4,7 +4,7 @@ from object_info import *
 
 
 # =====================================================================================================================
-TYPE__RESULT_CUM_STEP = Union[bool, Any, ValueValidate]     # DONT USE CALLABLES!!! ValueValidate is most PREFIRED! specially in case of EXX!!
+TYPE__RESULT_CUM_STEP = Union[bool, Any, Valid]     # DONT USE CALLABLES!!! Valid is most PREFIRED! specially in case of EXX!!
 TYPE__RESULT_CUM_STEPS = Union[TYPE__RESULT_CUM_STEP, list[TYPE__RESULT_CUM_STEP]]
 
 
@@ -44,7 +44,7 @@ class ResultCum:
 
     CONSTRAINTS
     -----------
-    1. dont use callables in steps! only final result (as expression) or ValueValidate as most preferred
+    1. dont use callables in steps! only final result (as expression) or Valid as most preferred
     2. if no steps - return True!
 
     BEST USAGE
@@ -104,7 +104,7 @@ class ResultCum:
         else:
             # SINGLE ------------------------------------------
             # TODO: if isinstance(step, ResultCum):   - what do i need to do here?? decide!
-            if isinstance(step, ValueValidate):
+            if isinstance(step, Valid):
                 if not step.finished:
                     step.run()
                 self.log_lines__add(step.str_last)

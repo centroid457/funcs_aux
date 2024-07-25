@@ -4,12 +4,12 @@ from object_info import *
 
 
 # =====================================================================================================================
-TYPE__VALUE_LINK = Any | Callable[[], Any]
-TYPE__VALIDATE_LINK = Any | Exception | Callable[[Any], bool | Exception]
+TYPE__VALUE_LINK = Union[Any, Exception, Callable[[], Any | Exception]]
+TYPE__BOOL_LINK = Union[bool, Any, Exception, Callable[[Any], bool | Exception]]
 
 
 # =====================================================================================================================
-class ValueValidate:
+class Valid:
     """
     NOTE
     ----
@@ -46,12 +46,14 @@ class ValueValidate:
     COMMENT: str = ""
 
     VALUE_LINK: TYPE__VALUE_LINK
-    VALIDATE_LINK: TYPE__VALIDATE_LINK = lambda self, val: val is True      # dont use bool(val)!!!
-    STR_PATTERN: str = "ValueValidate(validate_last={0.validate_last},value_last={0.value_last},title={0.TITLE})"
+    VALIDATE_LINK: TYPE__BOOL_LINK = lambda self, val: val is True      # dont use bool(val)!!!
+    SKIP_LINK: TYPE__BOOL_LINK = False
+    STR_PATTERN: str = "Valid(validate_last={0.validate_last},value_last={0.value_last},title={0.TITLE})"
 
     value_last: Any | Exception = None
-    validate_last: None | bool | Exception = None
-    validate_last_bool: bool = False
+    validate_last: None | bool | Exception = True
+    validate_last_bool: bool = True
+    skip_last: bool = False
     str_last: str = ""
 
     finished: bool | None = None
@@ -74,7 +76,8 @@ class ValueValidate:
     def __init__(
             self,
             value_link: TYPE__VALUE_LINK,
-            validate_link: Optional[TYPE__VALIDATE_LINK] = None,
+            validate_link: Optional[TYPE__BOOL_LINK] = None,
+            skip_link: Optional[TYPE__BOOL_LINK] = None,
             str_pattern: Optional[str] = None,
 
             title: Optional[str] = None,
@@ -84,6 +87,8 @@ class ValueValidate:
 
         if validate_link is not None:
             self.VALIDATE_LINK = validate_link
+        if skip_link is not None:
+            self.SKIP_LINK = skip_link
         if str_pattern:
             self.STR_PATTERN = str_pattern
         if title:
@@ -93,30 +98,34 @@ class ValueValidate:
 
     def run(self) -> bool:
         self.finished = False
-        # VALUE ---------------------
-        self.value_last = self.get_result_or_exx(self.VALUE_LINK)
-
-        # TODO: maybe add ArgsKwargs but it is too complicated! add only in critical obligatory situation!
-        # if TypeChecker.check__func_or_meth(self.VALUE_LINK):
-        #     self.VALUE_ACTUAL = self.VALUE_LINK(*self.ARGS, **self.KWARGS)
-        # else:
-        #     self.VALUE_ACTUAL = self.VALUE_LINK
+        # SKIP ---------------------
 
 
-        # VALIDATE ------------------
-        if isinstance(self.value_last, Exception) and not TypeChecker.check__exception(self.VALIDATE_LINK):
-            self.validate_last = False
+        if not self.skip_last:
+            # VALUE ---------------------
+            self.value_last = self.get_result_or_exx(self.VALUE_LINK)
 
-        elif TypeChecker.check__exception(self.VALIDATE_LINK):
-            self.validate_last = TypeChecker.check__nested__by_cls_or_inst(self.value_last, self.VALIDATE_LINK)
+            # TODO: maybe add ArgsKwargs but it is too complicated! add only in critical obligatory situation!
+            # if TypeChecker.check__func_or_meth(self.VALUE_LINK):
+            #     self.VALUE_ACTUAL = self.VALUE_LINK(*self.ARGS, **self.KWARGS)
+            # else:
+            #     self.VALUE_ACTUAL = self.VALUE_LINK
 
-        elif TypeChecker.check__func_or_meth(self.VALIDATE_LINK):
-            self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
 
-        else:
-            self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
+            # VALIDATE ------------------
+            if isinstance(self.value_last, Exception) and not TypeChecker.check__exception(self.VALIDATE_LINK):
+                self.validate_last = False
 
-        self.validate_last_bool = bool(self)
+            elif TypeChecker.check__exception(self.VALIDATE_LINK):
+                self.validate_last = TypeChecker.check__nested__by_cls_or_inst(self.value_last, self.VALIDATE_LINK)
+
+            elif TypeChecker.check__func_or_meth(self.VALIDATE_LINK):
+                self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
+
+            else:
+                self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
+
+            self.validate_last_bool = bool(self)
 
         # FINISH ---------------------
         self.str_last = self.STR_PATTERN.format(self)
@@ -158,6 +167,40 @@ class ValueValidate:
         else:
             result = source
         return result
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @classmethod
+    def get_bool(cls, source: Any | Callable[..., Any], args: list[Any] = None, kwargs: dict[str, Any] = None) -> bool:
+        """
+        GOAL
+        ----
+        ability to get bool result with meanings:
+            - methods/funcs must be called
+                assert get_bool(LAMBDA_TRUE) is True
+                assert get_bool(LAMBDA_NONE) is False
+
+            - Exceptions assumed as False
+                assert get_bool(Exception) is False
+                assert get_bool(Exception("FAIL")) is False
+                assert get_bool(LAMBDA_EXX) is False
+
+            - for other values get classic bool()
+                assert get_bool(None) is False
+                assert get_bool([]) is False
+                assert get_bool([None, ]) is True
+
+                assert get_bool(LAMBDA_LIST) is False
+                assert get_bool(LAMBDA_LIST, [1, ]) is True
+
+        CREATED SPECIALLY FOR
+        ---------------------
+        funcs_aux.Valid.skip_link or else value/func assumed as bool result
+        """
+        result = cls.get_result_or_exx(source, args, kwargs)
+        if TypeChecker.check__exception(result):
+            return False
+        else:
+            return bool(result)
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod

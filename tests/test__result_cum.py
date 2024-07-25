@@ -7,7 +7,7 @@ from object_info import *
 
 
 # =====================================================================================================================
-VALUE_VALIDATE__TRUE = ValueValidate(True)
+VALUE_VALIDATE__TRUE = Valid(True)
 
 
 # =====================================================================================================================
@@ -25,7 +25,7 @@ def test__log_lines():
     victim.log_lines__add([f"line{i}" for i in range(3)])
     assert victim.LOG_LINES == ["line0", "line1", "line2"]
 
-    # ValueValidate --------------------------
+    # Valid --------------------------
     victim.clear()
     assert victim.LOG_LINES == []
     victim.result__apply_step(VALUE_VALIDATE__TRUE)

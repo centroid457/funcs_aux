@@ -82,7 +82,7 @@ Designed to collect useful funcs in one place!
                 "full comparing + arithmetics",
         ],
         "ValueFromVariant",
-        "ValueValidate",
+        "Valid",
     ]
 
     # HISTORY -----------------------------------------------
@@ -94,7 +94,10 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[ResultCum] fix str for LogLines",
+
+
+
+        "[Valid] add get_bool",
     ]
 
 

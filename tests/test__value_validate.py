@@ -67,7 +67,7 @@ class Test__Validate:
         ]
     )
     def test__validate(self, args, _EXPECTED):
-        func_link = ValueValidate(*args).run
+        func_link = Valid(*args).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ class Test__Validate:
         ]
     )
     def test__get_result_or_exx(self, args, _EXPECTED):
-        func_link = ValueValidate.get_result_or_exx
+        func_link = Valid.get_result_or_exx
         pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ class Test__Validate:
         ]
     )
     def test__compare_doublesided(self, args, _EXPECTED):
-        func_link = ValueValidate.compare_doublesided
+        func_link = Valid.compare_doublesided
         pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
 
 

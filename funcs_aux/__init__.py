@@ -57,7 +57,7 @@ from .result_chain import (
 )
 from .value_validate import (
     # BASE
-    ValueValidate,
+    Valid,
     # AUX
     # TYPES
     # EXX

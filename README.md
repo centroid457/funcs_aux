@@ -32,7 +32,7 @@ Designed to collect useful funcs in one place!
 	- work with positive/negative  
 	- full comparing + arithmetics  
 5. ValueFromVariant  
-6. ValueValidate  
+6. Valid  
 
 
 ********************************************************************************

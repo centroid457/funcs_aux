@@ -97,6 +97,12 @@ class Valid:
         if comment:
             self.COMMENT = comment
 
+    def run_if_not_finished(self) -> bool:
+        if not self.finished:
+            return self.run()
+        else:
+            return self.validate_last_bool
+
     def run(self) -> bool:
         self.finished = False
         # SKIP ---------------------

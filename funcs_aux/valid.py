@@ -52,10 +52,10 @@ class Valid:
 
     # RESULT ACTUAL ------------------------------
     finished: bool | None = None
+    skip_last: bool = False
     value_last: Any | Exception = None
     validate_last: None | bool | Exception = True   # decide using only bool
     validate_last_bool: bool = True
-    skip_last: bool = False
     str_last: str = ""
 
     def get_finished_result_or_none(self) -> None | bool:

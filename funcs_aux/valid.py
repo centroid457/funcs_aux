@@ -47,15 +47,16 @@ class Valid:
     VALUE_LINK: TYPE__VALUE_LINK
     VALIDATE_LINK: TYPE__BOOL_LINK = lambda self, val: val is True      # dont use bool(val)!!!
     SKIP_LINK: TYPE__BOOL_LINK = False
+
     STR_PATTERN: str = "Valid(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE})"
 
+    # RESULT ACTUAL ------------------------------
+    finished: bool | None = None
     value_last: Any | Exception = None
     validate_last: None | bool | Exception = True   # decide using only bool
     validate_last_bool: bool = True
     skip_last: bool = False
     str_last: str = ""
-
-    finished: bool | None = None
 
     def get_finished_result_or_none(self) -> None | bool:
         """
@@ -77,7 +78,7 @@ class Valid:
             value_link: TYPE__VALUE_LINK,
             validate_link: Optional[TYPE__BOOL_LINK] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
-            
+
             str_pattern: Optional[str] = None,
 
             title: Optional[str] = None,

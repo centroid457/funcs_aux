@@ -44,15 +44,15 @@ class Valid:
     TITLE: str = ""
     COMMENT: str = ""
 
+    SKIP_LINK: TYPE__BOOL_LINK = None
     VALUE_LINK: TYPE__VALUE_LINK
     VALIDATE_LINK: TYPE__BOOL_LINK = True
-    SKIP_LINK: TYPE__BOOL_LINK = None
 
     STR_PATTERN: str = "Valid(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE},finished={0.finished})"
 
     # RESULT ACTUAL ------------------------------
-    finished: bool | None = None
     skip_last: bool = False
+    finished: bool | None = None
     value_last: Any | Exception = None
     validate_last: None | bool | Exception = True   # decide using only bool???
     validate_last_bool: bool = True
@@ -117,12 +117,24 @@ class Valid:
         else:
             return self.validate_last_bool
 
+    def clear(self):
+        self.skip_last = False
+        self.finished = None
+        self.value_last = None
+        self.validate_last = True
+        self.validate_last_bool = True
+        self.str_last = ""
+
     def run(self) -> bool:
-        self.finished = False
+        self.clear()
+
         # SKIP ---------------------
         self.skip_last = self.get_bool(self.SKIP_LINK)
 
         if not self.skip_last:
+            # WORK =======================
+            self.finished = False
+
             # VALUE ---------------------
             self.value_last = self.get_result_or_exx(self.VALUE_LINK)
 
@@ -146,10 +158,11 @@ class Valid:
                 self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
 
             self.validate_last_bool = bool(self)
+            self.finished = True
+            # ============================
 
         # FINISH ---------------------
         self.str_last = self.STR_PATTERN.format(self)
-        self.finished = True
         return self.validate_last_bool
 
     def __bool__(self) -> bool:
@@ -283,6 +296,81 @@ class Valid:
             return False
         else:
             return result12
+
+
+# =====================================================================================================================
+TYPE__CHAINS = list[Valid, 'ValidChains']
+
+
+# =====================================================================================================================
+class ValidChains(Valid):
+    """
+    GOAL
+    ----
+
+    CREATED SPECIALLY FOR
+    ---------------------
+
+    CONSTRAINTS
+    -----------
+
+    BEST USAGE
+    ----------
+    val_chains = ValidChains(
+        chains=[
+            Valid(1),
+            Valid(2),
+            Valid(3, chain_cum=False),
+            ValidChains([Valid(21), Valid(22)], chain_cum=False),
+        ]
+    )
+
+    result = val_chains.run()
+
+    WHY NOT: 1?
+    -----------
+
+    WHY NOT: 2?
+    -----------
+    """
+    __chains: TYPE__CHAINS
+
+    def __init__(self, chains: TYPE__CHAINS, **kwargs):
+        super().__init__(value_link=None, **kwargs)
+        self.__chains = chains
+
+    def __len__(self) -> int:
+        return len(self.__chains)
+
+    def __iter__(self):
+        return iter(self.__chains)
+
+    def run(self) -> bool:
+        self.clear()
+
+        # SKIP ---------------------
+        self.skip_last = self.get_bool(self.SKIP_LINK)
+
+        if not self.skip_last:
+            # WORK =======================
+            self.finished = False
+
+            # ITER -----------
+            for index, step in enumerate(self):
+                step_result = step.run()
+                self.str_last += "\n" + f"{index}:".rjust(5,'_') + str(step)
+
+                if not step.skip_last:
+                    if step.CHAIN__CUM:
+                        self.validate_last_bool &= step_result
+                    if step.CHAIN__STOP_IF_FAIL and not step_result:
+                        break
+            # ITER -----------
+
+            self.finished = True
+            # ============================
+
+        return self.validate_last_bool
 
 
 # =====================================================================================================================

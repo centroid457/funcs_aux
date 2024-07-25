@@ -55,7 +55,7 @@ from .result_chain import (
     TYPE__SKIP_IF,
     # EXX
 )
-from .value_validate import (
+from .valid import (
     # BASE
     Valid,
     # AUX

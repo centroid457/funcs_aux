@@ -11,26 +11,25 @@ TYPE__BOOL_LINK = Union[bool, Any, Exception, Callable[[Any], bool | Exception]]
 # =====================================================================================================================
 class Valid:
     """
-    NOTE
-    ----
-    any exception is a special state!
-    so dont try to compare Exception with any real NoExx value or validate it in validator_link!
-    if expect exception just place it directly in Validator!
-
     GOAL
     ----
     1. get value from somewhere and clearly validate it.
     2. ability to log result in appropriate way by using template-pattern for msg log
 
-    SAME AS: seems same as ResultExpect but maybe we need to use this instead of Expected (cause of too sophisticated!)
-    DIFFERENCE: more clear understanding
-
     CREATED SPECIALLY FOR
     ---------------------
-    testplans
+    testplans sequences or same staff
 
     CONSTRAINTS
     -----------
+    1. Exceptions
+    any exception is a special state!
+    so dont try to compare Exception with any real NoExx value or validate it in validator_link!
+    if expect exception just place it directly in Validator!
+
+    2. Callables
+    only funcs/methods will be called
+    if Class - no call! no init!
 
     BEST USAGE
     ----------
@@ -192,6 +191,9 @@ class Valid:
                 assert get_bool(LAMBDA_LIST) is False
                 assert get_bool(LAMBDA_LIST, [1, ]) is True
 
+            - if on bool() exception raised - return False!
+                assert get_bool(ClsBoolExx()) is False
+
         CREATED SPECIALLY FOR
         ---------------------
         funcs_aux.Valid.skip_link or else value/func assumed as bool result
@@ -200,7 +202,10 @@ class Valid:
         if TypeChecker.check__exception(result):
             return False
         else:
-            return bool(result)
+            try:
+                return bool(result)
+            except:
+                return False
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod

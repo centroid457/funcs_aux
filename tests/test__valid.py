@@ -106,5 +106,34 @@ class Test__Validate:
         func_link = Valid.compare_doublesided
         pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
 
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="args, _EXPECTED",
+        argvalues=[
+            (Exception, False),
+            (Exception(), False),
+            (LAMBDA_EXX, False),
+
+            (True, True),
+            (False, False),
+            (None, False),
+            (LAMBDA_TRUE, True),
+            (LAMBDA_FALSE, False),
+            (LAMBDA_NONE, False),
+
+            (([]), False),
+            ((LAMBDA_LIST), False),
+
+            (([1, ]), True),
+
+            (ClsBoolTrue(), True),
+            (ClsBoolFalse(), False),
+            (ClsBoolExx(), False),
+        ]
+    )
+    def test__get_bool(self, args, _EXPECTED):
+        func_link = Valid.get_bool
+        pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
+
 
 # =====================================================================================================================

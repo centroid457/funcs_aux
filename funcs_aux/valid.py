@@ -47,10 +47,10 @@ class Valid:
     VALUE_LINK: TYPE__VALUE_LINK
     VALIDATE_LINK: TYPE__BOOL_LINK = lambda self, val: val is True      # dont use bool(val)!!!
     SKIP_LINK: TYPE__BOOL_LINK = False
-    STR_PATTERN: str = "Valid(validate_last={0.validate_last},value_last={0.value_last},title={0.TITLE})"
+    STR_PATTERN: str = "Valid(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE})"
 
     value_last: Any | Exception = None
-    validate_last: None | bool | Exception = True
+    validate_last: None | bool | Exception = True   # decide using only bool
     validate_last_bool: bool = True
     skip_last: bool = False
     str_last: str = ""
@@ -98,7 +98,7 @@ class Valid:
     def run(self) -> bool:
         self.finished = False
         # SKIP ---------------------
-
+        self.skip_last = self.get_bool(self.SKIP_LINK)
 
         if not self.skip_last:
             # VALUE ---------------------
@@ -109,7 +109,6 @@ class Valid:
             #     self.VALUE_ACTUAL = self.VALUE_LINK(*self.ARGS, **self.KWARGS)
             # else:
             #     self.VALUE_ACTUAL = self.VALUE_LINK
-
 
             # VALIDATE ------------------
             if isinstance(self.value_last, Exception) and not TypeChecker.check__exception(self.VALIDATE_LINK):

@@ -321,7 +321,8 @@ class ValidChains(Valid):
     ----------
     val_chains = ValidChains(
         chains=[
-            Valid(1),
+            True,
+            1+1 == 2,
             Valid(2),
             Valid(3, chain_cum=False),
             ValidChains([Valid(21), Valid(22)], chain_cum=False),

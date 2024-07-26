@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 3, 14)
+    VERSION: tuple[int, int, int] = (0, 4, 0)
     TODO: list[str] = [
         "..."
     ]
@@ -94,10 +94,10 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-
-
-
-        "[Valid] add get_bool",
+        "[ResultExpect*] full deprecate",
+        "[ResultFunc] deprecate",
+        "[Valid/Chains] add by replacing ResultExpect",
+        "[ValueUnit/Variants] zero rename",
     ]
 
 

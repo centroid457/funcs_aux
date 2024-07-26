@@ -11,6 +11,13 @@
 ********************************************************************************
 ## NEWS
 
+0.4.0 (2024/07/26 15:24:48)
+------------------------------
+- [ResultExpect*] full deprecate  
+- [ResultFunc] deprecate  
+- [Valid/Chains] add by replacing ResultExpect  
+- [ValueUnit/Variants] zero rename  
+
 0.3.14 (2024/07/23 10:16:44)
 ------------------------------
 - [ResultCum] fix str for LogLines  

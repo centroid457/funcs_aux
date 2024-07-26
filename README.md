@@ -9,7 +9,7 @@
 ![Commit/Count/y](https://img.shields.io/github/commit-activity/y/centroid457/funcs_aux)
 ![Commit/Count/m](https://img.shields.io/github/commit-activity/m/centroid457/funcs_aux)
 
-# funcs_aux (current v0.3.14/![Ver/Pypi Latest](https://img.shields.io/pypi/v/funcs_aux?label=pypi%20latest))
+# funcs_aux (current v0.4.0/![Ver/Pypi Latest](https://img.shields.io/pypi/v/funcs_aux?label=pypi%20latest))
 
 ## DESCRIPTION_SHORT
 useful funcs in one place
@@ -22,7 +22,6 @@ Designed to collect useful funcs in one place!
 ## Features
 1. RESULTS:  
 	- ResultValue - resolved ambiguity with None-result for any method result!  
-	- ResultFunc  
 	- ResultCum  
 2. ITERABLES:  
 	- work with any iterable data by path/...  

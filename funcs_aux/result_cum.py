@@ -1,4 +1,7 @@
+"""
 # TODO: NEED DEPRECATE IT!!!
+but maybe leave it on!
+"""
 
 
 from typing import *
@@ -110,7 +113,7 @@ class ResultCum:
             if isinstance(step, Valid):
                 if not step.finished:
                     step.run()
-                self.log_lines__add(step.str_last)
+                self.log_lines__add(str(step))
 
         if msg:
             self.log_lines__add(msg)

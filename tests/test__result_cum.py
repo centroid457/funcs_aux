@@ -7,7 +7,7 @@ from object_info import *
 
 
 # =====================================================================================================================
-VALUE_VALIDATE__TRUE = Valid(True)
+VALIDATE__TRUE = Valid(True)
 
 
 # =====================================================================================================================
@@ -28,15 +28,15 @@ def test__log_lines():
     # Valid --------------------------
     victim.clear()
     assert victim.LOG_LINES == []
-    victim.result__apply_step(VALUE_VALIDATE__TRUE)
-    assert victim.LOG_LINES == [VALUE_VALIDATE__TRUE.str_last]
+    victim.result__apply_step(VALIDATE__TRUE)
+    assert victim.LOG_LINES == [str(VALIDATE__TRUE)]
 
     # msg --------------------------
     victim.clear()
     assert victim.LOG_LINES == []
     assert victim.log_last__get() is None
-    victim.result__apply_step(VALUE_VALIDATE__TRUE, msg="newMsg")
-    assert victim.LOG_LINES == [VALUE_VALIDATE__TRUE.str_last, "newMsg"]
+    victim.result__apply_step(VALIDATE__TRUE, msg="newMsg")
+    assert victim.LOG_LINES == [str(VALIDATE__TRUE), "newMsg"]
     assert victim.log_last__get() == "newMsg"
 
 
@@ -56,8 +56,8 @@ def test__step_history():
     victim.result__apply_step("Hello", False)
     assert victim.STEP_HISTORY == [(True, True), (False, False), (False, None), (True, "Hello")]
 
-    victim.result__apply_step(VALUE_VALIDATE__TRUE)
-    assert victim.STEP_HISTORY == [(True, True), (False, False), (False, None), (True, "Hello"), (True, VALUE_VALIDATE__TRUE)]
+    victim.result__apply_step(VALIDATE__TRUE)
+    assert victim.STEP_HISTORY == [(True, True), (False, False), (False, None), (True, "Hello"), (True, VALIDATE__TRUE)]
 
     victim.clear()
     assert victim.STEP_HISTORY == []
@@ -81,8 +81,8 @@ def test__step_last():
     victim.result__apply_step("True")
     assert victim.step_last__get() == "True"
 
-    victim.result__apply_step(VALUE_VALIDATE__TRUE)
-    assert victim.step_last__get() == VALUE_VALIDATE__TRUE
+    victim.result__apply_step(VALIDATE__TRUE)
+    assert victim.step_last__get() == VALIDATE__TRUE
 
     victim.clear()
     try:
@@ -139,7 +139,7 @@ def test__result():
 
     # ----------------------
     victim.clear()
-    victim.result__apply_step(VALUE_VALIDATE__TRUE)
+    victim.result__apply_step(VALIDATE__TRUE)
     assert victim.result is True
     assert bool(victim) is True
 

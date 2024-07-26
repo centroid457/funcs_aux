@@ -315,7 +315,7 @@ class Valid:
 
 
 # =====================================================================================================================
-TYPE__CHAINS = list[Valid, 'ValidChains', Any]      # all Any will be converted to Valid!
+TYPE__CHAINS = list[Union[Valid, 'ValidChains', Any]]      # all Any will be converted to Valid!
 
 
 # =====================================================================================================================

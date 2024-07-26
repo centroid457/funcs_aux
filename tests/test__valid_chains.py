@@ -10,7 +10,7 @@ class Test__ValidChains:
     # @classmethod
     # def setup_class(cls):
     #     pass
-    #     cls.Victim = type("Victim", (Value_WithUnit,), {})
+    #     cls.Victim = type("Victim", (ValueUnit,), {})
     # @classmethod
     # def teardown_class(cls):
     #     pass

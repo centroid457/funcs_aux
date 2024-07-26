@@ -61,7 +61,7 @@ pass
 
 
 # TODO: rename to Value_WithUnit_Arithm
-class Value_WithUnit(NumberArithmTranslateToAttr):
+class ValueUnit(NumberArithmTranslateToAttr):
     """
     GOAL
     ----
@@ -86,18 +86,18 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
 
     BEST USAGE
     ----------
-        assert Value_WithUnit('0.0k') == 0
-        assert Value_WithUnit('0,01k') == 10
+        assert ValueUnit('0.0k') == 0
+        assert ValueUnit('0,01k') == 10
 
-        assert Value_WithUnit('1нм') == '1n'    #RUS multipliers are acceptable! and mean the same!
+        assert ValueUnit('1нм') == '1n'    #RUS multipliers are acceptable! and mean the same!
 
-        assert Value_WithUnit('1k') == '1000'
-        assert Value_WithUnit('1kV') == 1000
-        assert Value_WithUnit('1kV') == '1k'
-        assert Value_WithUnit(1000) == '1kV'
+        assert ValueUnit('1k') == '1000'
+        assert ValueUnit('1kV') == 1000
+        assert ValueUnit('1kV') == '1k'
+        assert ValueUnit(1000) == '1kV'
 
-        assert Value_WithUnit(1001) > '1kV'
-        assert Value_WithUnit(1000) < '1.1kV'
+        assert ValueUnit(1001) > '1kV'
+        assert ValueUnit(1000) < '1.1kV'
     """
     # NESTED ----------------------
     NUMBER_ARITHM__GETATTR_NAME = "VALUE_PURE"
@@ -159,7 +159,7 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
         """
         CREATED SPECIALLY FOR
         ---------------------
-        if ypu want to decide somewhere return Value_WithUnit-object or just source
+        if ypu want to decide somewhere return ValueUnit-object or just source
         check source before applying
         """
         try:
@@ -259,7 +259,7 @@ class Value_WithUnit(NumberArithmTranslateToAttr):
 
 
 # =====================================================================================================================
-class Value_WithUnit_NoMulty(Value_WithUnit):
+class ValueUnit_NoMulty(ValueUnit):
     """
     this is just as parser! when you need only get number near the unit without object arithmetic acceptable.
     but with comparing methods.

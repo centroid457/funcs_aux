@@ -30,7 +30,7 @@ class Test__Valid_ClsMethods:
     # @classmethod
     # def setup_class(cls):
     #     pass
-    #     cls.Victim = type("Victim", (Value_WithUnit,), {})
+    #     cls.Victim = type("Victim", (ValueUnit,), {})
     # @classmethod
     # def teardown_class(cls):
     #     pass
@@ -112,7 +112,7 @@ class Test__ValidVariants:
     # @classmethod
     # def setup_class(cls):
     #     pass
-    #     cls.Victim = type("Victim", (Value_WithUnit,), {})
+    #     cls.Victim = type("Victim", (ValueUnit,), {})
     # @classmethod
     # def teardown_class(cls):
     #     pass

@@ -15,7 +15,7 @@ from .value_not_passed import (
 )
 from .value_unit import (
     # BASE
-    Value_WithUnit,
+    ValueUnit,
     # AUX
     UnitBase,
     UNIT_MULT__VARIANTS,
@@ -26,7 +26,7 @@ from .value_unit import (
 )
 from .value_variants import (
     # BASE
-    Value_FromVariants,
+    ValueVariants,
     # AUX
     # TYPES
     # EXX

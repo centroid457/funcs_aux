@@ -16,11 +16,11 @@ class Exx__VariantsIncompatible(Exception):     # TODO: seems need to deprecate 
 
 
 # =====================================================================================================================
-class Value_FromVariants:
+class ValueVariants:
     """
     used to keep separated VALUE and measure unit
     """
-    # TODO: combine with Value_WithUnit - just add ACCEPTABLE(*VARIANTS) and rename UNIT just as SUFFIX!
+    # TODO: combine with ValueUnit - just add ACCEPTABLE(*VARIANTS) and rename UNIT just as SUFFIX!
 
     # SETTINGS -----------------------
     CASE_INSENSITIVE: bool = True
@@ -59,7 +59,7 @@ class Value_FromVariants:
         return f"{self.VALUE}{self.VARIANTS}"
 
     def __eq__(self, other):
-        if isinstance(other, Value_FromVariants):
+        if isinstance(other, ValueVariants):
             other = other.VALUE
 
         # todo: decide is it correct using comparing by str()??? by now i think it is good enough! but maybe add it as parameter

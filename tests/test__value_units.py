@@ -10,7 +10,7 @@ class Test__WithUnit:
     # @classmethod
     # def setup_class(cls):
     #     pass
-    #     cls.Victim = type("Victim", (Value_WithUnit,), {})
+    #     cls.Victim = type("Victim", (ValueUnit,), {})
     # @classmethod
     # def teardown_class(cls):
     #     pass
@@ -55,7 +55,7 @@ class Test__WithUnit:
         ]
     )
     def test__validate(self, args, _EXPECTED):
-        func_link = Value_WithUnit.validate
+        func_link = ValueUnit.validate
         pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ class Test__WithUnit:
         ]
     )
     def test__parse(self, source, val_orig, val_pure, mult, unit, unit_mult, unit_base):
-        victim = Value_WithUnit(source)
+        victim = ValueUnit(source)
         assert victim.VALUE == val_orig
         assert victim.VALUE_PURE == val_pure
         assert victim.MULT == mult
@@ -108,7 +108,7 @@ class Test__WithUnit:
         ]
     )
     def test__str(self, args, _EXPECTED):
-        func_link = lambda: str(Value_WithUnit(args))
+        func_link = lambda: str(ValueUnit(args))
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ class Test__WithUnit:
         ]
     )
     def test__multiplier(self, args, _EXPECTED):
-        func_link = lambda: Value_WithUnit(args).MULT
+        func_link = lambda: ValueUnit(args).MULT
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
@@ -175,19 +175,19 @@ class Test__WithUnit:
         ]
     )
     def test__cmp(self, source1, source2, _EXPECTED):
-        func_link = lambda: Value_WithUnit(source1).__cmp__(source2)
+        func_link = lambda: ValueUnit(source1).__cmp__(source2)
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
 
 # =====================================================================================================================
 def test__arithm_x1():
-    victim = Value_WithUnit(1)
+    victim = ValueUnit(1)
     assert victim.VALUE == 1
     victim += 1
     assert victim.VALUE == 2
 
     # ---------------------------
-    victim = Value_WithUnit("1.1V")
+    victim = ValueUnit("1.1V")
 
     victim += 0.1
     assert str(victim) == "1.2V"
@@ -206,7 +206,7 @@ def test__arithm_x1():
 
 
 def test__arithm_x3():
-    victim = Value_WithUnit("1k")
+    victim = ValueUnit("1k")
     assert victim == 1000
     assert victim.VALUE == 1
     assert victim.VALUE_PURE == 1000
@@ -216,7 +216,7 @@ def test__arithm_x3():
     assert victim.VALUE_PURE == 2000
     assert int(victim) == 2000
 
-    victim = Value_WithUnit("1k")
+    victim = ValueUnit("1k")
     assert victim == 1000
     victim += 1
     # assert victim == 1001
@@ -229,11 +229,11 @@ def test__arithm_x3():
 
 
 def test__arithm_x3_EXPLORE():
-    victim = Value_WithUnit("1k") + 1
+    victim = ValueUnit("1k") + 1
     assert victim == 1001
 
     # ---------------------------
-    # victim = Value_WithUnit("1.1V")
+    # victim = ValueUnit("1.1V")
     #
     # victim += 0.1
     # assert str(victim) == "1.2V"

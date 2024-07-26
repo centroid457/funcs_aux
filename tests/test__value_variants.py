@@ -13,7 +13,7 @@ class Test__FromVariants:
     @classmethod
     def setup_class(cls):
         pass
-        cls.Victim = type("Victim", (Value_FromVariants,), {})
+        cls.Victim = type("Victim", (ValueVariants,), {})
 
     # @classmethod
     # def teardown_class(cls):

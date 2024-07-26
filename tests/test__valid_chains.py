@@ -30,14 +30,43 @@ class Test__ValidChains:
             ([None, ], False),
 
             ([0, ], False),
-            ([1, ], True),
+            ([1, ], True),      # CAREFUL assert 1 == True, assert 2 == False, assert 0 == False
+            ([2, ], False),
 
             ([[], ], False),
-            ([[None, ], ], True),
+            ([[None, ], ], False),
 
+            ([Valid(True), ], True),
+            ([Valid(False), ], False),
+            ([Valid(False, skip_link=True), ], True),
+            ([Valid(False, chain__cum=False), ], True),
         ]
     )
-    def test__single_types(self, chains, _EXPECTED):
+    def test__types_single(self, chains, _EXPECTED):
+        func_link = ValidChains(chains).run
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="chains, _EXPECTED",
+        argvalues=[
+            ([True, True, True], True),
+            ([True, False, True], False),
+
+            ([True, LAMBDA_TRUE, True], True),
+            ([True, LAMBDA_TRUE, ClsCallTrue()], True),
+
+            ([Valid(True), Valid(True)], True),
+            ([Valid(True), Valid(False)], False),
+            ([Valid(True), Valid(False, skip_link=True)], True),
+            ([Valid(True), Valid(False, chain__cum=False)], True),
+
+            ([True, ValidChains([True, True])], True),
+            ([True, ValidChains([False, ], skip_link=True)], True),
+            ([True, ValidChains([False, ], chain__cum=False)], True),
+        ]
+    )
+    def test__chains(self, chains, _EXPECTED):
         func_link = ValidChains(chains).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 

@@ -302,7 +302,7 @@ class Valid:
 
 
 # =====================================================================================================================
-TYPE__CHAINS = list[Valid, 'ValidChains'] | Any     # all Any will be converted to Valid!
+TYPE__CHAINS = list[Valid, 'ValidChains', Any]      # all Any will be converted to Valid!
 
 
 # =====================================================================================================================
@@ -336,17 +336,17 @@ class ValidChains(Valid):
     WHY NOT: 2?
     -----------
     """
-    __chains: TYPE__CHAINS
+    _CHAINS: TYPE__CHAINS
 
     def __init__(self, chains: TYPE__CHAINS, **kwargs):
         super().__init__(value_link=None, **kwargs)
-        self.__chains = chains
+        self._CHAINS = chains
 
     def __len__(self) -> int:
-        return len(self.__chains)
+        return len(self._CHAINS)
 
     def __iter__(self):
-        return iter(self.__chains)
+        return iter(self._CHAINS)
 
     def run(self) -> bool:
         self.clear()
@@ -370,6 +370,7 @@ class ValidChains(Valid):
                     if step.CHAIN__CUM:
                         self.validate_last &= step_result
                     if step.CHAIN__STOP_IF_FAIL and not step_result:
+                        self.log_lines.append("STOP")
                         break
             # ITER -----------
 

@@ -45,15 +45,6 @@ from .result_value import (
     TYPE__KWARGS,
     # EXX
 )
-from .result_chain import (
-    # BASE
-    ResultExpect_Base,
-    ResultExpect_Chain,
-    # AUX
-    # TYPES
-    TYPE__SKIP_IF,
-    # EXX
-)
 from .valid import (
     # BASE
     Valid,

@@ -127,11 +127,35 @@ class Test__ValidVariants:
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[
+            # BOOLING ---------------
+            # direct TRUE
+            ((0,), False),
+            ((2,), False),  # careful about 1 comparing (assert 0 == False, assert 1 == True, assert 2 != True)
+            (([],), False),
+            (([None,],), False),
+            (([1,],), False),
+
+            ((0, True), False),
+            ((2, True), False),
+            (([], True), False),
+            (([None, True],), False),
+            (([1, ], True), False),
+
+            # active BOOL
+            ((0, bool), False),
+            ((2, bool), True),
+            (([], bool), False),
+            (([None, ], bool), True),
+            (([1, ], bool), True),
+
+            # -----------------------
             ((LAMBDA_TRUE,), True),
             ((LAMBDA_TRUE, True), True),
             ((LAMBDA_TRUE, False), False),
             ((LAMBDA_TRUE, LAMBDA_TRUE), True),
             ((LAMBDA_TRUE, LAMBDA_FALSE), False),
+
+            ((LAMBDA_NONE,), False),
 
             ((LAMBDA_FALSE,), False),
             ((LAMBDA_FALSE, False), True),

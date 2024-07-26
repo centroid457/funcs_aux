@@ -31,6 +31,10 @@ class Valid:
     only funcs/methods will be called
     if Class - no call! no init!
 
+    3. VALIDATE
+    if final value - it will be compared directly by compare_doublesided.
+    So be careful about True (as default) and apply LAMBDA_BOOL(VALUE) if you need bool(val) comparing!
+
     BEST USAGE
     ----------
 
@@ -120,6 +124,11 @@ class Valid:
         self.log_lines = []
 
     def run(self) -> bool:
+        """
+        CONSTRAINTS
+        -----------
+        careful about 1 comparing (assert 0 == False, assert 1 == True, assert 2 != True)
+        """
         self.clear()
 
         # SKIP ---------------------
@@ -147,6 +156,10 @@ class Valid:
 
             elif TypeChecker.check__func_or_meth(self.VALIDATE_LINK):
                 self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
+
+                # elif self.VALIDATE_LINK is True:
+                #     # self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
+                #     # dont use it!
 
             else:
                 self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)

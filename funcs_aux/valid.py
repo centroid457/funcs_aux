@@ -121,7 +121,7 @@ class Valid:
     def clear(self):
         self.skip_last = False
         self.finished = None
-        self.value_last = True
+        self.value_last = None
         self.validate_last = True
         self.log_lines = []
 
@@ -375,6 +375,10 @@ class ValidChains(Valid):
             self.finished = False
             self.log_lines.append(f"(START) len={len(self)}")
 
+            # init self.validate_last if None -----------
+            if self.validate_last is None:
+                self.validate_last = True
+
             # ITER -----------
             for index, step in enumerate(self):
                 if not isinstance(step, (Valid, ValidChains)):
@@ -387,11 +391,11 @@ class ValidChains(Valid):
                     if step.CHAIN__CUM:
                         self.validate_last &= step_result
                     if step.CHAIN__STOP_IF_FAIL and not step_result:
-                        self.log_lines.append(f"(FAIL STOP) {index=}/len={len(self)}")
+                        self.log_lines.append(f"(FAIL STOP) [result={bool(self)}]{index=}/len={len(self)}")
                         break
             # ITER -----------
 
-            self.log_lines.append(f"(SUCCESS FINISH) len={len(self)}")
+            self.log_lines.append(f"(FINISH) [result={bool(self)}]/len={len(self)}")
             self.finished = True
             # ============================
 

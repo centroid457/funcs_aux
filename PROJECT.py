@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 3)
+    VERSION: tuple[int, int, int] = (0, 4, 4)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Valid] fix str()",
+        "[ValidChains] fix str() by adding START/STOP/FINISH, +fix default None for validate_last",
     ]
 
 

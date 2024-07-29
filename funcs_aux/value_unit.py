@@ -60,7 +60,7 @@ UNIT_MULT__VARIANTS: dict[str, float | int] = {
 pass
 
 
-# TODO: rename to Value_WithUnit_Arithm
+# TODO: rename to ValueUnit_Arithm
 class ValueUnit(NumberArithmTranslateToAttr):
     """
     GOAL

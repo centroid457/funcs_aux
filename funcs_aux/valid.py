@@ -373,6 +373,7 @@ class ValidChains(Valid):
         if not self.skip_last:
             # WORK =======================
             self.finished = False
+            self.log_lines.append(f"(START) len={len(self)}")
 
             # ITER -----------
             for index, step in enumerate(self):
@@ -386,14 +387,25 @@ class ValidChains(Valid):
                     if step.CHAIN__CUM:
                         self.validate_last &= step_result
                     if step.CHAIN__STOP_IF_FAIL and not step_result:
-                        self.log_lines.append("STOP")
+                        self.log_lines.append(f"(FAIL STOP) {index=}/len={len(self)}")
                         break
             # ITER -----------
 
+            self.log_lines.append(f"(SUCCESS FINISH) len={len(self)}")
             self.finished = True
             # ============================
 
         return bool(self)
+
+
+# =====================================================================================================================
+if __name__ == "__main__":
+    victim = ValidChains([Valid(True), Valid(False)])
+    print(victim)
+    print()
+
+    victim.run()
+    print(victim)
 
 
 # =====================================================================================================================

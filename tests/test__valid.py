@@ -187,5 +187,68 @@ class Test__ValidVariants:
         func_link = Valid(*args).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="args",
+        argvalues=[
+            # BOOLING ---------------
+            # direct TRUE
+            (0,),
+            (2,),  # careful about 1 comparing (assert 0 == False, assert 1 == True, assert 2 != True)
+            ([],),
+            ([None,],),
+            ([1,],),
+
+            (0, True),
+            (2, True),
+            (([], True)),
+            ([None, True],),
+            ([1, ], True),
+
+            # active BOOL
+            (0, bool),
+            (2, bool),
+            ([], bool),
+            ([None, ], bool),
+            ([1, ], bool),
+
+            # -----------------------
+            (LAMBDA_TRUE,),
+            (LAMBDA_TRUE, True),
+            (LAMBDA_TRUE, False),
+            (LAMBDA_TRUE, LAMBDA_TRUE),
+            (LAMBDA_TRUE, LAMBDA_FALSE),
+
+            (LAMBDA_NONE,),
+
+            (LAMBDA_FALSE,),
+            (LAMBDA_FALSE, False),
+            (LAMBDA_FALSE, LAMBDA_TRUE),
+            (LAMBDA_FALSE, LAMBDA_EXX),
+
+            (LAMBDA_EXX, True),
+            (LAMBDA_EXX, LAMBDA_TRUE),
+            (LAMBDA_EXX,),
+            (LAMBDA_EXX, LAMBDA_EXX),
+            (LAMBDA_EXX, Exception),
+
+            (True, None),
+            (lambda: True, None),
+
+            (True, lambda val: val is True),
+            (LAMBDA_TRUE, lambda val: val is True),
+
+            (lambda: 1, lambda val: 0 < val < 2),
+            (lambda: 1, lambda val: 0 < val < 1),
+
+            (lambda: "1", lambda val: 0 < val < 2),
+            (lambda: "1", lambda val: 0 < int(val) < 2),
+            (lambda: "1.0", lambda val: 0 < int(val) < 2),
+            (lambda: "1.0", lambda val: 0 < float(val) < 2),
+        ]
+    )
+    def test__str(self, args):
+        assert str(Valid(*args)) is not None
+
 
 # =====================================================================================================================

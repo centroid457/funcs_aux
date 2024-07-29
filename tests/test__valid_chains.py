@@ -70,5 +70,28 @@ class Test__ValidChains:
         func_link = ValidChains(chains).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="chains",
+        argvalues=[
+            [True, True, True],
+            [True, False, True],
+
+            [True, LAMBDA_TRUE, True],
+            [True, LAMBDA_TRUE, ClsCallTrue()],
+
+            [Valid(True), Valid(True)],
+            [Valid(True), Valid(False)],
+            [Valid(True), Valid(False, skip_link=True)],
+            [Valid(True), Valid(False, chain__cum=False)],
+
+            [True, ValidChains([True, True])],
+            [True, ValidChains([False, ], skip_link=True)],
+            [True, ValidChains([False, ], chain__cum=False)],
+        ]
+    )
+    def test__str(self, chains):
+        assert str(ValidChains(chains)) is not None
+
 
 # =====================================================================================================================

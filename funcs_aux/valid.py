@@ -92,6 +92,8 @@ class Valid:
             chain__cum: Optional[bool] = None,
             chain__stop_if_fail: Optional[bool] = None,
     ):
+        self.clear()
+
         self.VALUE_LINK = value_link
 
         if validate_link is not None:

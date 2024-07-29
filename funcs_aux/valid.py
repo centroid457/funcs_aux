@@ -110,7 +110,7 @@ class Valid:
         if chain__stop_if_fail is not None:
             self.CHAIN__STOP_IF_FAIL = chain__stop_if_fail
 
-    def run_if_not_finished(self) -> bool:
+    def run__if_not_finished(self) -> bool:
         if not self.finished:
             return self.run()
         else:

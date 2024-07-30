@@ -4,8 +4,10 @@ from object_info import *
 
 
 # =====================================================================================================================
-TYPE__VALUE_LINK = Union[Any, Exception, Callable[[], Any | Exception]]
-TYPE__BOOL_LINK = Union[bool, Any, Exception, Callable[[Any], bool | Exception]]
+TYPE__VALUE_LINK = Union[Any, Exception, Callable[[...], Any | Exception]]
+TYPE__BOOL_LINK = Union[bool, Any, Exception, Callable[[Any, ...], bool | Exception]]
+TYPE__ARGS = tuple[Any, ...]
+TYPE__KWARGS = dict[str, Any]
 
 
 # =====================================================================================================================
@@ -52,6 +54,11 @@ class Valid:
     VALUE_LINK: TYPE__VALUE_LINK
     VALIDATE_LINK: TYPE__BOOL_LINK = True
 
+    ARGS__VALUE: TYPE__ARGS = None
+    ARGS__VALIDATE: TYPE__ARGS = None
+    KWARGS__VALUE: TYPE__KWARGS = None
+    KWARGS__VALIDATE: TYPE__KWARGS = None
+
     STR_PATTERN: str = "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE},finished={0.finished})"
 
     # RESULT ACTUAL ------------------------------
@@ -86,6 +93,11 @@ class Valid:
             validate_link: Optional[TYPE__BOOL_LINK] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
 
+            args__value: TYPE__ARGS = None,
+            args__validate: TYPE__ARGS = None,
+            kwargs__value: TYPE__KWARGS = None,
+            kwargs__validate: TYPE__KWARGS = None,
+
             title: Optional[str] = None,
             comment: Optional[str] = None,
 
@@ -101,6 +113,13 @@ class Valid:
         if skip_link is not None:
             self.SKIP_LINK = skip_link
 
+        # ARGS/KWARGS --------------------------------
+        self.ARGS__VALUE = args__value or ()
+        self.ARGS__VALIDATE = args__validate or ()
+        self.KWARGS__VALUE = kwargs__value or {}
+        self.KWARGS__VALIDATE = kwargs__validate or {}
+
+        # INFO ---------------------------------------
         if title:
             self.TITLE = title
         if comment:
@@ -141,7 +160,7 @@ class Valid:
             self.finished = False
 
             # VALUE ---------------------
-            self.value_last = self.get_result_or_exx(self.VALUE_LINK)
+            self.value_last = self.get_result_or_exx(self.VALUE_LINK, args=self.ARGS__VALUE, kwargs=self.KWARGS__VALUE)
 
             # TODO: maybe add ArgsKwargs but it is too complicated! add only in critical obligatory situation!
             # if TypeChecker.check__func_or_meth(self.VALUE_LINK):
@@ -157,7 +176,8 @@ class Valid:
                 self.validate_last = TypeChecker.check__nested__by_cls_or_inst(self.value_last, self.VALIDATE_LINK)
 
             elif TypeChecker.check__func_or_meth(self.VALIDATE_LINK):
-                self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
+                args_validate = (self.value_last, *self.ARGS__VALIDATE)
+                self.validate_last = self.get_result_or_exx(self.VALIDATE_LINK, args=args_validate, kwargs=self.KWARGS__VALIDATE)
 
                 # elif self.VALIDATE_LINK is True:
                 #     # self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
@@ -194,7 +214,7 @@ class Valid:
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
-    def get_result_or_exx(cls, source: Any | Callable[..., Any], args: list[Any] = None, kwargs: dict[str, Any] = None) -> Any | Exception:
+    def get_result_or_exx(cls, source: Any | Callable[..., Any], args: TYPE__ARGS = None, kwargs: TYPE__KWARGS = None) -> Any | Exception:
         """
         GOAL
         ----
@@ -221,7 +241,7 @@ class Valid:
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
-    def get_bool(cls, source: Any | Callable[..., Any], args: list[Any] = None, kwargs: dict[str, Any] = None) -> bool:
+    def get_bool(cls, source: Any | Callable[..., Any], args: TYPE__ARGS = None, kwargs: TYPE__KWARGS = None) -> bool:
         """
         GOAL
         ----

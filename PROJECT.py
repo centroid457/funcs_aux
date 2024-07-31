@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 5)
+    VERSION: tuple[int, int, int] = (0, 4, 6)
     TODO: list[str] = [
         "..."
     ]
@@ -94,10 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        ["[Valid]",
-            "add args/kwargs into Value/Validate",
-            "add ltgt/**",
-         ]
+        "[Valid/Chains] add timestamp_last",
     ]
 
 

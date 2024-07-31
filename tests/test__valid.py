@@ -224,6 +224,13 @@ class Test__ValidVariants:
 
             (LAMBDA_LIST_VALUES, (1, 2,), {"1": 11, }, [1, 2, 11], False),
             (LAMBDA_LIST_VALUES, (1, 2,), {"1": 11, }, [], True),
+
+            # VALUE --------------------
+            (0, (1, 3,), {}, Valid.legt, False),
+            (1, (1, 3,), {}, Valid.legt, True),
+            (2, (1, 3,), {}, Valid.legt, True),
+            (3, (1, 3,), {}, Valid.legt, False),
+            (4, (1, 3,), {}, Valid.legt, False),
         ]
     )
     def test__validate_with_args_kwargs__value(self, source, args, kwargs, validate, _EXPECTED):

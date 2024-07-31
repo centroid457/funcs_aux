@@ -335,6 +335,48 @@ class Valid:
         else:
             return result12
 
+    # -----------------------------------------------------------------------------------------------------------------
+    @staticmethod
+    def ltgt(source: Any, low: Any | None = None, high: Any | None = None) -> bool | Exception:
+        """
+        NOTE
+        ----
+        1. important to keep source at first place!
+        """
+        result = True
+        if low is not None:
+            result &= source > low
+        if high is not None:
+            result &= source < high
+        return result
+
+    @staticmethod
+    def ltge(source: Any, low: Any | None = None, high: Any | None = None) -> bool | Exception:
+        result = True
+        if low is not None:
+            result &= source > low
+        if high is not None:
+            result &= source <= high
+        return result
+
+    @staticmethod
+    def legt(source: Any, low: Any | None = None, high: Any | None = None) -> bool | Exception:
+        result = True
+        if low is not None:
+            result &= source >= low
+        if high is not None:
+            result &= source < high
+        return result
+
+    @staticmethod
+    def lege(source: Any, low: Any | None = None, high: Any | None = None) -> bool | Exception:
+        result = True
+        if low is not None:
+            result &= source >= low
+        if high is not None:
+            result &= source <= high
+        return result
+
 
 # =====================================================================================================================
 TYPE__CHAINS = list[Union[Valid, 'ValidChains', Any]]      # all Any will be converted to Valid!

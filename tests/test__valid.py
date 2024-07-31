@@ -231,6 +231,15 @@ class Test__ValidVariants:
             (2, (1, 3,), {}, Valid.legt, True),
             (3, (1, 3,), {}, Valid.legt, False),
             (4, (1, 3,), {}, Valid.legt, False),
+
+            (0, (1, None,), {}, Valid.legt, False),
+            (1, (1, None,), {}, Valid.legt, True),
+            (2, (1, None,), {}, Valid.legt, True),
+
+            (0, (None, 3,), {}, Valid.legt, True),
+            (1, (None, 3,), {}, Valid.legt, True),
+            (2, (None, 3,), {}, Valid.legt, True),
+            (3, (None, 3,), {}, Valid.legt, False),
         ]
     )
     def test__validate_with_args_kwargs__value(self, source, args, kwargs, validate, _EXPECTED):

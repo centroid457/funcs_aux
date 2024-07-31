@@ -11,6 +11,12 @@
 ********************************************************************************
 ## NEWS
 
+0.4.5 (2024/07/31 10:14:17)
+------------------------------
+- [Valid]:  
+	- add args/kwargs into Value/Validate  
+	- add ltgt/**  
+
 0.4.4 (2024/07/29 16:40:49)
 ------------------------------
 - [ValidChains] fix str() by adding START/STOP/FINISH, +fix default None for validate_last  

@@ -93,7 +93,7 @@ class Test__Valid_ClsMethods:
             (LAMBDA_NONE, False),
 
             (([]), False),
-            ((LAMBDA_LIST), False),
+            ((LAMBDA_LIST_DIRECT), False),
 
             (([1, ]), True),
 
@@ -183,8 +183,51 @@ class Test__ValidVariants:
             ((lambda: "1.0", lambda val: 0 < float(val) < 2), True),
         ]
     )
-    def test__validate(self, args, _EXPECTED):
+    def test__validate__types(self, args, _EXPECTED):
         func_link = Valid(*args).run
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="source, args, kwargs, validate, _EXPECTED",
+        argvalues=[
+            # bool --------------------
+            (0, (), {}, True, False),
+            (0, (1,2,), {1:1}, True, False),
+
+            (2, (), {}, bool, True),
+            (2, (1,2,), {1:1}, bool, True),
+
+            # VALUE --------------------
+            (LAMBDA_LIST_VALUES, (1,2,), {}, [1,2], True),
+            (LAMBDA_LIST_VALUES, (1,2,), {"1":11, }, [1,2,11], True),
+        ]
+    )
+    def test__validate__value_with_args_kwargs(self, source, args, kwargs, validate, _EXPECTED):
+        func_link = Valid(value_link=source, validate_link=validate, args__value=args, kwargs__value=kwargs).run
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="source, args, kwargs, validate, _EXPECTED",
+        argvalues=[
+            # bool --------------------
+            (0, (), {}, True, False),
+            (0, (1, 2,), {1: 1}, True, False),
+
+            (2, (), {}, bool, True),
+            (2, (1, 2,), {1: 1}, bool, False),
+
+            # VALUE --------------------
+            (LAMBDA_LIST_VALUES, (1, 2,), {}, [1, 2], False),
+            (LAMBDA_LIST_VALUES, (1, 2,), {}, [], True),
+
+            (LAMBDA_LIST_VALUES, (1, 2,), {"1": 11, }, [1, 2, 11], False),
+            (LAMBDA_LIST_VALUES, (1, 2,), {"1": 11, }, [], True),
+        ]
+    )
+    def test__validate_with_args_kwargs__value(self, source, args, kwargs, validate, _EXPECTED):
+        func_link = Valid(value_link=source, validate_link=validate, args__validate=args, kwargs__validate=kwargs).run
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------

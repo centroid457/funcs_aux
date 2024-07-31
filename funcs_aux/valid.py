@@ -1,4 +1,5 @@
 from typing import *
+import time
 from funcs_aux import *
 from object_info import *
 
@@ -59,9 +60,10 @@ class Valid:
     KWARGS__VALUE: TYPE__KWARGS = None
     KWARGS__VALIDATE: TYPE__KWARGS = None
 
-    STR_PATTERN: str = "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE},finished={0.finished})"
+    STR_PATTERN: str = "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE},finished={0.finished},timestamp_last={0.timestamp_last})"
 
     # RESULT ACTUAL ------------------------------
+    timestamp_last: float | None = None
     skip_last: bool = False
     finished: bool | None = None
     value_last: Any | Exception = None
@@ -138,6 +140,7 @@ class Valid:
             return bool(self)
 
     def clear(self):
+        self.timestamp_last = None
         self.skip_last = False
         self.finished = None
         self.value_last = None
@@ -151,6 +154,7 @@ class Valid:
         careful about 1 comparing (assert 0 == False, assert 1 == True, assert 2 != True)
         """
         self.clear()
+        self.timestamp_last = time.time()
 
         # SKIP ---------------------
         self.skip_last = self.get_bool(self.SKIP_LINK)
@@ -428,6 +432,7 @@ class ValidChains(Valid):
 
     def run(self) -> bool:
         self.clear()
+        self.timestamp_last = time.time()
 
         # SKIP ---------------------
         self.skip_last = self.get_bool(self.SKIP_LINK)
@@ -435,7 +440,7 @@ class ValidChains(Valid):
         if not self.skip_last:
             # WORK =======================
             self.finished = False
-            self.log_lines.append(f"(START) len={len(self)}")
+            self.log_lines.append(f"(START) len={len(self)}/timestamp={self.timestamp_last}")
 
             # init self.validate_last if None -----------
             if self.validate_last is None:

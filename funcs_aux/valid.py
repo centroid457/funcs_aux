@@ -48,7 +48,7 @@ class Valid:
     -----------
     """
 
-    TITLE: str = ""
+    NAME: str = ""      # TODO: realise access to Valid from Chains!
     COMMENT: str = ""
 
     SKIP_LINK: TYPE__BOOL_LINK = None
@@ -60,7 +60,7 @@ class Valid:
     KWARGS__VALUE: TYPE__KWARGS = None
     KWARGS__VALIDATE: TYPE__KWARGS = None
 
-    STR_PATTERN: str = "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},title={0.TITLE},finished={0.finished},timestamp_last={0.timestamp_last})"
+    STR_PATTERN: str = "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},name={0.NAME},finished={0.finished},timestamp_last={0.timestamp_last})"
 
     # RESULT ACTUAL ------------------------------
     timestamp_last: float | None = None
@@ -100,7 +100,7 @@ class Valid:
             kwargs__value: TYPE__KWARGS = None,
             kwargs__validate: TYPE__KWARGS = None,
 
-            title: Optional[str] = None,
+            name: Optional[str] = None,
             comment: Optional[str] = None,
 
             chain__cum: Optional[bool] = None,
@@ -122,8 +122,8 @@ class Valid:
         self.KWARGS__VALIDATE = kwargs__validate or {}
 
         # INFO ---------------------------------------
-        if title:
-            self.TITLE = title
+        if name:
+            self.NAME = name
         if comment:
             self.COMMENT = comment
 

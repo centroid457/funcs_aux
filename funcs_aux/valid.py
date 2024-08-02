@@ -7,7 +7,7 @@ from object_info import *
 # =====================================================================================================================
 TYPE__VALUE_LINK = Union[Any, Exception, Callable[[...], Any | Exception]]
 TYPE__BOOL_LINK = Union[bool, Any, Exception, Callable[[Any, ...], bool | Exception]]
-TYPE__ARGS = tuple[Any, ...]
+TYPE__ARGS = tuple[Any, ...]    # | Any  # FIXME: dont use None directly!!! only withing Tuple! its an IDEA! need finish!!!
 TYPE__KWARGS = dict[str, Any]
 
 

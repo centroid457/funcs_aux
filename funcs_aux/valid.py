@@ -7,8 +7,6 @@ from object_info import *
 # =====================================================================================================================
 TYPE__VALUE_LINK = Union[Any, Exception, Callable[[...], Any | Exception]]
 TYPE__BOOL_LINK = Union[bool, Any, Exception, Callable[[Any, ...], bool | Exception]]
-TYPE__ARGS = tuple[Any, ...]    # | Any  # FIXME: dont use None directly!!! only withing Tuple! its an IDEA! need finish!!!
-TYPE__KWARGS = dict[str, Any]
 
 
 # =====================================================================================================================
@@ -97,6 +95,7 @@ class Valid:
 
             args__value: TYPE__ARGS = None,
             args__validate: TYPE__ARGS = None,
+
             kwargs__value: TYPE__KWARGS = None,
             kwargs__validate: TYPE__KWARGS = None,
 
@@ -116,8 +115,9 @@ class Valid:
             self.SKIP_LINK = skip_link
 
         # ARGS/KWARGS --------------------------------
-        self.ARGS__VALUE = args__value or ()
-        self.ARGS__VALIDATE = args__validate or ()
+        self.ARGS__VALUE = args__ensure_tuple(args__value)
+        self.ARGS__VALIDATE = args__ensure_tuple(args__validate)
+
         self.KWARGS__VALUE = kwargs__value or {}
         self.KWARGS__VALIDATE = kwargs__validate or {}
 

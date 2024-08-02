@@ -94,7 +94,8 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Valid] zero idea",
+        
+        "[ResultValue] add args__ensure_tuple and apply in Valid",
     ]
 
 

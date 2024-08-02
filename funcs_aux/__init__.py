@@ -37,6 +37,7 @@ from .value_variants import (
 from .result_value import (
     # BASE
     ResultValue,
+    args__ensure_tuple,
     # AUX
     # TYPES
     TYPE__FUNC,
@@ -51,6 +52,8 @@ from .valid import (
     ValidChains,
     # AUX
     # TYPES
+    TYPE__VALUE_LINK,
+    TYPE__BOOL_LINK,
     # EXX
 )
 from .result_cum import (

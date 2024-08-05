@@ -201,6 +201,12 @@ class Test__ValidVariants:
             # VALUE --------------------
             (LAMBDA_LIST_VALUES, (1,2,), {}, [1,2], True),
             (LAMBDA_LIST_VALUES, (1,2,), {"1":11, }, [1,2,11], True),
+
+            # ARG COLLECTION TYPES --------------------
+            (LAMBDA_LIST_VALUES, 1, {}, [1, ], True),
+            (LAMBDA_LIST_VALUES, ClsIterYield, {}, [ClsIterYield, ], True),
+            (LAMBDA_LIST_VALUES, ClsIterYield(), {}, [ClsIterYield(), ], True),
+            (LAMBDA_LIST_VALUES, ClsGen(), {}, [ClsGen(), ], True),
         ]
     )
     def test__validate__value_with_args_kwargs(self, source, args, kwargs, validate, _EXPECTED):

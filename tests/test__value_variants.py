@@ -101,7 +101,7 @@ class Test__FromVariants:
 
     def test__types__None(self):
         victim = self.Victim(variants=["NONE", ])
-        assert victim.VALUE == Value_NotPassed
+        assert victim.VALUE == ArgsEmpty
         # assert str(victim) == "NONE"
 
         victim = self.Victim(value=None, variants=["NONE", ])

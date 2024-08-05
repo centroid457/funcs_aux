@@ -25,12 +25,12 @@ class ValueVariants:
     # SETTINGS -----------------------
     CASE_INSENSITIVE: bool = True
     VARIANTS: list[Any] = None
-    VALUE_DEFAULT: Any = Value_NotPassed
+    VALUE_DEFAULT: Any = ArgsEmpty
 
     # DATA ---------------------------
-    __value: Any = Value_NotPassed
+    __value: Any = ArgsEmpty
 
-    def __init__(self, value: Union[str, Any] = Value_NotPassed, variants: list[Union[str, Any]] = None, case_insensitive: bool = None):
+    def __init__(self, value: Union[str, Any] = ArgsEmpty, variants: list[Union[str, Any]] = None, case_insensitive: bool = None):
         """
         :param value: None mean NotSelected/NotSet!
             if you need set None - use string VALUE in any case! 'None'/NONE/none
@@ -45,7 +45,7 @@ class ValueVariants:
         # work ---------------
         self._variants_validate()
 
-        if value != Value_NotPassed:
+        if value != ArgsEmpty:
             self.VALUE_DEFAULT = value
             self.VALUE = value
 
@@ -122,7 +122,7 @@ class ValueVariants:
         """
         set VALUE into default only if default is exists!
         """
-        if self.VALUE_DEFAULT != Value_NotPassed:
+        if self.VALUE_DEFAULT != ArgsEmpty:
             self.VALUE = self.VALUE_DEFAULT
 
 

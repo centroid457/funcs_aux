@@ -61,7 +61,7 @@ class Valid:
     KWARGS__VALUE: TYPE__KWARGS = None
     KWARGS__VALIDATE: TYPE__KWARGS = None
 
-    STR_PATTERN: str = "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},skip_last={0.skip_last},name={0.NAME},finished={0.finished},timestamp_last={0.timestamp_last})"
+    STR_PATTERN: str = "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},args__validate={0.args__validate},value_last={0.value_last},skip_last={0.skip_last},name={0.NAME},finished={0.finished},timestamp_last={0.timestamp_last})"
 
     # RESULT ACTUAL ------------------------------
     timestamp_last: float | None = None

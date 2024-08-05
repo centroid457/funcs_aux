@@ -1,12 +1,15 @@
 from typing import *
 import time
-from funcs_aux import *
+# from funcs_aux import *
 from object_info import *
+from funcs_aux import args__ensure_tuple, TYPE__ARGS, TYPE__KWARGS
 
 
 # =====================================================================================================================
-TYPE__VALUE_LINK = Union[Any, Exception, Callable[[...], Any | Exception]]
-TYPE__BOOL_LINK = Union[bool, Any, Exception, Callable[[Any, ...], bool | Exception]]
+TYPE__EXCEPTION = Union[Exception, Type[Exception]]
+TYPE__SOURCE_LINK = Union[Any, TYPE__EXCEPTION, Callable[[...], Any | NoReturn]]
+TYPE__VALIDATE_LINK = Union[bool, Any, TYPE__EXCEPTION, Callable[[Any, ...], bool | NoReturn]]
+TYPE__BOOL_LINK = Union[bool, Any, TYPE__EXCEPTION, Callable[[...], bool | NoReturn]]
 
 
 # =====================================================================================================================
@@ -50,8 +53,8 @@ class Valid:
     COMMENT: str = ""
 
     SKIP_LINK: TYPE__BOOL_LINK = None
-    VALUE_LINK: TYPE__VALUE_LINK
-    VALIDATE_LINK: TYPE__BOOL_LINK = True
+    VALUE_LINK: TYPE__SOURCE_LINK
+    VALIDATE_LINK: TYPE__VALIDATE_LINK = True
 
     ARGS__VALUE: TYPE__ARGS = None
     ARGS__VALIDATE: TYPE__ARGS = None
@@ -89,8 +92,8 @@ class Valid:
 
     def __init__(
             self,
-            value_link: TYPE__VALUE_LINK,
-            validate_link: Optional[TYPE__BOOL_LINK] = None,
+            value_link: TYPE__SOURCE_LINK,
+            validate_link: Optional[TYPE__VALIDATE_LINK] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
 
             args__value: TYPE__ARGS = None,

@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 9)
+    VERSION: tuple[int, int, int] = (0, 4, 10)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[ARGS] create and separate +NEED FIX TESTS!!!",
+        "[ARGS] create separated file + add tests",
     ]
 
 

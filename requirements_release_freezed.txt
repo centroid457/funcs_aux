@@ -17,7 +17,7 @@ docutils==0.21.2
 dummy_module==0.0.2
 fastapi==0.112.0
 frozenlist==1.4.1
-funcs_aux==0.4.8
+funcs_aux==0.4.9
 h11==0.14.0
 idna==3.7
 importlib_metadata==8.2.0
@@ -48,7 +48,7 @@ PyQt5_sip==12.15.0
 pyqt_templates==0.1.0
 pyserial==3.5
 pytest==8.3.2
-pytest_aux==0.1.8
+pytest_aux==0.1.10
 pywin32-ctypes==0.2.2
 PyYAML==6.0.1
 readme_renderer==44.0

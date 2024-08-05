@@ -92,9 +92,11 @@ class Test__Valid_ClsMethods:
             (LAMBDA_FALSE, False),
             (LAMBDA_NONE, False),
 
-            (([]), False),
+            ((), Exception),
+            (([], ), False),
             ((LAMBDA_LIST_DIRECT), False),
 
+            (([None, ]), False),
             (([1, ]), True),
 
             (ClsBoolTrue(), True),

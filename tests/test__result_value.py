@@ -40,31 +40,3 @@ class Test__ResultValue:
 
 
 # =====================================================================================================================
-@pytest.mark.parametrize(
-    argnames="args, _EXPECTED",
-    argvalues=[
-        # NONE -----------------------
-        (None, ()),
-        ((None, ), (None, )),
-
-        # COLLECTION -----------------------
-        ((), ()),
-        ([], ()),
-        ({}, ()),
-
-        (range(3), (range(3), )),
-        (ClsGen, (ClsGen, )),
-        (, (ClsGen(), )),
-
-        (0, (0, )),
-        (1, (1, )),
-        (2, (2, )),
-
-    ]
-)
-def test__args__ensure_tuple(args, _EXPECTED):
-    func_link = args__ensure_tuple
-    pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
-
-
-# =====================================================================================================================

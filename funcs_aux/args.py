@@ -132,7 +132,7 @@ def args__ensure_tuple(args: TYPE__ARGS = ()) -> tuple:
         elementary collection would unpack!
     """
     # APPLY DEFAULT --------------------------
-    if args == Default or args == ArgsEmpty:
+    if args is Default or args is ArgsEmpty:    # use only IS!
         args = ()
     elif isinstance(args, Default):
         args = args()

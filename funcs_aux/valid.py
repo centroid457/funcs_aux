@@ -2,7 +2,7 @@ from typing import *
 import time
 # from funcs_aux import *
 from object_info import *
-from funcs_aux import args__ensure_tuple, TYPE__ARGS, TYPE__KWARGS
+from funcs_aux import args__ensure_tuple, TYPE__ARGS, TYPE__KWARGS, ArgsEmpty
 
 
 # =====================================================================================================================
@@ -56,8 +56,8 @@ class Valid:
     VALUE_LINK: TYPE__SOURCE_LINK
     VALIDATE_LINK: TYPE__VALIDATE_LINK = True
 
-    ARGS__VALUE: TYPE__ARGS = None
-    ARGS__VALIDATE: TYPE__ARGS = None
+    ARGS__VALUE: TYPE__ARGS = ()
+    ARGS__VALIDATE: TYPE__ARGS = ()
     KWARGS__VALUE: TYPE__KWARGS = None
     KWARGS__VALIDATE: TYPE__KWARGS = None
 
@@ -96,8 +96,8 @@ class Valid:
             validate_link: Optional[TYPE__VALIDATE_LINK] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
 
-            args__value: TYPE__ARGS = None,
-            args__validate: TYPE__ARGS = None,
+            args__value: TYPE__ARGS = (),
+            args__validate: TYPE__ARGS = (),
 
             kwargs__value: TYPE__KWARGS = None,
             kwargs__validate: TYPE__KWARGS = None,

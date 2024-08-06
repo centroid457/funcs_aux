@@ -62,11 +62,11 @@ class Valid:
     KWARGS__VALIDATE: TYPE__KWARGS = None
 
     # TODO: apply name from source!!! if not passed
-    # FIXME: need use all params like args/kwargs!!!
-    STR_PATTERN: str = ("{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},\n"
-                        "ARGS__VALUE={0.ARGS__VALUE},KWARGS__VALUE={0.KWARGS__VALUE},\n"
-                        "ARGS__VALIDATE={0.ARGS__VALIDATE},KWARGS__VALIDATE={0.KWARGS__VALIDATE},\n"
-                        "skip_last={0.skip_last},NAME={0.NAME},finished={0.finished},timestamp_last={0.timestamp_last})")
+    STR_PATTERN: str = ("{0.__class__.__name__}(\n"
+                        "...validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},\n"
+                        "...VALUE_LINK={0.VALUE_LINK},ARGS__VALUE={0.ARGS__VALUE},KWARGS__VALUE={0.KWARGS__VALUE},value_last={0.value_last},\n"
+                        "...VALIDATE_LINK={0.VALIDATE_LINK},ARGS__VALIDATE={0.ARGS__VALIDATE},KWARGS__VALIDATE={0.KWARGS__VALIDATE},\n"
+                        "...skip_last={0.skip_last},NAME={0.NAME},finished={0.finished},timestamp_last={0.timestamp_last})")
 
     # RESULT ACTUAL ------------------------------
     timestamp_last: float | None = None

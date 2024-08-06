@@ -17,7 +17,7 @@ docutils==0.21.2
 dummy_module==0.0.2
 fastapi==0.112.0
 frozenlist==1.4.1
-funcs_aux==0.4.11
+funcs_aux==0.4.12
 h11==0.14.0
 idna==3.7
 importlib_metadata==8.2.0
@@ -54,7 +54,7 @@ PyYAML==6.0.1
 readme_renderer==44.0
 requests==2.32.3
 requests-toolbelt==1.0.0
-requirements_checker==0.2.11
+requirements_checker==0.2.12
 rfc3986==2.0.0
 rich==13.7.1
 server_templates==0.3.3

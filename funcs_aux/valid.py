@@ -63,7 +63,10 @@ class Valid:
 
     # TODO: apply name from source!!! if not passed
     # FIXME: need use all params like args/kwargs!!!
-    STR_PATTERN: str = "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},args__validate={0.args__validate},value_last={0.value_last},skip_last={0.skip_last},name={0.NAME},finished={0.finished},timestamp_last={0.timestamp_last})"
+    STR_PATTERN: str = ("{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},value_last={0.value_last},\n"
+                        "ARGS__VALUE={0.ARGS__VALUE},KWARGS__VALUE={0.KWARGS__VALUE},\n"
+                        "ARGS__VALIDATE={0.ARGS__VALIDATE},KWARGS__VALIDATE={0.KWARGS__VALIDATE},\n"
+                        "skip_last={0.skip_last},NAME={0.NAME},finished={0.finished},timestamp_last={0.timestamp_last})")
 
     # RESULT ACTUAL ------------------------------
     timestamp_last: float | None = None
@@ -172,7 +175,7 @@ class Valid:
             self.value_last = self.get_result_or_exx(self.VALUE_LINK, args=self.ARGS__VALUE, kwargs=self.KWARGS__VALUE)
 
             # TODO: maybe add ArgsKwargs but it is too complicated! add only in critical obligatory situation!
-            # if TypeChecker.check__func_or_meth(self.VALUE_LINK):
+            # if TypeChecker.check__callable_func_meth_inst(self.VALUE_LINK):
             #     self.VALUE_ACTUAL = self.VALUE_LINK(*self.ARGS, **self.KWARGS)
             # else:
             #     self.VALUE_ACTUAL = self.VALUE_LINK
@@ -184,7 +187,7 @@ class Valid:
             elif TypeChecker.check__exception(self.VALIDATE_LINK):
                 self.validate_last = TypeChecker.check__nested__by_cls_or_inst(self.value_last, self.VALIDATE_LINK)
 
-            elif TypeChecker.check__func_or_meth(self.VALIDATE_LINK):
+            elif TypeChecker.check__callable_func_meth_inst(self.VALIDATE_LINK):
                 args_validate = (self.value_last, *self.ARGS__VALIDATE)
                 self.validate_last = self.get_result_or_exx(self.VALIDATE_LINK, args=args_validate, kwargs=self.KWARGS__VALIDATE)
 
@@ -239,7 +242,7 @@ class Valid:
         args = args or []
         kwargs = kwargs or {}
 
-        if TypeChecker.check__func_or_meth(source):
+        if TypeChecker.check__callable_func_meth_inst(source):
             try:
                 result = source(*args, **kwargs)
             except Exception as exx:

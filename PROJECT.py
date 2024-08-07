@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 15)
+    VERSION: tuple[int, int, int] = (0, 4, 16)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Explicit] rename +separate +use as base! +add cmp EQ/NE",
+        "[Valid] zero add derivatives ValidFailStop/*ContinueE",
     ]
 
 

@@ -55,7 +55,7 @@ class PROJECT(PROJECT_BASE):
     # add DOUBLE SPACE at the end of all lines! for correct representation in MD-viewers
     DESCRIPTION_SHORT: str = "useful funcs in one place"
     DESCRIPTION_LONG: str = """
-    
+
 Now its just a beginning!
 Designed to collect useful funcs in one place!
 """
@@ -65,7 +65,7 @@ Designed to collect useful funcs in one place!
 
         [
             "RESULTS",
-                "ResultValue - resolved ambiguity with None-result for any method result!",
+                "Explicit - resolved ambiguity with None-result for any method result!",
                 "ResultCum",
          ],
         [
@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 14)
+    VERSION: tuple[int, int, int] = (0, 4, 15)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Valid] fix STR_PATTERN2",
+        "[Explicit] rename +separate +use as base! +add cmp EQ/NE",
     ]
 
 

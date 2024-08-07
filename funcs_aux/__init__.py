@@ -59,6 +59,8 @@ from .value_explicit import (
 from .valid import (
     # BASE
     Valid,
+    ValidFailStop,
+    ValidFailContinue,
     ValidChains,
     # AUX
     # TYPES

@@ -77,7 +77,7 @@ class Valid:
 
     # CHAINS -------------------------------------
     CHAIN__CUM: bool = True
-    CHAIN__STOP_IF_FAIL: bool = True
+    CHAIN__FAIL_STOP: bool = True
 
     def get_finished_result_or_none(self) -> None | bool:
         """
@@ -110,7 +110,7 @@ class Valid:
             comment: Optional[str] = None,
 
             chain__cum: Optional[bool] = None,
-            chain__stop_if_fail: Optional[bool] = None,
+            chain__fail_stop: Optional[bool] = None,
     ):
         self.clear()
 
@@ -137,8 +137,8 @@ class Valid:
         # CHAINS -------------------------------------
         if chain__cum is not None:
             self.CHAIN__CUM = chain__cum
-        if chain__stop_if_fail is not None:
-            self.CHAIN__STOP_IF_FAIL = chain__stop_if_fail
+        if chain__fail_stop is not None:
+            self.CHAIN__FAIL_STOP = chain__fail_stop
 
     def run__if_not_finished(self) -> bool:
         if not self.finished:
@@ -390,6 +390,21 @@ class Valid:
 
 
 # =====================================================================================================================
+class ValidFailStop(Valid):
+    """
+    just a derivative
+    """
+    CHAIN__FAIL_STOP = True
+
+
+class ValidFailContinue(Valid):
+    """
+    just a derivative
+    """
+    CHAIN__FAIL_STOP = False
+
+
+# =====================================================================================================================
 TYPE__CHAINS = list[Union[Valid, 'ValidChains', Any]]      # all Any will be converted to Valid!
 
 
@@ -464,7 +479,7 @@ class ValidChains(Valid):
                 if not step.skip_last:
                     if step.CHAIN__CUM:
                         self.validate_last &= step_result
-                    if step.CHAIN__STOP_IF_FAIL and not step_result:
+                    if step.CHAIN__FAIL_STOP and not step_result:
                         self.log_lines.append(f"(FAIL STOP) [result={bool(self)}]{index=}/len={len(self)}")
                         break
             # ITER -----------

@@ -1,7 +1,5 @@
 import pytest
-
 from funcs_aux import *
-from funcs_aux import ResultValue
 
 
 # =====================================================================================================================

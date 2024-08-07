@@ -5,16 +5,23 @@
 
 
 # =====================================================================================================================
+from .value_explicit import (
+    # BASE
+    Explicit,
+    Default,
+    # AUX
+    # TYPES
+    TYPE__EXPLICIT,
+    TYPE__DEFAULT,
+    # EXX
+)
 from .args import (
     # BASE
     args__ensure_tuple,
     # AUX
-    Default,
     ArgsEmpty,
     # TYPES
-    TYPE__DEFAULT,
     TYPE__ARGS_EMPTY,
-
     TYPE__ARGS,
     TYPE__KWARGS,
     # EXX
@@ -41,13 +48,11 @@ from .value_variants import (
     Exx__VariantsIncompatible,
 )
 # ---------------------------------------------------------------------------------------------------------------------
-from .result_value import (
+from .value_explicit import (
     # BASE
-    ResultValue,
+    Explicit, Default, TYPE__EXPLICIT, TYPE__DEFAULT,
     # AUX
     # TYPES
-    TYPE__FUNC,
-    TYPE__FUNC_UNDER_VALUE,
     # EXX
 )
 # ---------------------------------------------------------------------------------------------------------------------

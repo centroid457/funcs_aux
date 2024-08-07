@@ -1,5 +1,5 @@
 from typing import *
-from funcs_aux import ResultValue
+from funcs_aux import Explicit
 
 
 # =====================================================================================================================
@@ -26,7 +26,7 @@ class Iterables:
             self,
             item_expected: Any,
             data: Optional[TYPE__ITERABLE] = None
-    ) -> Optional[ResultValue]:
+    ) -> Optional[Explicit]:
         """
         get FIRST original item from any collection by comparing str(expected).lower()==str(original).lower().
 
@@ -48,13 +48,13 @@ class Iterables:
             data = self.DATA
         for value in list(data):
             if str(value).lower() == str(item_expected).lower():
-                return ResultValue(value)
+                return Explicit(value)
 
     def path__get_original(
             self,
             path_expected: TYPE__ITERABLE_PATH_EXPECTED,
             data: Optional[TYPE__ITERABLE] = None,
-    ) -> Optional[ResultValue]:
+    ) -> Optional[Explicit]:
         """
         NOTES:
         1. path used as address KEY for dicts and as INDEX for other listed data
@@ -86,7 +86,7 @@ class Iterables:
                 address_original = self.item__get_original__case_insensitive(path_part, data)
                 if not address_original:
                     return
-                address_original = address_original.VALUE
+                address_original = address_original()
                 data = data[address_original]
 
             elif isinstance(data, (list, tuple)):
@@ -100,25 +100,25 @@ class Iterables:
                 return
             path_original.append(address_original)
 
-        return ResultValue(path_original)
+        return Explicit(path_original)
 
     def value_by_path__get(
             self,
             path_expected: TYPE__ITERABLE_PATH_EXPECTED,
             data: Optional[TYPE__ITERABLE] = None
-    ) -> Optional[ResultValue]:
+    ) -> Optional[Explicit]:
         if data is None:
             data = self.DATA
 
         # work ----------------------------
         path_original = self.path__get_original(path_expected, data)
         try:
-            for path_part in path_original.VALUE:
+            for path_part in path_original():
                 data = data[path_part]
         except:
             return
 
-        return ResultValue(data)
+        return Explicit(data)
 
     def value_by_path__set(
             self,
@@ -132,8 +132,8 @@ class Iterables:
         # work ----------------------------
         path_original = self.path__get_original(path_expected, data)
         try:
-            length = len(path_original.VALUE)
-            for pos, path_part in enumerate(path_original.VALUE, start=1):
+            length = len(path_original())
+            for pos, path_part in enumerate(path_original(), start=1):
                 if pos == length:
                     data[path_part] = value
                 else:

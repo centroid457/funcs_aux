@@ -1,5 +1,5 @@
 from funcs_aux import *
-from funcs_aux import ResultValue
+from funcs_aux import Explicit
 
 
 # =====================================================================================================================
@@ -24,36 +24,36 @@ class Test__1:
     def test__int(self):
         assert self.victim(0, [1]) is None
 
-        assert self.victim(1, [1]) == ResultValue(1)
-        assert self.victim(1, [1, 2]) == ResultValue(1)
-        assert self.victim(2, [1, 2]) == ResultValue(2)
+        assert self.victim(1, [1]) == Explicit(1)
+        assert self.victim(1, [1, 2]) == Explicit(1)
+        assert self.victim(2, [1, 2]) == Explicit(2)
 
-        assert self.victim(1, ["1", 2]) == ResultValue("1")
-        assert self.victim("1", ["1", 2]) == ResultValue("1")
+        assert self.victim(1, ["1", 2]) == Explicit("1")
+        assert self.victim("1", ["1", 2]) == Explicit("1")
 
-        assert self.victim(1, ["1", 1]) == ResultValue("1")
-        assert self.victim(1, [1, "1"]) == ResultValue(1)
+        assert self.victim(1, ["1", 1]) == Explicit("1")
+        assert self.victim(1, [1, "1"]) == Explicit(1)
 
-        assert self.victim("1", [1, 1]) == ResultValue(1)
+        assert self.victim("1", [1, 1]) == Explicit(1)
 
     def test__collections_1__iterables(self):
-        assert self.victim(1, [1, 2]) == ResultValue(1)
-        assert self.victim(1, (1, 2)) == ResultValue(1)
-        assert self.victim(1, {1, 2}) == ResultValue(1)
-        assert self.victim(1, range(5)) == ResultValue(1)
+        assert self.victim(1, [1, 2]) == Explicit(1)
+        assert self.victim(1, (1, 2)) == Explicit(1)
+        assert self.victim(1, {1, 2}) == Explicit(1)
+        assert self.victim(1, range(5)) == Explicit(1)
 
     def test__collections_2__dict(self):
-        assert self.victim(2, {1: 11, 2: 22}) == ResultValue(2)
-        assert self.victim("2", {1: 11, 2: 22}) == ResultValue(2)
-        assert self.victim(2, {1: 11, "2": 22}) == ResultValue("2")
-        assert self.victim("2", {1: 11, "2": 22}) == ResultValue("2")
+        assert self.victim(2, {1: 11, 2: 22}) == Explicit(2)
+        assert self.victim("2", {1: 11, 2: 22}) == Explicit(2)
+        assert self.victim(2, {1: 11, "2": 22}) == Explicit("2")
+        assert self.victim("2", {1: 11, "2": 22}) == Explicit("2")
 
     def test__case(self):
         assert self.victim("hell", ["hello123", 'hello']) is None
 
-        assert self.victim("hello", ["hello123", 'hello']) == ResultValue("hello")
-        assert self.victim("hello", ["hello123", 'HELLO']) == ResultValue("HELLO")
-        assert self.victim("heLLO", ["hello123", 'Hello']) == ResultValue("Hello")
+        assert self.victim("hello", ["hello123", 'hello']) == Explicit("hello")
+        assert self.victim("hello", ["hello123", 'HELLO']) == Explicit("HELLO")
+        assert self.victim("heLLO", ["hello123", 'Hello']) == Explicit("Hello")
 
 
 # =====================================================================================================================
@@ -76,54 +76,54 @@ class Test__2:
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__path__list(self):
-        assert self.victim([0, ], [[1], 2]) == ResultValue([0, ])
-        assert self.victim(["0", ], [[1], 2]) == ResultValue([0, ])
+        assert self.victim([0, ], [[1], 2]) == Explicit([0, ])
+        assert self.victim(["0", ], [[1], 2]) == Explicit([0, ])
 
         assert self.victim([0, 0], [1]) is None
-        assert self.victim([0, 0], [[1]]) == ResultValue([0, 0, ])
+        assert self.victim([0, 0], [[1]]) == Explicit([0, 0, ])
         assert self.victim([0, 1], [[1]]) is None
 
     def test__value__list__single(self):
-        assert self.victim(0, [1]) == ResultValue([0, ])
-        assert self.victim("0", [1]) == ResultValue([0, ])
+        assert self.victim(0, [1]) == Explicit([0, ])
+        assert self.victim("0", [1]) == Explicit([0, ])
 
         assert self.victim(1, [1]) is None
         assert self.victim("1", [1]) is None
 
-        assert self.victim(1, [1, 11]) == ResultValue([1, ])
-        assert self.victim("1", [1, 11]) == ResultValue([1, ])
+        assert self.victim(1, [1, 11]) == Explicit([1, ])
+        assert self.victim("1", [1, 11]) == Explicit([1, ])
 
     def test__value__list__multy(self):
-        assert self.victim(0, [[1], 2]) == ResultValue([0, ])
-        assert self.victim("0", [[1], 2]) == ResultValue([0, ])
+        assert self.victim(0, [[1], 2]) == Explicit([0, ])
+        assert self.victim("0", [[1], 2]) == Explicit([0, ])
 
         assert self.victim("0/0", [1]) is None
-        assert self.victim("0/0", [[1]]) == ResultValue([0, 0, ])
+        assert self.victim("0/0", [[1]]) == Explicit([0, 0, ])
         assert self.victim("0/1", [[1]]) is None
 
     def test__value__dict_str(self):
         assert self.victim("hello", ["hello", ]) is None
 
-        assert self.victim("hello", {"hello": 1}) == ResultValue(["hello", ])
-        assert self.victim("hello", {"HELLO": 1}) == ResultValue(["HELLO", ])
-        assert self.victim("HELLO", {"hello": 1}) == ResultValue(["hello", ])
+        assert self.victim("hello", {"hello": 1}) == Explicit(["hello", ])
+        assert self.victim("hello", {"HELLO": 1}) == Explicit(["HELLO", ])
+        assert self.victim("HELLO", {"hello": 1}) == Explicit(["hello", ])
 
     def test__value__dict_int(self):
-        assert self.victim("1", {"1": 11, }) == ResultValue(["1", ])
-        assert self.victim("1", {1: 11, }) == ResultValue([1, ])
-        assert self.victim(1, {1: 11, }) == ResultValue([1, ])
+        assert self.victim("1", {"1": 11, }) == Explicit(["1", ])
+        assert self.victim("1", {1: 11, }) == Explicit([1, ])
+        assert self.victim(1, {1: 11, }) == Explicit([1, ])
 
         assert self.victim("1/2", {1: 11, }) is None
-        assert self.victim("1/2", {1: {2: 22}, }) == ResultValue([1, 2, ])
-        assert self.victim("1/2/1", {1: {2: [30, 31, 32]}, }) == ResultValue([1, 2, 1])
+        assert self.victim("1/2", {1: {2: 22}, }) == Explicit([1, 2, ])
+        assert self.victim("1/2/1", {1: {2: [30, 31, 32]}, }) == Explicit([1, 2, 1])
 
     def test__value__dict__with_list(self):
-        assert self.victim("hello", {"hello": [1]}) == ResultValue(["hello", ])
+        assert self.victim("hello", {"hello": [1]}) == Explicit(["hello", ])
         assert self.victim("hello/1", {"hello": [1]}) is None
-        assert self.victim("hello/0", {"hello": [1]}) == ResultValue(["hello", 0])
+        assert self.victim("hello/0", {"hello": [1]}) == Explicit(["hello", 0])
 
-        assert self.victim("hello1/hello2", {"hello1": {"hello2": [1]}}) == ResultValue(["hello1", "hello2"])
-        assert self.victim("hello1/hello2/0", {"hello1": {"hello2": [1]}}) == ResultValue(["hello1", "hello2", 0, ])
+        assert self.victim("hello1/hello2", {"hello1": {"hello2": [1]}}) == Explicit(["hello1", "hello2"])
+        assert self.victim("hello1/hello2/0", {"hello1": {"hello2": [1]}}) == Explicit(["hello1", "hello2", 0, ])
         assert self.victim("hello1/hello2/1", {"hello1": {"hello2": [1]}}) is None
 
 
@@ -147,9 +147,9 @@ class Test__3:
 
     # -----------------------------------------------------------------------------------------------------------------
     def test__1(self):
-        assert self.victim("hello", {"hello": [1]}) == ResultValue([1])
+        assert self.victim("hello", {"hello": [1]}) == Explicit([1])
         assert self.victim("hello/1", {"hello": [1]}) is None
-        assert self.victim("hello/0", {"hello": [1]}) == ResultValue(1)
+        assert self.victim("hello/0", {"hello": [1]}) == Explicit(1)
 
 
 # =====================================================================================================================

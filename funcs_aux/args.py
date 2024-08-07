@@ -1,5 +1,6 @@
 from typing import *
-from object_info import ObjectInfo, TypeChecker
+from object_info import TypeChecker
+from funcs_aux import Default, TYPE__EXPLICIT
 
 
 # =====================================================================================================================
@@ -7,45 +8,7 @@ from object_info import ObjectInfo, TypeChecker
 HOW to work with ARGS in your funcs
 ---------------------
 usually and maybe often when we passing ARGS it assumed as we will pass tuple/list or direct value
-
 """
-
-
-# =====================================================================================================================
-class Default:
-    """
-    GOAL
-    ----
-    use in funcs as explicitly define for not passed params!
-
-    USAGE
-    -----
-    1. AUTO_WORK (preferred)
-        when get Default instance - call it to get source value!
-        if get Default class - get None as value!
-
-        def func(source = Default(1)):
-            if isinstance(source, Default):
-                source = source()
-
-    2. MANUAL_WORK (not preferred)
-        you can apply inside func
-
-        def func(source = Default):
-            if source == Default:
-                source = 1
-    """
-    __SOURCE: Any
-
-    def __init__(self, source: Any = None):
-        self.__SOURCE = source
-
-    def __call__(self, *args, **kwargs) -> Any:
-        return self.__SOURCE
-
-
-# ---------------------------------------------------------------------------------------------------------------------
-TYPE__DEFAULT = Type[Default] | Default
 
 
 # =====================================================================================================================
@@ -97,7 +60,7 @@ TYPE__ARGS_EMPTY = Type[ArgsEmpty] | ArgsEmpty
 
 
 # =====================================================================================================================
-TYPE__ARGS = Union[tuple, Any, None, TYPE__ARGS_EMPTY, TYPE__DEFAULT]
+TYPE__ARGS = Union[tuple, Any, None, TYPE__ARGS_EMPTY, TYPE__EXPLICIT]
 TYPE__KWARGS = Optional[dict[str, Any]]
 
 

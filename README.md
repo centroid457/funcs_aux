@@ -21,7 +21,7 @@ Designed to collect useful funcs in one place!
 
 ## Features
 1. RESULTS:  
-	- ResultValue - resolved ambiguity with None-result for any method result!  
+	- Explicit - resolved ambiguity with None-result for any method result!  
 	- ResultCum  
 2. ITERABLES:  
 	- work with any iterable data by path/...  

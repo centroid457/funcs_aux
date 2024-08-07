@@ -1,9 +1,9 @@
-from typing import *
 import pytest
-from pytest import mark
 from pytest_aux import *
 from funcs_aux import *
 from classes_aux import *
+
+from funcs_aux import Default
 
 
 # =====================================================================================================================

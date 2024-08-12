@@ -48,10 +48,14 @@ class Test__Args:
             (ArgsEmpty, ()),
             (ArgsEmpty(), ()),
 
-            # INT --------------
+            # None --------------
             (None, (None, )),
             ((None, ), (None, )),
 
+            ((None, True), ()),
+            (((None, ), True), (None, )),
+
+            # INT --------------
             (0, (0, )),
             ((0, ), (0, )),
             (1, (1, )),

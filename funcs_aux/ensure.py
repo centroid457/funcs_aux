@@ -4,7 +4,7 @@ from funcs_aux import TYPE__ARGS, Default, ArgsEmpty
 
 
 # =====================================================================================================================
-def args__ensure_tuple(args: TYPE__ARGS = ()) -> tuple:
+def args__ensure_tuple(args: TYPE__ARGS = (), none_as_empty: bool | None = None) -> tuple:
     """
     GOAL
     ----
@@ -36,8 +36,16 @@ def args__ensure_tuple(args: TYPE__ARGS = ()) -> tuple:
 
         unpacked iterables/generators - if need unpack it manually!!! its not difficult and so clear!
         elementary collection would unpack!
+
+    :param none_as_empty:
+        use carefully!
+
     """
     # TODO: move to object-info or funcsAux???
+
+    # None --------------------------
+    if args is None and none_as_empty:
+        return ()
 
     # APPLY DEFAULT --------------------------
     if args is Default or args is ArgsEmpty:    # use only IS!

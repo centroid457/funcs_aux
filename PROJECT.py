@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 17)
+    VERSION: tuple[int, int, int] = (0, 4, 18)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[ENSURE] separate file + add ensure_class",
+        "[ENSURE_tuple] add param none_as_empty",
     ]
 
 

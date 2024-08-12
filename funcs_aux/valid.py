@@ -341,6 +341,14 @@ class Valid:
         except Exception as exx:
             result21 = exx
 
+        try:
+            result3 = obj2 is obj1
+            if result3:
+                return True
+        except Exception as exx:
+            result3 = exx
+            pass
+
         if False in [result12, result21]:
             return False
         else:

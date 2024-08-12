@@ -3,7 +3,7 @@ from pytest_aux import *
 from funcs_aux import *
 from classes_aux import *
 
-from funcs_aux import Default
+from funcs_aux import Default, args__ensure_tuple
 
 
 # =====================================================================================================================
@@ -74,7 +74,7 @@ class Test__Args:
             (INST_GEN, (INST_GEN, )),
         ]
     )
-    def test__args__ensure_tuple(self, args, _EXPECTED):
+    def test__ensure_tuple(self, args, _EXPECTED):
         func_link = args__ensure_tuple
         pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
 
@@ -82,3 +82,4 @@ class Test__Args:
 
 
 # =====================================================================================================================
+

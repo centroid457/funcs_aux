@@ -1,5 +1,4 @@
 from typing import *
-from object_info import TypeChecker
 from funcs_aux import Default, TYPE__EXPLICIT
 
 
@@ -62,50 +61,6 @@ TYPE__ARGS_EMPTY = Type[ArgsEmpty] | ArgsEmpty
 # =====================================================================================================================
 TYPE__ARGS = Union[tuple, Any, None, TYPE__ARGS_EMPTY, TYPE__EXPLICIT]
 TYPE__KWARGS = Optional[dict[str, Any]]
-
-
-# =====================================================================================================================
-def args__ensure_tuple(args: TYPE__ARGS = ()) -> tuple:
-    """
-    GOAL
-    ----
-    used in methods which handle with *args/args (like in funcs_aux.Valid)
-    when we want to apply singular value without tuple
-
-    CREATED SPECIALLY FOR
-    ---------------------
-    Valid
-    but can be used in any funcs!
-
-    USAGE
-    -----
-        def func1(*args):
-            args = args__ensure_tuple(args)
-
-        def func2(link: Callable, args):
-            args = args__ensure_tuple(args)
-            result = link(*args)
-
-    :param args:
-        NONE - is equivalent to SingleElement! so None -> (None, )
-        any elementaryCollection - will convert to tuple!
-        for others (classes/instances/irerables/generators/...) will assumed as single Object!!! and applied in tuple!!!
-
-        unpacked iterables/generators - if need unpack it manually!!! its not difficult and so clear!
-        elementary collection would unpack!
-    """
-    # APPLY DEFAULT --------------------------
-    if args is Default or args is ArgsEmpty:    # use only IS!
-        args = ()
-    elif isinstance(args, Default):
-        args = args()
-
-    # ENSURE TUPLE --------------------------
-    if not TypeChecker.check__elementary_collection(args):
-        result = (args, )
-    else:
-        result = tuple(args)
-    return result
 
 
 # =====================================================================================================================

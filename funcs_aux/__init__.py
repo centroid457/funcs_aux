@@ -17,13 +17,20 @@ from .value_explicit import (
 )
 from .args import (
     # BASE
-    args__ensure_tuple,
     # AUX
     ArgsEmpty,
     # TYPES
     TYPE__ARGS_EMPTY,
     TYPE__ARGS,
     TYPE__KWARGS,
+    # EXX
+)
+from .ensure import (
+    # BASE
+    args__ensure_tuple,
+    ensure_class,
+    # AUX
+    # TYPES
     # EXX
 )
 # ---------------------------------------------------------------------------------------------------------------------

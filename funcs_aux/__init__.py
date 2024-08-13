@@ -55,14 +55,6 @@ from .value_variants import (
     Exx__VariantsIncompatible,
 )
 # ---------------------------------------------------------------------------------------------------------------------
-from .value_explicit import (
-    # BASE
-    Explicit, Default, TYPE__EXPLICIT, TYPE__DEFAULT,
-    # AUX
-    # TYPES
-    # EXX
-)
-# ---------------------------------------------------------------------------------------------------------------------
 from .valid import (
     # BASE
     Valid,

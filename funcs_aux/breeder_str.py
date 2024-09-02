@@ -128,7 +128,9 @@ class BreederStrSeries(NamedTuple):
 # =====================================================================================================================
 class BreederStrStack(AnnotsNested):
     """
-    created specially for applying in Gui tableModels (PyQt5) as header structure
+    CREATED SPECIALLY FOR
+    ---------------------
+    applying in Gui tableModels (PyQt5) as header structure
 
     VULNERABILITIES # FIXME:
     ------------------------
@@ -164,7 +166,13 @@ class BreederStrStack(AnnotsNested):
     1. use always any ANNOTATIONS for your indexes!!
     2. hide names by using underscore!
     3. use None for AUTOINDEX!!!
-    4. nesting available with correct order!
+    4. indexes follow the order
+        class BreederStrStack_Example(BreederStrStack):
+            atr1: int
+            atr2: int = None
+
+
+    5. nesting available with correct order!
         class ClsFirst(BreederStrStack):
             atr1: int
             atr3: int = None
@@ -182,13 +190,17 @@ class BreederStrStack(AnnotsNested):
         # atr4:<class 'int'>
     """
     # settings ----------------------
+    _INDEX_START: int | None = 0
     _RAISE_IF_INDEX_SKIPPED: bool = True
 
     # aux ----------------------
     _DATA: dict[int, str] = {}
 
     def __init__(self):
-        index_last = 0
+        if self._INDEX_START is None:
+            self._INDEX_START = 0
+
+        index_last = self._INDEX_START -1
         result = {}
 
         # ATTRS ------------------

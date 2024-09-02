@@ -1,5 +1,4 @@
 import pytest
-from pytest_aux import *
 
 from funcs_aux import *
 

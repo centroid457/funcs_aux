@@ -103,18 +103,24 @@ from .strings import (
     # EXX
 )
 # ---------------------------------------------------------------------------------------------------------------------
-from .breeder_str import (
+from .breeder_str_series import (
     # BASE
     BreederStrSeries,
-    BreederStrStack,
     # AUX
-    BreederStrStack_Example,
-    BreederStrStack_Example__BestUsage,
     # EXX
     Exx__IndexOverlayed,
     Exx__IndexNotSet,
     Exx__ItemNotExists,
     Exx__StartOuterNONE_UsedInStackByRecreation,
+)
+from .breeder_str_stack import (
+    # BASE
+    BreederStrStack,
+    # AUX
+    BreederStrStack_Example,
+    BreederStrStack_Example__BestUsage
+    # TYPES
+    # EXX
 )
 from .breeder_objects import (
     # BASE

@@ -40,6 +40,12 @@ class Test__ValidChains:
             ([Valid(False), ], False),
             ([Valid(False, skip_link=True), ], True),
             ([Valid(False, chain__cum=False), ], True),
+
+            ([ValidNoCum(False), ], True),
+
+            ([ValidSleep(), ], True),
+            ([ValidSleep(0.1), ], True),
+            ([ValidSleep(), ], True),
         ]
     )
     def test__types_single(self, chains, _EXPECTED):

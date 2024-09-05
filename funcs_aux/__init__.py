@@ -62,6 +62,7 @@ from .valid import (
     ValidNoCum,
     ValidFailStop,
     ValidFailContinue,
+    ValidSleep,
     # AUX
     # TYPES
     TYPE__EXCEPTION,

@@ -425,6 +425,17 @@ class ValidNoCum(Valid):
     CHAIN__CUM = False
 
 
+class ValidSleep(ValidNoCum):
+    """
+    just a derivative - to make a pause in chains
+    """
+    NAME = "Sleep"
+    VALIDATE_LINK: TYPE__VALIDATE_LINK = None
+
+    def __init__(self, secs: float = 1):
+        super().__init__(value_link=time.sleep, args__value=secs)
+
+
 # =====================================================================================================================
 TYPE__CHAINS = list[Union[Valid, 'ValidChains', Any]]      # all Any will be converted to Valid!
 

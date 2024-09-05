@@ -110,7 +110,7 @@ class Test__Valid_ClsMethods:
 
 
 # =====================================================================================================================
-class Test__ValidVariants:
+class Test__ValidTypes:
     # @classmethod
     # def setup_class(cls):
     #     pass
@@ -183,6 +183,12 @@ class Test__ValidVariants:
             ((lambda: "1", lambda val: 0 < int(val) < 2), True),
             ((lambda: "1.0", lambda val: 0 < int(val) < 2), False),
             ((lambda: "1.0", lambda val: 0 < float(val) < 2), True),
+
+            # ValueVariants --------------------------
+            (("hello", ValueVariants(variants=["hello", 1])), True),
+            (("1", ValueVariants(variants=["hello", 1])), True),
+            ((1, ValueVariants(variants=["hello", 1])), True),
+            (("0", ValueVariants(variants=["hello", 1])), False),
         ]
     )
     def test__validate__types(self, args, _EXPECTED):

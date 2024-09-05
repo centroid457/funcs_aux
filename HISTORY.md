@@ -11,6 +11,11 @@
 ********************************************************************************
 ## NEWS
 
+0.4.21 (2024/09/05 14:41:43)
+------------------------------
+- [ValueVariants] fix cmp direct objects (not only by str)  
+- [Valid] add validateLink as ValueVariants  
+
 0.4.20 (2024/09/05 12:55:43)
 ------------------------------
 - [Valid] just zero add ValidNoCum  

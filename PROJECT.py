@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 20)
+    VERSION: tuple[int, int, int] = (0, 4, 21)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,8 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Valid] just zero add ValidNoCum",
+        "[ValueVariants] fix cmp direct objects (not only by str)",
+        "[Valid] add validateLink as ValueVariants"
     ]
 
 

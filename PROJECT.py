@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 19)
+    VERSION: tuple[int, int, int] = (0, 4, 20)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[BreederStrStack] add _INDEX_START",
+        "[Valid] just zero add ValidNoCum",
     ]
 
 

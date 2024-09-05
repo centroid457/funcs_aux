@@ -27,7 +27,7 @@ fastapi==0.112.0
 finam-export==5.1.1
 fonttools==4.53.1
 frozenlist==1.4.1
-funcs_aux==0.4.20
+funcs_aux==0.4.21
 h11==0.14.0
 html5lib==1.1
 idna==3.7

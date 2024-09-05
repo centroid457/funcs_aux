@@ -58,9 +58,10 @@ from .value_variants import (
 from .valid import (
     # BASE
     Valid,
+    ValidChains,
+    ValidNoCum,
     ValidFailStop,
     ValidFailContinue,
-    ValidChains,
     # AUX
     # TYPES
     TYPE__EXCEPTION,

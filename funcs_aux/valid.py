@@ -412,6 +412,13 @@ class ValidFailContinue(Valid):
     CHAIN__FAIL_STOP = False
 
 
+class ValidNoCum(Valid):
+    """
+    just a derivative
+    """
+    CHAIN__CUM = False
+
+
 # =====================================================================================================================
 TYPE__CHAINS = list[Union[Valid, 'ValidChains', Any]]      # all Any will be converted to Valid!
 

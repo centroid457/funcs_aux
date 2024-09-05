@@ -9,7 +9,7 @@ from funcs_aux import *
 
 
 # =====================================================================================================================
-class Test__FromVariants:
+class Test__ValueVariants:
     @classmethod
     def setup_class(cls):
         pass

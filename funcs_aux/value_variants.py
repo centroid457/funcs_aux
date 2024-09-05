@@ -81,15 +81,20 @@ class ValueVariants:
         """
         used to check compatibility
         """
+        result = False
         for variant in self.VARIANTS:
-            if self.CASE_INSENSITIVE:
+            if variant == item:
+                result = True
+
+            elif self.CASE_INSENSITIVE:
                 result = str(variant).lower() == str(item).lower()
             else:
                 result = str(variant) == str(item)
-            if result:
-                return True
 
-        return False
+            if result:
+                break
+
+        return result
 
     def _variants_validate(self) -> Optional[NoReturn]:
         if self.CASE_INSENSITIVE:

@@ -49,18 +49,15 @@ class Explicit:
     def __call__(self, *args, **kwargs) -> Any:
         return self.__VALUE
 
+    def __str__(self):
+        return f"{self.__class__.__name__}({self.__VALUE})"
+
     # -----------------------------------------------------------------------------------------------------------------
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return self.__VALUE == other()
         else:
             return self.__VALUE == other
-
-    def __ne__(self, other):
-        if isinstance(other, self.__class__):
-            return self.__VALUE != other()
-        else:
-            return self.__VALUE != other
 
 
 # =====================================================================================================================
@@ -91,9 +88,51 @@ class Default(Explicit):
     pass
 
 
-# ---------------------------------------------------------------------------------------------------------------------
+# =====================================================================================================================
+class ValueNotPassed:
+    """
+    DEPRECATE???
+    ---------
+    use direct ArgsEmpty???
+
+    GOAL
+    ----
+    it is different from Default!
+    there is no value!
+    used when we need to change logic with not passed value!
+
+    SPECIALLY CREATED FOR
+    ---------------------
+    Valid as universal validation object under cmp other objects!
+
+    USAGE
+    -----
+    class Cls:
+        def __init__(self, value: Any | Type[ValueNotPassed] | ValueNotPassed = ValueNotPassed):
+            self.value = value
+
+        def __eq__(self, other):
+            if self.value is ValueNotPassed:
+                return other is True
+                # or
+                return self.__class__(other).run()
+            else:
+                return other == self.value
+
+        def run(self):
+            return bool(self.value)
+
+    SAME AS
+    -------
+    args.ArgsEmpty but single and really not defined
+    """
+    pass
+
+
+# =====================================================================================================================
 TYPE__EXPLICIT = Type[Explicit] | Explicit
 TYPE__DEFAULT = Type[Default] | Default
+TYPE__VALUE_NOT_PASSED = Type[ValueNotPassed] | ValueNotPassed
 
 
 # =====================================================================================================================

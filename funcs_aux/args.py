@@ -28,6 +28,10 @@ class ArgsEmpty(Default):
     special object used as VALUE to show that parameter was not passed!
     dont pass it directly! keep it only as default parameter in class and in methods instead of None Value!
     it used only in special cases! not always even in one method!!!
+
+    SAME AS
+    -------
+    value_explicit.ValueNotPassed but just blank collection
     """
     def __init__(self, source: Any = ()):
         super().__init__(source)

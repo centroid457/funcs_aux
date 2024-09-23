@@ -5,11 +5,12 @@ from object_info import *
 from funcs_aux import args__ensure_tuple, TYPE__ARGS, TYPE__KWARGS, ArgsEmpty
 
 from .value_variants import ValueVariants
+from .value_explicit import ValueNotPassed, TYPE__VALUE_NOT_PASSED
 
 
 # =====================================================================================================================
 TYPE__EXCEPTION = Union[Exception, Type[Exception]]
-TYPE__SOURCE_LINK = Union[Any, TYPE__EXCEPTION, Callable[[...], Any | NoReturn]]
+TYPE__SOURCE_LINK = Union[Any, TYPE__EXCEPTION, Callable[[...], Any | NoReturn], TYPE__VALUE_NOT_PASSED]
 TYPE__VALIDATE_LINK = Union[bool, Any, TYPE__EXCEPTION, Callable[[Any, ...], bool | NoReturn]]
 TYPE__BOOL_LINK = Union[bool, Any, TYPE__EXCEPTION, Callable[[...], bool | NoReturn]]
 
@@ -98,7 +99,7 @@ class Valid:
 
     def __init__(
             self,
-            value_link: TYPE__SOURCE_LINK,
+            value_link: TYPE__SOURCE_LINK = ValueNotPassed,
             validate_link: Optional[TYPE__VALIDATE_LINK] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
 
@@ -114,6 +115,20 @@ class Valid:
             chain__cum: Optional[bool] = None,
             chain__fail_stop: Optional[bool] = None,
     ):
+        """
+
+        :param value_link: None - for cmp by eq/ne! other types - for direct usage
+        :param validate_link:
+        :param skip_link:
+        :param args__value:
+        :param args__validate:
+        :param kwargs__value:
+        :param kwargs__validate:
+        :param name:
+        :param comment:
+        :param chain__cum:
+        :param chain__fail_stop:
+        """
         self.clear()
 
         self.VALUE_LINK = value_link
@@ -226,6 +241,36 @@ class Valid:
 
     def __repr__(self) -> str:
         return str(self)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    def __eq__(self, other) -> bool:
+        """
+        GOAL
+        ----
+        use created object (with not defined value_link=None) as validator by EQ/NE inline methods!
+
+        USAGE
+        -----
+        assert 1.0 >= 1
+        assert float("1.0") >= 1
+        assert "1.0" == Valid(validate_link=lambda x: float(x) >= 1)
+
+        SPECIALY CREATED FOR
+        --------------------
+        test uart devises by schema!
+
+        assert "220.0V" == ValueUnit(...)
+        assert "OFF" == ValueVariant("OFF", ["OFF", "ON"])
+        assert "1.0" == Valid(validate_link=lambda x: float(x) >= 1)
+        """
+        if self.VALUE_LINK is ValueNotPassed:
+            return self.__class__(other).run()
+        else:
+            # todo: maybe its not so good here/need ref?
+            return self.run__if_not_finished() == other
+
+    # AUX =============================================================================================================
+    pass
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod

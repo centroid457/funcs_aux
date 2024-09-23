@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 22)
+    VERSION: tuple[int, int, int] = (0, 4, 23)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Valid] add ValidSleep for pause in chains"
+        "[Explicit] add ValueNotPassed+Type*=need tests"
     ]
 
 

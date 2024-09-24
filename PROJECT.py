@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 23)
+    VERSION: tuple[int, int, int] = (0, 4, 24)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Explicit] add ValueNotPassed+Type*=need tests"
+        "[Valid] ref EQ on ValueNotPassed+add tests"
     ]
 
 

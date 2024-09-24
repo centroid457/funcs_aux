@@ -267,6 +267,10 @@ class Valid:
         assert "220.0V" == ValueUnit(...)
         assert "OFF" == ValueVariant("OFF", ["OFF", "ON"])
         assert "1.0" == Valid(validate_link=lambda x: float(x) >= 1)
+
+        ValidTypeFloat = Valid(validate_link=lambda x: isinstance(x, float))
+        assert "1.0" != ValidTypeFloat()
+        assert 1.0 == ValidTypeFloat()
         """
         if self.VALUE_LINK is ValueNotPassed:
             return self.run(other)

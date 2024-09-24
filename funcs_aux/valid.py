@@ -171,12 +171,17 @@ class Valid:
         self.validate_last = True
         self.log_lines = []
 
-    def run(self) -> bool:
+    def run(self, _value_link: Any = ValueNotPassed) -> bool:
         """
         CONSTRAINTS
         -----------
         careful about 1 comparing (assert 0 == False, assert 1 == True, assert 2 != True)
+
+        :param _value_link: BE CAREFUL created specially for value_link=ValueNotPassed on init
         """
+        if _value_link is not ValueNotPassed:
+            self.VALUE_LINK = _value_link
+
         self.clear()
         self.timestamp_last = time.time()
 
@@ -264,7 +269,7 @@ class Valid:
         assert "1.0" == Valid(validate_link=lambda x: float(x) >= 1)
         """
         if self.VALUE_LINK is ValueNotPassed:
-            return self.__class__(other).run()
+            return self.run(other)
         else:
             # todo: maybe its not so good here/need ref?
             return self.run__if_not_finished() == other

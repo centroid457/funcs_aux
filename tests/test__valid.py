@@ -197,6 +197,22 @@ class Test__ValidTypes:
 
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(
+        argnames="source, args, _EXPECTED",
+        argvalues=[
+            (1, (ValueNotPassed, lambda x: float(x) >= 1), True),
+            ("1", (ValueNotPassed, lambda x: float(x) >= 1), True),
+            ("0", (ValueNotPassed, lambda x: float(x) >= 1), False),
+            ("hello", (ValueNotPassed, lambda x: float(x) >= 1), False),
+        ]
+    )
+    def test__not_passed(self, source, args, _EXPECTED):
+        # assert source == Valid(*valid_args)
+
+        func_link = lambda *_args: source == Valid(*_args)
+        pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
         argnames="source, args, kwargs, validate, _EXPECTED",
         argvalues=[
             # bool --------------------

@@ -565,7 +565,7 @@ class ValidChains(Valid):
                 if not step.skip_last:
                     if step.CHAIN__CUM:
                         self.validate_last &= step_result
-                    if step.CHAIN__FAIL_STOP and not step_result:
+                    if step.CHAIN__CUM and step.CHAIN__FAIL_STOP and not step_result:
                         self.log_lines.append(f"(FAIL STOP) [result={bool(self)}]{index=}/len={len(self)}")
                         break
             # ITER -----------

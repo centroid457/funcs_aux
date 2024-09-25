@@ -31,7 +31,7 @@ class ArgsEmpty(Default):
 
     SAME AS
     -------
-    value_explicit.ValueNotPassed but just blank collection
+    value_explicit.ValueNotExist but just blank collection
     """
     def __init__(self, source: Any = ()):
         super().__init__(source)

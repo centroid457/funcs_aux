@@ -13,11 +13,11 @@
 
 0.4.24 (2024/09/24 14:13:57)
 ------------------------------
-- [Valid] ref EQ on ValueNotPassed+add tests  
+- [Valid] ref EQ on ValueNotExist+add tests  
 
 0.4.23 (2024/09/23 16:38:51)
 ------------------------------
-- [Explicit] add ValueNotPassed+Type*=need tests  
+- [Explicit] add ValueNotExist+Type*=need tests  
 
 0.4.22 (2024/09/05 15:09:31)
 ------------------------------

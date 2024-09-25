@@ -94,7 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Valid] ref EQ on ValueNotPassed+add tests"
+        "[Valid] ref EQ on ValueNotExist+add tests"
     ]
 
 

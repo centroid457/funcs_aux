@@ -89,7 +89,7 @@ class Default(Explicit):
 
 
 # =====================================================================================================================
-class ValueNotPassed:
+class ValueNotExist:
     """
     DEPRECATE???
     ---------
@@ -108,11 +108,11 @@ class ValueNotPassed:
     USAGE
     -----
     class Cls:
-        def __init__(self, value: Any | Type[ValueNotPassed] | ValueNotPassed = ValueNotPassed):
+        def __init__(self, value: Any | Type[ValueNotExist] | ValueNotExist = ValueNotExist):
             self.value = value
 
         def __eq__(self, other):
-            if self.value is ValueNotPassed:
+            if self.value is ValueNotExist:
                 return other is True
                 # or
                 return self.__class__(other).run()
@@ -132,7 +132,7 @@ class ValueNotPassed:
 # =====================================================================================================================
 TYPE__EXPLICIT = Type[Explicit] | Explicit
 TYPE__DEFAULT = Type[Default] | Default
-TYPE__VALUE_NOT_PASSED = Type[ValueNotPassed] | ValueNotPassed
+TYPE__VALUE_NOT_PASSED = Type[ValueNotExist] | ValueNotExist
 
 
 # =====================================================================================================================

@@ -9,7 +9,7 @@ from .value_explicit import (
     # BASE
     Explicit,
     Default,
-    ValueNotPassed,
+    ValueNotExist,
     # AUX
     # TYPES
     TYPE__EXPLICIT,

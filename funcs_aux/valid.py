@@ -5,7 +5,7 @@ from object_info import *
 from funcs_aux import args__ensure_tuple, TYPE__ARGS, TYPE__KWARGS, ArgsEmpty
 
 from .value_variants import ValueVariants
-from .value_explicit import ValueNotPassed, TYPE__VALUE_NOT_PASSED
+from .value_explicit import ValueNotExist, TYPE__VALUE_NOT_PASSED
 
 
 # =====================================================================================================================
@@ -99,7 +99,7 @@ class Valid:
 
     def __init__(
             self,
-            value_link: TYPE__SOURCE_LINK = ValueNotPassed,
+            value_link: TYPE__SOURCE_LINK = ValueNotExist,
             validate_link: Optional[TYPE__VALIDATE_LINK] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
 
@@ -171,15 +171,15 @@ class Valid:
         self.validate_last = True
         self.log_lines = []
 
-    def run(self, _value_link: Any = ValueNotPassed) -> bool:
+    def run(self, _value_link: Any = ValueNotExist) -> bool:
         """
         CONSTRAINTS
         -----------
         careful about 1 comparing (assert 0 == False, assert 1 == True, assert 2 != True)
 
-        :param _value_link: BE CAREFUL created specially for value_link=ValueNotPassed on init
+        :param _value_link: BE CAREFUL created specially for value_link=ValueNotExist on init
         """
-        if _value_link is not ValueNotPassed:
+        if _value_link is not ValueNotExist:
             self.VALUE_LINK = _value_link
 
         self.clear()
@@ -272,7 +272,7 @@ class Valid:
         assert "1.0" != ValidTypeFloat()
         assert 1.0 == ValidTypeFloat()
         """
-        if self.VALUE_LINK is ValueNotPassed:
+        if self.VALUE_LINK is ValueNotExist:
             return self.run(other)
         else:
             # todo: maybe its not so good here/need ref?

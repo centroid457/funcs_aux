@@ -132,7 +132,7 @@ class ValueUnit(NumberArithmTranslateToAttr):
         self.VALUE = value
 
     # -----------------------------------------------------------------------------------------------------------------
-    def __init__(self, source: Union[int, float, str, Any] = None, unit: str = None, separator: str = None):
+    def __init__(self, source: Union[int, float, str, Any] = ValueNotExist, unit: str = None, separator: str = None):
         """
         :param source:
         :param unit: use it only if not exists in source!
@@ -141,8 +141,12 @@ class ValueUnit(NumberArithmTranslateToAttr):
         if self.UNIT_MULT__DISABLE:
             self.UNIT_MULT__VARIANTS = {}
 
+        self.source = source
+
         # first parse -----------------
-        if source is not None:
+        if source is ValueNotExist:
+            pass
+        else:
             self.parse(source)
 
         # second OVERWRITE  -----------------
@@ -242,7 +246,14 @@ class ValueUnit(NumberArithmTranslateToAttr):
             0=self==other
             -1=self<other
         """
-        other = self.__class__(other)
+        if not isinstance(other, self.__class__):
+            other = self.__class__(other)
+
+        if self.source == ValueNotExist or other.source == ValueNotExist:
+            if not self.UNIT_BASE or not other.UNIT_BASE or self.UNIT_BASE == other.UNIT_BASE:
+                return 0
+            else:
+                return -1   # just to show not equel!!!
 
         # cmp units -----------
         if self.UNIT_BASE and other.UNIT_BASE and self.UNIT_BASE != other.UNIT_BASE:

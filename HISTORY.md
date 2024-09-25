@@ -11,6 +11,11 @@
 ********************************************************************************
 ## NEWS
 
+0.4.25 (2024/09/25 16:21:42)
+------------------------------
+- [ValidChains] fix FailStop incorrect breakOut  
+- rename to ValueNotExist  
+
 0.4.24 (2024/09/24 14:13:57)
 ------------------------------
 - [Valid] ref EQ on ValueNotExist+add tests  

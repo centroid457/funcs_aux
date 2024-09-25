@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 24)
+    VERSION: tuple[int, int, int] = (0, 4, 25)
     TODO: list[str] = [
         "..."
     ]
@@ -94,7 +94,8 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Valid] ref EQ on ValueNotExist+add tests"
+        "[ValidChains] fix FailStop incorrect breakOut",
+        "rename to ValueNotExist"
     ]
 
 

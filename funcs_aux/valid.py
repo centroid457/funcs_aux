@@ -350,7 +350,7 @@ class Valid:
 
     # -----------------------------------------------------------------------------------------------------------------
     @classmethod
-    def compare_doublesided(cls, obj1: Any, obj2: Any) -> bool | Exception:
+    def compare_doublesided(cls, obj1: Any, obj2: Any, return_bool: bool = None) -> bool | Exception:
         """
         GOAL
         ----
@@ -407,10 +407,19 @@ class Valid:
             result3 = exx
             pass
 
-        if False in [result12, result21]:
+        if False in [result12, result21] or return_bool:
             return False
         else:
             return result12
+
+    @classmethod
+    def compare_doublesided__bool(cls, obj1: Any, obj2: Any) -> bool:
+        """
+        CREATED SPECIALLY FOR
+        ---------------------
+        Valid.value_validate
+        """
+        return cls.compare_doublesided(obj1, obj2, return_bool=True)
 
     # -----------------------------------------------------------------------------------------------------------------
     @staticmethod

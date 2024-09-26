@@ -11,6 +11,10 @@
 ********************************************************************************
 ## NEWS
 
+0.4.27 (2024/09/26 17:30:56)
+------------------------------
+- [ValueVariants] big ref +add ValueNotExist to use as validator  
+
 0.4.26 (2024/09/26 11:18:39)
 ------------------------------
 - [ValueUnit] add ValueNotExist for using object as pattern  

@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 25)
+    VERSION: tuple[int, int, int] = (0, 4, 26)
     TODO: list[str] = [
         "..."
     ]
@@ -94,8 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[ValidChains] fix FailStop incorrect breakOut",
-        "rename to ValueNotExist"
+        "[ValueUnit] add ValueNotExist for using object as pattern"
     ]
 
 

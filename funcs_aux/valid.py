@@ -4,7 +4,6 @@ import time
 from object_info import *
 from funcs_aux import args__ensure_tuple, TYPE__ARGS, TYPE__KWARGS, ArgsEmpty
 
-from .value_variants import ValueVariants
 from .value_explicit import ValueNotExist, TYPE__VALUE_NOT_PASSED
 
 
@@ -216,8 +215,6 @@ class Valid:
                 #     # self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
                 #     # dont use it!
 
-            elif isinstance(self.VALIDATE_LINK, ValueVariants):
-                self.validate_last = self.value_last in self.VALIDATE_LINK
             else:
                 self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
 

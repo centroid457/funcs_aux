@@ -30,17 +30,17 @@ class Test__ValueVariants:
         victim = self.Victim(value="var1", variants=["VAR1", "VAR2"])
         assert victim.VALUE == "VAR1"
         assert victim.VALUE != "VAR2"
-        assert victim.VALUE_DEFAULT == "var1"
+        assert victim.VALUE_DEFAULT == "VAR1"
 
         victim.VALUE = "var2"
         assert victim.VALUE != "VAR1"
         assert victim.VALUE == "VAR2"
-        assert victim.VALUE_DEFAULT == "var1"
+        assert victim.VALUE_DEFAULT == "VAR1"
 
         victim.reset()
         assert victim.VALUE == "VAR1"
         assert victim.VALUE != "VAR2"
-        assert victim.VALUE_DEFAULT == "var1"
+        assert victim.VALUE_DEFAULT == "VAR1"
 
     def test__double_objects(self):
         victim1 = self.Victim(value="var1", variants=["VAR1", "VAR11"])
@@ -77,31 +77,9 @@ class Test__ValueVariants:
         except:
             assert True
 
-    def test__variants_validate(self):
-        victim = self.Victim(value="var", variants=["VAR", "var"], case_insensitive=False)
-        assert victim.VALUE == "var"
-
-        try:
-            victim = self.Victim(value="var123", variants=["VAR", "var"], case_insensitive=False)
-            assert False
-        except Exx__ValueNotInVariants:
-            pass
-        except Exception as exx:
-            print(f"{exx!r}")
-            assert False
-
-        try:
-            victim = self.Victim(value="var123", variants=["VAR", "var"], case_insensitive=True)
-            assert False
-        except Exx__VariantsIncompatible:
-            pass
-        except Exception as exx:
-            print(f"{exx!r}")
-            assert False
-
     def test__types__None(self):
         victim = self.Victim(variants=["NONE", ])
-        assert victim.VALUE == ArgsEmpty
+        assert victim.VALUE == ValueNotExist
         # assert str(victim) == "NONE"
 
         victim = self.Victim(value=None, variants=["NONE", ])
@@ -149,6 +127,26 @@ class Test__ValueVariants:
     def test__iter(self):
         assert list(self.Victim(variants=[0, ])) == [0, ]
         assert list(self.Victim(variants=[0, 1])) == [0, 1, ]
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="source1, obj2, _EXPECTED",
+        argvalues=[
+            (0, ValueVariants(variants=[0, 1]), True),
+            (1, ValueVariants(variants=[0, 1]), True),
+            (2, ValueVariants(variants=[0, 1]), False),
+
+            (0, ValueVariants(0, variants=[0, 1]), True),
+            (1, ValueVariants(0, variants=[0, 1]), False),
+
+            # str -----------------------
+            ("0", ValueVariants(0, variants=[0, 1]), True),
+            ("00", ValueVariants(0, variants=[0, 1]), False),
+        ]
+    )
+    def test__cmp_objs(self, source1, obj2, _EXPECTED):
+        func_link = lambda: source1 == obj2
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
 
 # =====================================================================================================================

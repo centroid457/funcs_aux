@@ -5,6 +5,7 @@ from annot_attrs import *
 from classes_aux import *
 import re
 
+from .valid import Valid
 
 # =====================================================================================================================
 class Exx__ValueNotInVariants(Exception):
@@ -16,38 +17,53 @@ class Exx__VariantsIncompatible(Exception):     # TODO: seems need to deprecate 
 
 
 # =====================================================================================================================
+TYPE__VARIANT = Union[str, Any]
+TYPE__VARIANTS = Iterable[TYPE__VARIANT] | ValueNotExist
+
+
+# =====================================================================================================================
 class ValueVariants:
     """
     used to keep separated VALUE and measure unit
+
+    GOAL
+    ----
+    1. get first associated value
+    2. validate item by variants
     """
     # TODO: combine with ValueUnit - just add ACCEPTABLE(*VARIANTS) and rename UNIT just as SUFFIX!
 
     # SETTINGS -----------------------
     CASE_INSENSITIVE: bool = True
-    VARIANTS: list[Any] = None
-    VALUE_DEFAULT: Any = ArgsEmpty
+    VARIANTS: TYPE__VARIANTS = ValueNotExist
+    VALUE_DEFAULT: Any = ValueNotExist
 
     # DATA ---------------------------
-    __value: Any = ArgsEmpty
+    __value: Any = ValueNotExist
 
-    def __init__(self, value: Union[str, Any] = ArgsEmpty, variants: list[Union[str, Any]] = None, case_insensitive: bool = None):
+    def __init__(self, value: Union[str, Any] = ValueNotExist, variants: TYPE__VARIANTS = ValueNotExist, case_insensitive: bool = None):
         """
-        :param value: None mean NotSelected/NotSet!
-            if you need set None - use string VALUE in any case! 'None'/NONE/none
         """
-        # FIXME: need think about None VALUE!
-        # settings ---------------
         if case_insensitive is not None:
             self.CASE_INSENSITIVE = case_insensitive
-        if variants is not None:
+
+        self._variants_apply(variants)
+
+        if value != ValueNotExist:
+            self.VALUE = value
+            self.VALUE_DEFAULT = self.VALUE
+
+        self._variants_apply(variants)  # need secondary!!!
+
+    def _variants_apply(self, variants: set[Union[str, Any]] | ValueNotExist = ValueNotExist) -> None:
+        if variants is not ValueNotExist:
             self.VARIANTS = variants
 
-        # work ---------------
-        self._variants_validate()
-
-        if value != ArgsEmpty:
-            self.VALUE_DEFAULT = value
-            self.VALUE = value
+        if self.VARIANTS is ValueNotExist:
+            if self.VALUE is not ValueNotExist:
+                self.VARIANTS = {self.VALUE, }
+            # else:
+            #     self.VARIANTS = set()
 
     def __str__(self) -> str:
         return f"{self.VALUE}"
@@ -60,7 +76,13 @@ class ValueVariants:
 
     def __eq__(self, other):
         if isinstance(other, ValueVariants):
-            other = other.VALUE
+            if other.VALUE == ValueNotExist:
+                return self.VALUE in other
+            else:
+                other = other.VALUE
+
+        if self.VALUE == ValueNotExist:
+            return self.value_validate(other)
 
         # todo: decide is it correct using comparing by str()??? by now i think it is good enough! but maybe add it as parameter
         if self.CASE_INSENSITIVE:
@@ -68,43 +90,17 @@ class ValueVariants:
         else:
             return (self.VALUE == other) or (str(self.VALUE) == str(other))
 
-    def __ne__(self, other):
-        return not self == other
-
     def __len__(self):
         return len(self.VARIANTS)
 
     def __iter__(self):
         yield from self.VARIANTS
 
-    def __contains__(self, item):
+    def __contains__(self, item) -> bool:
         """
         used to check compatibility
         """
-        result = False
-        for variant in self.VARIANTS:
-            if variant == item:
-                result = True
-
-            elif self.CASE_INSENSITIVE:
-                result = str(variant).lower() == str(item).lower()
-            else:
-                result = str(variant) == str(item)
-
-            if result:
-                break
-
-        return result
-
-    def _variants_validate(self) -> Optional[NoReturn]:
-        if self.CASE_INSENSITIVE:
-            real_len = len(set(map(lambda item: str(item).lower(), self.VARIANTS)))
-        else:
-            real_len = len(set(self.VARIANTS))
-
-        result = real_len == len(self.VARIANTS)
-        if not result:
-            raise Exx__VariantsIncompatible()
+        return self.value_validate(item)
 
     @property
     def VALUE(self) -> Any:
@@ -112,22 +108,34 @@ class ValueVariants:
 
     @VALUE.setter
     def VALUE(self, value: Any) -> Optional[NoReturn]:
+        variant = self.value_get_variant(value)
+        if variant != ValueNotExist:
+            self.__value = variant
+        else:
+            raise Exx__ValueNotInVariants()
+
+    def value_get_variant(self, value: Any) -> TYPE__VARIANT | ValueNotExist:
         for variant in self.VARIANTS:
+            if Valid.compare_doublesided__bool(variant, value):
+                return variant
+
             if self.CASE_INSENSITIVE:
                 result = str(variant).lower() == str(value).lower()
             else:
                 result = str(variant) == str(value)
             if result:
-                self.__value = variant
-                return
+                return variant
 
-        raise Exx__ValueNotInVariants()
+        return ValueNotExist
+
+    def value_validate(self, value: Any) -> Any | None:
+        return self.value_get_variant(value) != ValueNotExist
 
     def reset(self) -> None:
         """
         set VALUE into default only if default is exists!
         """
-        if self.VALUE_DEFAULT != ArgsEmpty:
+        if self.VALUE_DEFAULT != ValueNotExist:
             self.VALUE = self.VALUE_DEFAULT
 
 

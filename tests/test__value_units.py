@@ -170,12 +170,63 @@ class Test__WithUnit:
             ("0.001", "1m", 0),
             ("1k", "1000", 0),
 
-            # RUS/ENG
+            # RUS/ENG ------------
             ("1d", "1д", 0),
+
+            # VALUENOTEXISTS ------------
+            ("1", ValueNotExist, 0),
+            ("1", ValueNotExist, 0),
+            (ValueNotExist, "1", 0),
         ]
     )
-    def test__cmp(self, source1, source2, _EXPECTED):
+    def test__cmp_as_func(self, source1, source2, _EXPECTED):
         func_link = lambda: ValueUnit(source1).__cmp__(source2)
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="source1, obj2, _EXPECTED",
+        argvalues=[
+            # unit -----------------------
+            (1, ValueUnit(1), True),
+            ("1.0", ValueUnit(1), True),
+            ("1.0V", ValueUnit(1), True),
+            ("1.0V", ValueUnit("1 V"), True),
+
+            ("1.0HELLO", ValueUnit(1), True),
+            ("1.0kHELLO", ValueUnit(1000), True),
+            ("1.0kHELLO", ValueUnit("1k"), True),
+
+            ("1V", ValueUnit("1A"), Exception),
+
+            # multiplier ------------------
+            ("0.001V", ValueUnit("1mV"), True),
+            ("0.002V", ValueUnit("1mV"), False),
+            ("0.001V", ValueUnit("11 mV"), False),
+            ("0.001V", ValueUnit("1,1mV"), False),
+
+            ("hello", ValueUnit(2), Exception),
+
+            # baseWoUnit ------------------
+            ("0.001V", ValueUnit("1m"), True),
+            ("0.001", ValueUnit("1m"), True),
+            ("1k", ValueUnit("1000"), True),
+
+            # RUS/ENG ------------
+            ("1d", ValueUnit("1д"), True),
+
+            # VALUENOTEXISTS ------------
+            ("1", ValueUnit(ValueNotExist), True),
+            ("1V", ValueUnit(ValueNotExist), True),
+            ("1V", ValueUnit(ValueNotExist, unit="V"), True),
+            ("1V", ValueUnit(ValueNotExist, unit="A"), False),
+            ("1", ValueUnit(ValueNotExist, unit="A"), True),
+            ("1m", ValueUnit(ValueNotExist, unit="A"), True),
+            (ValueUnit(ValueNotExist), "1", True),
+        ]
+    )
+    def test__cmp_by_second_obj(self, source1, obj2, _EXPECTED):
+        func_link = lambda: source1 == obj2
         pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
 
 

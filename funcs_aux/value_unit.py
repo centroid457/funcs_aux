@@ -98,6 +98,15 @@ class ValueUnit(NumberArithmTranslateToAttr):
 
         assert ValueUnit(1001) > '1kV'
         assert ValueUnit(1000) < '1.1kV'
+
+        - ValueNotExist - same as object as pattern!
+
+        assert "1" == ValueUnit(ValueNotExist)
+        assert "1V" == ValueUnit(ValueNotExist)
+        assert "1V" == ValueUnit(ValueNotExist, unit="V")
+        assert "1" == ValueUnit(ValueNotExist, unit="V")
+        assert "1A" != ValueUnit(ValueNotExist, unit="V")
+
     """
     # NESTED ----------------------
     NUMBER_ARITHM__GETATTR_NAME = "VALUE_PURE"
@@ -132,12 +141,15 @@ class ValueUnit(NumberArithmTranslateToAttr):
         self.VALUE = value
 
     # -----------------------------------------------------------------------------------------------------------------
-    def __init__(self, source: Union[int, float, str, Any] = ValueNotExist, unit: str = None, separator: str = None):
+    def __init__(self, source: Union[int, float, str, Any] = ValueNotExist, unit: str = None, separator: str = None, mult_disable: bool = None):
         """
         :param source:
         :param unit: use it only if not exists in source!
         :param separator: if set - would overwrite parsed!
         """
+        if mult_disable is not None:
+            self.UNIT_MULT__DISABLE = mult_disable
+
         if self.UNIT_MULT__DISABLE:
             self.UNIT_MULT__VARIANTS = {}
 

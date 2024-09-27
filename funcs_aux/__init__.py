@@ -73,6 +73,13 @@ from .valid import (
     TYPE__BOOL_LINK,
     # EXX
 )
+from .valid_regexp import (
+    # BASE
+    ValidRegExp,
+    # AUX
+    # TYPES
+    # EXX
+)
 from .result_cum import (
     # BASE
     ResultCum,

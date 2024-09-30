@@ -48,7 +48,7 @@ class ValidRegExp:
                 return True
         return False
 
-    def check(self, source: Any) -> bool:
+    def run(self, source: Any) -> bool:
         return self == source
 
 

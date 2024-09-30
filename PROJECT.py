@@ -86,15 +86,16 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 27)
+    VERSION: tuple[int, int, int] = (0, 4, 28)
     TODO: list[str] = [
-        "..."
+        "[Valid*/Value*] ref/make all nested from VALID!!!",
     ]
     FIXME: list[str] = [
         "..."
     ]
     NEWS: list[str] = [
-        "[ValueVariants] big ref +add ValueNotExist to use as validator"
+        "[ValidRegExp] add new",
+        "[ValidAux] separate from Valid",
     ]
 
 

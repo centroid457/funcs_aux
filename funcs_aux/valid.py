@@ -270,6 +270,11 @@ class Valid(ValidAux):
     CHAIN__CUM: bool = True
     CHAIN__FAIL_STOP: bool = True
 
+    # -----------------------------------------------------------------------------------------------------------------
+    @property
+    def validate_last_bool(self) -> bool:
+        return bool(self)
+
     def get_finished_result_or_none(self) -> None | bool:
         """
         GOAL
@@ -411,10 +416,6 @@ class Valid(ValidAux):
             # ============================
 
         # FINISH ---------------------
-        return bool(self)
-
-    @property
-    def validate_last_bool(self) -> bool:
         return bool(self)
 
     def __bool__(self) -> bool:

@@ -20,10 +20,10 @@ class ValidRegExp:
     BEST USAGE
     ----------
     OBJECT cmp
-        assert 1 == ValidRegExp(r"\d?")
-        assert 1 == ValidRegExp([r"\d?", r"\s*\d?"])
+        assert 1 == ValidRegExp(r"\\d?")
+        assert 1 == ValidRegExp([r"\\d?", r"\\s*\\d?"])
     METHOD check
-        assert ValidRegExp(r"\d?").check(1)
+        assert ValidRegExp(r"\\d?").run(1)
 
     """
     REGEXPS: Iterable[str] = None

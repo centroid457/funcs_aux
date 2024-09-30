@@ -372,8 +372,8 @@ class Valid(ValidAux):
 
         :param _value_link: BE CAREFUL created specially for value_link=ValueNotExist on init
         """
-        if _value_link is not ValueNotExist:
-            self.VALUE_LINK = _value_link
+        if _value_link == ValueNotExist:
+            _value_link = self.VALUE_LINK
 
         self.clear()
         self.timestamp_last = time.time()
@@ -386,13 +386,7 @@ class Valid(ValidAux):
             self.finished = False
 
             # VALUE ---------------------
-            self.value_last = self.get_result_or_exx(self.VALUE_LINK, args=self.ARGS__VALUE, kwargs=self.KWARGS__VALUE)
-
-            # TODO: maybe add ArgsKwargs but it is too complicated! add only in critical obligatory situation!
-            # if TypeChecker.check__callable_func_meth_inst(self.VALUE_LINK):
-            #     self.VALUE_ACTUAL = self.VALUE_LINK(*self.ARGS, **self.KWARGS)
-            # else:
-            #     self.VALUE_ACTUAL = self.VALUE_LINK
+            self.value_last = self.get_result_or_exx(_value_link, args=self.ARGS__VALUE, kwargs=self.KWARGS__VALUE)
 
             # VALIDATE ------------------
             if isinstance(self.value_last, Exception) and not TypeChecker.check__exception(self.VALIDATE_LINK):
@@ -405,10 +399,6 @@ class Valid(ValidAux):
                 args_validate = (self.value_last, *self.ARGS__VALIDATE)
                 self.validate_last = self.get_result_or_exx(self.VALIDATE_LINK, args=args_validate, kwargs=self.KWARGS__VALIDATE)
 
-                # elif self.VALIDATE_LINK is True:
-                #     # self.validate_last = self.get_result_or_exx(lambda: self.VALIDATE_LINK(self.value_last))
-                #     # dont use it!
-
             else:
                 self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
 
@@ -417,6 +407,8 @@ class Valid(ValidAux):
 
         # FINISH ---------------------
         return bool(self)
+
+    # def validate(self, _value_link: Any = ValueNotExist) -> bool:
 
     def __bool__(self) -> bool:
         return self.validate_last is True   # dont use validate_last_bool!

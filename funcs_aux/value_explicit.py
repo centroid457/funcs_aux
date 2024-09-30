@@ -3,6 +3,7 @@ from enum import Enum
 
 
 # =====================================================================================================================
+# TODO: use as ValueExplicit and VariantsExplicit(*args)
 class Explicit:
     """
     GOAL

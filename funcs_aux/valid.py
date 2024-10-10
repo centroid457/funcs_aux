@@ -246,6 +246,7 @@ class Valid(ValidAux):
     SKIP_LINK: TYPE__BOOL_LINK = None
     VALUE_LINK: TYPE__SOURCE_LINK
     VALIDATE_LINK: TYPE__VALIDATE_LINK = True
+    VALIDATE_RETRY: int = 0
 
     ARGS__VALUE: TYPE__ARGS = ()
     ARGS__VALIDATE: TYPE__ARGS = ()
@@ -294,6 +295,7 @@ class Valid(ValidAux):
             self,
             value_link: TYPE__SOURCE_LINK = ValueNotExist,
             validate_link: Optional[TYPE__VALIDATE_LINK] = None,
+            validate_retry: Optional[int] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
 
             args__value: TYPE__ARGS = (),
@@ -328,6 +330,8 @@ class Valid(ValidAux):
 
         if validate_link is not None:
             self.VALIDATE_LINK = validate_link
+        if validate_retry is not None:
+            self.VALIDATE_RETRY = validate_retry
         if skip_link is not None:
             self.SKIP_LINK = skip_link
 
@@ -382,25 +386,34 @@ class Valid(ValidAux):
         self.skip_last = self.get_bool(self.SKIP_LINK)
 
         if not self.skip_last:
+            retry_count = 0
             # WORK =======================
             self.finished = False
 
-            # VALUE ---------------------
-            self.value_last = self.get_result_or_exx(_value_link, args=self.ARGS__VALUE, kwargs=self.KWARGS__VALUE)
+            while True:
+                self.clear()
+                self.timestamp_last = time.time()
 
-            # VALIDATE ------------------
-            if isinstance(self.value_last, Exception) and not TypeChecker.check__exception(self.VALIDATE_LINK):
-                self.validate_last = False
+                # VALUE ---------------------
+                self.value_last = self.get_result_or_exx(_value_link, args=self.ARGS__VALUE, kwargs=self.KWARGS__VALUE)
 
-            elif TypeChecker.check__exception(self.VALIDATE_LINK):
-                self.validate_last = TypeChecker.check__nested__by_cls_or_inst(self.value_last, self.VALIDATE_LINK)
+                # VALIDATE ------------------
+                if isinstance(self.value_last, Exception) and not TypeChecker.check__exception(self.VALIDATE_LINK):
+                    self.validate_last = False
 
-            elif TypeChecker.check__callable_func_meth_inst(self.VALIDATE_LINK):
-                args_validate = (self.value_last, *self.ARGS__VALIDATE)
-                self.validate_last = self.get_result_or_exx(self.VALIDATE_LINK, args=args_validate, kwargs=self.KWARGS__VALIDATE)
+                elif TypeChecker.check__exception(self.VALIDATE_LINK):
+                    self.validate_last = TypeChecker.check__nested__by_cls_or_inst(self.value_last, self.VALIDATE_LINK)
 
-            else:
-                self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
+                elif TypeChecker.check__callable_func_meth_inst(self.VALIDATE_LINK):
+                    args_validate = (self.value_last, *self.ARGS__VALIDATE)
+                    self.validate_last = self.get_result_or_exx(self.VALIDATE_LINK, args=args_validate, kwargs=self.KWARGS__VALIDATE)
+
+                else:
+                    self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
+
+                # FINISH
+                if not self.VALIDATE_RETRY or retry_count == self.VALIDATE_RETRY or self.validate_last_bool:
+                    break
 
             self.finished = True
             # ============================
@@ -459,6 +472,14 @@ class Valid(ValidAux):
 
 
 # =====================================================================================================================
+class ValidRetry1(Valid):
+    VALIDATE_RETRY = 1
+
+
+class ValidRetry2(Valid):
+    VALIDATE_RETRY = 2
+
+
 class ValidFailStop(Valid):
     """
     just a derivative

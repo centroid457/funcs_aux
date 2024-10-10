@@ -61,10 +61,13 @@ from .valid import (
     # BASE
     Valid,
     ValidChains,
+
     ValidNoCum,
     ValidFailStop,
     ValidFailContinue,
     ValidSleep,
+    ValidRetry1,
+    ValidRetry2,
     # AUX
     # TYPES
     TYPE__EXCEPTION,

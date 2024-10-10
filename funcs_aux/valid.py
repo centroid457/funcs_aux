@@ -475,6 +475,11 @@ class Valid(ValidAux):
 
 # =====================================================================================================================
 class ValidRetry1(Valid):
+    """
+    CREATED SPECIALLY FOR
+    ---------------------
+    eltech_testplans retry testing Serial(Uart) validation responses
+    """
     VALIDATE_RETRY = 1
 
 

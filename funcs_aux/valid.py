@@ -411,14 +411,16 @@ class Valid(ValidAux):
                 else:
                     self.validate_last = self.compare_doublesided(self.value_last, self.VALIDATE_LINK)
 
-                # FINISH
+                # FINISH retry
                 if not self.VALIDATE_RETRY or retry_count == self.VALIDATE_RETRY or self.validate_last_bool:
                     break
+                else:
+                    retry_count += 1
 
             self.finished = True
             # ============================
 
-        # FINISH ---------------------
+        # FINISH final ---------------------
         return bool(self)
 
     # def validate(self, _value_link: Any = ValueNotExist) -> bool:

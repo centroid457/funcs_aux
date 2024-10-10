@@ -339,5 +339,19 @@ class Test__ValidTypes:
     def test__str(self, args):
         assert str(Valid(*args)) is not None
 
+    # -----------------------------------------------------------------------------------------------------------------
+    @pytest.mark.parametrize(
+        argnames="source, validate_link, retry, _EXPECTED",
+        argvalues=[
+            # bool --------------------
+            ([True, False, False], list.pop, 0, False),
+            ([True, False, False], list.pop, 1, False),
+            ([True, False, False], list.pop, 2, True),
+        ]
+    )
+    def test__retry(self, source, validate_link, retry, _EXPECTED):
+        func_link = Valid(value_link=source, validate_link=validate_link, validate_retry=retry).run
+        pytest_func_tester__no_args_kwargs(func_link, _EXPECTED)
+
 
 # =====================================================================================================================

@@ -70,7 +70,7 @@ def ensure_class(source: Any) -> type:
 
     CREATED SPECIALLY FOR
     ---------------------
-    ClsMiddleGroup
+    classes_aux.ClsMiddleGroup
     """
     if TypeChecker.check__class(source):
         return source

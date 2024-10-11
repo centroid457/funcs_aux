@@ -59,6 +59,7 @@ from .value_variants import (
 # ---------------------------------------------------------------------------------------------------------------------
 from .valid import (
     # BASE
+    ValidAux,
     Valid,
     ValidChains,
 

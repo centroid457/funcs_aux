@@ -478,7 +478,7 @@ class ValidRetry1(Valid):
     """
     CREATED SPECIALLY FOR
     ---------------------
-    eltech_testplans retry testing Serial(Uart) validation responses
+    eltech_testplans make retry while testing Serial(Uart) validation responses by sending RESET with ensure result!
     """
     VALIDATE_RETRY = 1
 

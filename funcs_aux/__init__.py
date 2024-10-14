@@ -59,7 +59,6 @@ from .value_variants import (
 # ---------------------------------------------------------------------------------------------------------------------
 from .valid import (
     # BASE
-    ValidAux,
     Valid,
     ValidChains,
 
@@ -77,6 +76,7 @@ from .valid import (
     TYPE__BOOL_LINK,
     # EXX
 )
+from .valid__aux import ValidAux
 from .valid_regexp import (
     # BASE
     ValidRegExp,

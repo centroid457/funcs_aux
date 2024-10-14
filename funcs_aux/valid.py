@@ -4,7 +4,7 @@ import time
 from object_info import *
 
 from .args import TYPE__ARGS, TYPE__KWARGS
-from .valid__aux import ValidAux
+from .valid_aux import ValidAux
 from .ensure import args__ensure_tuple
 from .value_explicit import ValueNotExist, TYPE__VALUE_NOT_PASSED
 
@@ -284,54 +284,6 @@ class Valid(ValidAux):
         else:
             # todo: maybe its not so good here/need ref? - seems OK!
             return self.run__if_not_finished() == other
-
-
-# =====================================================================================================================
-class ValidRetry1(Valid):
-    """
-    CREATED SPECIALLY FOR
-    ---------------------
-    eltech_testplans make retry while testing Serial(Uart) validation responses by sending RESET with ensure result!
-    """
-    VALIDATE_RETRY = 1
-
-
-class ValidRetry2(Valid):
-    VALIDATE_RETRY = 2
-
-
-class ValidFailStop(Valid):
-    """
-    just a derivative
-    """
-    CHAIN__FAIL_STOP = True
-
-
-class ValidFailContinue(Valid):
-    """
-    just a derivative
-    """
-    CHAIN__FAIL_STOP = False
-
-
-class ValidNoCum(Valid):
-    """
-    just a derivative
-
-    you can use it as a stub in chains
-    """
-    CHAIN__CUM = False
-
-
-class ValidSleep(ValidNoCum):
-    """
-    just a derivative - to make a pause in chains
-    """
-    NAME = "Sleep"
-    VALIDATE_LINK: TYPE__VALIDATE_LINK = None
-
-    def __init__(self, secs: float = 1):
-        super().__init__(value_link=time.sleep, args__value=secs)
 
 
 # =====================================================================================================================

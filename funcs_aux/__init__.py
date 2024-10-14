@@ -57,17 +57,11 @@ from .value_variants import (
     Exx__VariantsIncompatible,
 )
 # ---------------------------------------------------------------------------------------------------------------------
+from .valid_aux import ValidAux
 from .valid import (
     # BASE
     Valid,
     ValidChains,
-
-    ValidNoCum,
-    ValidFailStop,
-    ValidFailContinue,
-    ValidSleep,
-    ValidRetry1,
-    ValidRetry2,
     # AUX
     # TYPES
     TYPE__EXCEPTION,
@@ -76,7 +70,18 @@ from .valid import (
     TYPE__BOOL_LINK,
     # EXX
 )
-from .valid__aux import ValidAux
+from .valid_derivatives import (
+    # BASE
+    ValidRetry1,
+    ValidRetry2,
+    ValidFailStop,
+    ValidFailContinue,
+    ValidNoCum,
+    ValidSleep,
+    # AUX
+    # TYPES
+    # EXX
+)
 from .valid_regexp import (
     # BASE
     ValidRegExp,

@@ -16,7 +16,7 @@ colorama==0.4.6
 docutils==0.21.2
 fastapi==0.115.0
 frozenlist==1.4.1
-funcs_aux==0.4.28
+funcs_aux==0.4.29
 h11==0.14.0
 idna==3.10
 importlib_metadata==8.5.0

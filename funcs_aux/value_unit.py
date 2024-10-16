@@ -1,9 +1,10 @@
-from . import *
 from typing import *
-from object_info import ObjectInfo
-from annot_attrs import *
-from classes_aux import *
 import re
+from object_info import ObjectInfo
+from annot_attrs import AnnotClsKeysAsValues
+from classes_aux import NumberArithmTranslateToAttr
+
+from . import *
 
 
 # =====================================================================================================================

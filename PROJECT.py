@@ -86,7 +86,7 @@ Designed to collect useful funcs in one place!
     ]
 
     # HISTORY -----------------------------------------------
-    VERSION: tuple[int, int, int] = (0, 4, 30)
+    VERSION: tuple[int, int, int] = (0, 4, 31)
     TODO: list[str] = [
         "[Valid*/Value*] ref/make all nested from VALID!!!",
     ]
@@ -94,8 +94,7 @@ Designed to collect useful funcs in one place!
         "..."
     ]
     NEWS: list[str] = [
-        "[Valid] separate ValidAux/derivatives",
-        "[ValidAux] add get_result",
+        "try apply last vers for modules like AnnotAux, seems errors exists!",
     ]
 
 

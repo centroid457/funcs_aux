@@ -11,6 +11,10 @@
 ********************************************************************************
 ## NEWS
 
+0.4.31 (2024/10/16 12:38:22)
+------------------------------
+- try apply last vers for modules like AnnotAux, seems errors exists!  
+
 0.4.30 (2024/10/14 15:22:54)
 ------------------------------
 - [Valid] separate ValidAux/derivatives  
@@ -286,7 +290,7 @@
 
 0.2.1 (2024/05/22 12:15:48)
 ------------------------------
-- [breeder_str] move AnnotsNested into separated module![__INIT__.py] fix import  
+- [breeder_str] move AnnotAux into separated module![__INIT__.py] fix import  
 - apply last pypi template  
 
 0.2.0 (2024/05/21 13:02:53)

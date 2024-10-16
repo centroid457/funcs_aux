@@ -15,7 +15,7 @@ class Exx__ValueUnitsIncompatible(Exception):
     pass
 
 
-class UnitBase(AnnotsClsKeysAsValues):
+class UnitBase(AnnotClsKeysAsValues):
     """
     this is just an example! it will help you to use just strings by Object
     """

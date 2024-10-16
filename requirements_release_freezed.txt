@@ -1,7 +1,7 @@
 aiohappyeyeballs==2.4.3
 aiohttp==3.10.9
 aiosignal==1.3.1
-annot_attrs==0.0.13
+annot_attrs==0.1.0
 annotated-types==0.7.0
 anyio==4.6.0
 attrs==24.2.0
@@ -9,14 +9,15 @@ build==1.2.2.post1
 bus_user==0.4.16
 certifi==2024.8.30
 charset-normalizer==3.3.2
-classes_aux==0.1.10
+classes_aux==0.1.13
 cli_user==0.1.3
 click==8.1.7
 colorama==0.4.6
 docutils==0.21.2
+dummy_module==0.0.1
 fastapi==0.115.0
 frozenlist==1.4.1
-funcs_aux==0.4.29
+funcs_aux==0.4.30
 h11==0.14.0
 idna==3.10
 importlib_metadata==8.5.0
@@ -36,7 +37,7 @@ object_info==0.2.20
 packaging==24.1
 pkginfo==1.10.0
 pluggy==1.5.0
-private_values==0.5.9
+private_values==0.6.0
 pydantic==2.9.2
 pydantic_core==2.23.4
 Pygments==2.18.0
@@ -53,7 +54,7 @@ PyYAML==6.0.2
 readme_renderer==44.0
 requests==2.32.3
 requests-toolbelt==1.0.0
-requirements_checker==0.2.14
+requirements_checker==0.2.15
 rfc3986==2.0.0
 rich==13.9.2
 server_templates==0.3.3

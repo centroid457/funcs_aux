@@ -1,11 +1,11 @@
 from typing import *
-from annot_attrs import AnnotsNested
+from annot_attrs import AnnotAux
 
 from funcs_aux import Exx__IndexOverlayed, BreederStrSeries, Exx__ItemNotExists, Exx__IndexNotSet
 
 
 # =====================================================================================================================
-class BreederStrStack(AnnotsNested):
+class BreederStrStack(AnnotAux):
     """
     CREATED SPECIALLY FOR
     ---------------------

@@ -1,8 +1,7 @@
 from typing import *
 import re
 from object_info import *
-
-from .value_explicit import ValueNotExist, TYPE__VALUE_NOT_PASSED
+from . import *
 
 
 # =====================================================================================================================
@@ -49,7 +48,7 @@ class ValidRegExp:
         return False
 
     def run(self, source: Any) -> bool:
-        return self == source
+        return ValidAux.compare_doublesided__bool(source, self)
 
 
 # =====================================================================================================================

@@ -91,7 +91,7 @@ class ValueVariants:
             return (self.VALUE == other) or (str(self.VALUE) == str(other))
 
     def __len__(self):
-        return len(self.VARIANTS)
+        return len(self.VARIANTS or [])
 
     def __iter__(self):
         yield from self.VARIANTS

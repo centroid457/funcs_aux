@@ -85,25 +85,6 @@ class Valid(ValidAux):
     CHAIN__FAIL_STOP: bool = True
 
     # -----------------------------------------------------------------------------------------------------------------
-    @property
-    def validate_last_bool(self) -> bool:
-        return bool(self)
-
-    def get_finished_result_or_none(self) -> None | bool:
-        """
-        GOAL
-        ----
-        attempt to make ability to get clear result by one check (for Gui)
-
-        :return: if not finished - None
-            if finished - validate_last_bool
-        """
-        if self.finished is None:
-            result = None
-        else:
-            result = bool(self)
-        return result
-
     def __init__(
             self,
             value_link: TYPE__SOURCE_LINK = ValueNotExist,
@@ -124,7 +105,6 @@ class Valid(ValidAux):
             chain__fail_stop: Optional[bool] = None,
     ):
         """
-
         :param value_link: None - for cmp by eq/ne! other types - for direct usage
         :param validate_link:
         :param skip_link:
@@ -167,12 +147,6 @@ class Valid(ValidAux):
         if chain__fail_stop is not None:
             self.CHAIN__FAIL_STOP = chain__fail_stop
 
-    def run__if_not_finished(self) -> bool:
-        if not self.finished:
-            return self.run()
-        else:
-            return bool(self)
-
     def clear(self):
         self.timestamp_last = None
         self.skip_last = False
@@ -181,16 +155,41 @@ class Valid(ValidAux):
         self.validate_last = True
         self.log_lines = []
 
-    def run(self, _value_link: Any = ValueNotExist) -> bool:
+    @property
+    def validate_last_bool(self) -> bool:
+        return bool(self)
+
+    def get_finished_result_or_none(self) -> None | bool:
+        """
+        GOAL
+        ----
+        attempt to make ability to get clear result by one check (for Gui)
+
+        :return: if not finished - None
+            if finished - validate_last_bool
+        """
+        if self.finished is None:
+            result = None
+        else:
+            result = bool(self)
+        return result
+
+    def run__if_not_finished(self) -> bool:
+        if not self.finished:
+            return self.run()
+        else:
+            return bool(self)
+
+    def run(self, value_link: Any = ValueNotExist) -> bool:
         """
         CONSTRAINTS
         -----------
         careful about 1 comparing (assert 0 == False, assert 1 == True, assert 2 != True)
 
-        :param _value_link: BE CAREFUL created specially for value_link=ValueNotExist on init
+        :param value_link: BE CAREFUL created specially for value_link=ValueNotExist on init
         """
-        if _value_link == ValueNotExist:
-            _value_link = self.VALUE_LINK
+        if value_link == ValueNotExist:
+            value_link = self.VALUE_LINK
 
         self.clear()
         self.timestamp_last = time.time()
@@ -208,7 +207,7 @@ class Valid(ValidAux):
                 self.timestamp_last = time.time()
 
                 # VALUE ---------------------
-                self.value_last = self.get_result_or_exx(_value_link, args=self.ARGS__VALUE, kwargs=self.KWARGS__VALUE)
+                self.value_last = self.get_result_or_exx(value_link, args=self.ARGS__VALUE, kwargs=self.KWARGS__VALUE)
 
                 # VALIDATE ------------------
                 if isinstance(self.value_last, Exception) and not TypeChecker.check__exception(self.VALIDATE_LINK):
@@ -236,7 +235,7 @@ class Valid(ValidAux):
         # FINISH final ---------------------
         return bool(self)
 
-    # def validate(self, _value_link: Any = ValueNotExist) -> bool:
+    # def validate(self, value_link: Any = ValueNotExist) -> bool:
 
     def __bool__(self) -> bool:
         return self.validate_last is True   # dont use validate_last_bool!

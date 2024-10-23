@@ -60,6 +60,7 @@ class Valid(ValidAux):
     VALUE_LINK: TYPE__SOURCE_LINK
     VALIDATE_LINK: TYPE__VALIDATE_LINK = True
     VALIDATE_RETRY: int = 0
+    VALIDATE_FAIL: bool = None
 
     ARGS__VALUE: TYPE__ARGS = ()
     ARGS__VALIDATE: TYPE__ARGS = ()
@@ -76,8 +77,9 @@ class Valid(ValidAux):
     timestamp_last: float | None = None
     skip_last: bool = False
     finished: bool | None = None
-    value_last: Any | Exception = None
-    validate_last: None | bool | Exception = True   # decide using only bool???
+    value_last: Any | Exception = None              # direct result value for calculating func value_link
+    validate_last: None | bool | Exception = True   # direct result value for calculating func validate_link === decide using only bool???
+    validate_last_bool: bool    # represented value for validation
     log_lines: list[str] = None
 
     # CHAINS -------------------------------------
@@ -91,6 +93,7 @@ class Valid(ValidAux):
             validate_link: Optional[TYPE__VALIDATE_LINK] = None,
             validate_retry: Optional[int] = None,
             skip_link: Optional[TYPE__BOOL_LINK] = None,
+            validate_fail: Optional[bool] = None,
 
             args__value: TYPE__ARGS = (),
             args__validate: TYPE__ARGS = (),
@@ -125,6 +128,8 @@ class Valid(ValidAux):
             self.VALIDATE_LINK = validate_link
         if validate_retry is not None:
             self.VALIDATE_RETRY = validate_retry
+        if validate_fail is not None:
+            self.VALIDATE_FAIL = validate_fail
         if skip_link is not None:
             self.SKIP_LINK = skip_link
 
@@ -157,6 +162,9 @@ class Valid(ValidAux):
 
     @property
     def validate_last_bool(self) -> bool:
+        """
+        this is link name for bool(result)
+        """
         return bool(self)
 
     def get_finished_result_or_none(self) -> None | bool:
@@ -169,10 +177,9 @@ class Valid(ValidAux):
             if finished - validate_last_bool
         """
         if self.finished is None:
-            result = None
+            return None
         else:
-            result = bool(self)
-        return result
+            return self.validate_last_bool
 
     def run__if_not_finished(self) -> bool:
         if not self.finished:
@@ -233,12 +240,18 @@ class Valid(ValidAux):
             # ============================
 
         # FINISH final ---------------------
-        return bool(self)
+        return self.validate_last_bool
 
     # def validate(self, value_link: Any = ValueNotExist) -> bool:
 
     def __bool__(self) -> bool:
-        return self.validate_last is True   # dont use validate_last_bool!
+        if not self.finished:
+            return False
+
+        if self.VALIDATE_FAIL:
+            return self.validate_last != True       # dont use validate_last_bool!!! recursion!
+        else:
+            return self.validate_last == True
 
     def __str__(self) -> str:
         # main ---------------
@@ -266,7 +279,7 @@ class Valid(ValidAux):
         assert float("1.0") >= 1
         assert "1.0" == Valid(validate_link=lambda x: float(x) >= 1)
 
-        SPECIALY CREATED FOR
+        SPECIALLY CREATED FOR
         --------------------
         test uart devises by schema!
 

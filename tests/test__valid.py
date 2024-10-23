@@ -45,7 +45,7 @@ class Test__ValidTypes:
     @pytest.mark.parametrize(
         argnames="args, _EXPECTED",
         argvalues=[
-            # BOOLING ---------------
+            # BOOLS ---------------
             # direct TRUE
             ((0,), False),
             ((2,), False),  # careful about 1 comparing (assert 0 == False, assert 1 == True, assert 2 != True)

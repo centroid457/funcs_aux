@@ -77,6 +77,7 @@ from .valid_derivatives import (
     ValidFailStop,
     ValidFailContinue,
     ValidNoCum,
+    ValidFail,
     ValidSleep,
     # AUX
     # TYPES

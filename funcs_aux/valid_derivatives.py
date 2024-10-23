@@ -4,6 +4,7 @@ from funcs_aux import Valid, TYPE__VALIDATE_LINK
 
 
 # =====================================================================================================================
+# RETRY ---------------------------------------------------------------------------------------------------------------
 class ValidRetry1(Valid):
     """
     CREATED SPECIALLY FOR
@@ -17,6 +18,7 @@ class ValidRetry2(Valid):
     VALIDATE_RETRY = 2
 
 
+# CONTINUE ------------------------------------------------------------------------------------------------------------
 class ValidFailStop(Valid):
     """
     just a derivative
@@ -31,6 +33,7 @@ class ValidFailContinue(Valid):
     CHAIN__FAIL_STOP = False
 
 
+# CHANGE RESULT -------------------------------------------------------------------------------------------------------
 class ValidNoCum(Valid):
     """
     just a derivative
@@ -40,6 +43,14 @@ class ValidNoCum(Valid):
     CHAIN__CUM = False
 
 
+class ValidFail(Valid):
+    """
+    reverse direct valid result (if finished)
+    """
+    VALIDATE_FAIL = True
+
+
+# UTILS ---------------------------------------------------------------------------------------------------------------
 class ValidSleep(ValidNoCum):
     """
     just a derivative - to make a pause in chains

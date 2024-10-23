@@ -108,8 +108,13 @@ class Test__ValidTypes:
         ]
     )
     def test__validate__types(self, args, _EXPECTED):
+        # DIRECT -------
         func_link = lambda *_args: Valid(*_args).run()
         pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
+
+        # REVERSE ------
+        func_link = lambda *_args: ValidFail(*_args).run()
+        pytest_func_tester__no_kwargs(func_link, args, not _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------
     @pytest.mark.parametrize(

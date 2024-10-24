@@ -281,7 +281,7 @@ class Valid(ValidAux):
         result_str += f",\n"
 
         # finish ----
-        result_str += f",finished={self.finished},timestamp_last={self.timestamp_last},\n"
+        result_str += f",finished={self.finished},timestamp_last={self.timestamp_last},"
 
         # log ----------------
         for index, line in enumerate(self.log_lines):

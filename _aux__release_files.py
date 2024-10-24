@@ -16,7 +16,8 @@ from cli_user import *
 # VERSION = (0, 0, 6)   # [BADGES] improve
 # VERSION = (0, 0, 7)   # [BADGES] separate TestLinWin
 # VERSION = (0, 0, 8)   # examples string add docstrings
-VERSION = (0, 0, 9)   # add gen requirements_release_freezed
+# VERSION = (0, 0, 9)   # add gen requirements_release_freezed
+VERSION = (0, 0, 10)   # requirements_release_freezed extend timeout (at home i need 3-4sec!)
 
 
 # =====================================================================================================================
@@ -317,7 +318,7 @@ class ReleaseHistory(ReleaseFileBase):
 
 # =====================================================================================================================
 def release_files_update(project: Type['PROJECT']):
-    CliUser().send("python -m pip freeze > requirements_release_freezed.txt")
+    CliUser().send("python -m pip freeze > requirements_release_freezed.txt", timeout=10)
     ReleaseReadme(project).generate()
     ReleaseHistory(project).generate()
 

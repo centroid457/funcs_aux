@@ -113,7 +113,7 @@ class Test__ValidTypes:
         pytest_func_tester__no_kwargs(func_link, args, _EXPECTED)
 
         # REVERSE ------
-        func_link = lambda *_args: ValidFail(*_args).run()
+        func_link = lambda *_args: ValidReverse(*_args).run()
         pytest_func_tester__no_kwargs(func_link, args, not _EXPECTED)
 
     # -----------------------------------------------------------------------------------------------------------------

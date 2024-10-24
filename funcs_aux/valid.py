@@ -60,18 +60,12 @@ class Valid(ValidAux):
     VALUE_LINK: TYPE__SOURCE_LINK
     VALIDATE_LINK: TYPE__VALIDATE_LINK = True
     VALIDATE_RETRY: int = 0
-    VALIDATE_FAIL: bool = None
+    VALIDATE_REVERSE: bool = None
 
     ARGS__VALUE: TYPE__ARGS = ()
     ARGS__VALIDATE: TYPE__ARGS = ()
     KWARGS__VALUE: TYPE__KWARGS = None
     KWARGS__VALIDATE: TYPE__KWARGS = None
-
-    # TODO: apply name from source!!! if not passed
-    STR_PATTERN: str = ("{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},\n"
-                        "...VALUE_LINK={0.VALUE_LINK},ARGS__VALUE={0.ARGS__VALUE},KWARGS__VALUE={0.KWARGS__VALUE},value_last={0.value_last},\n"
-                        "...VALIDATE_LINK={0.VALIDATE_LINK},ARGS__VALIDATE={0.ARGS__VALIDATE},KWARGS__VALIDATE={0.KWARGS__VALIDATE},\n"
-                        "...skip_last={0.skip_last},NAME={0.NAME},finished={0.finished},timestamp_last={0.timestamp_last})")
 
     # RESULT ACTUAL ------------------------------
     timestamp_last: float | None = None
@@ -129,7 +123,7 @@ class Valid(ValidAux):
         if validate_retry is not None:
             self.VALIDATE_RETRY = validate_retry
         if validate_fail is not None:
-            self.VALIDATE_FAIL = validate_fail
+            self.VALIDATE_REVERSE = validate_fail
         if skip_link is not None:
             self.SKIP_LINK = skip_link
 
@@ -248,14 +242,46 @@ class Valid(ValidAux):
         if not self.finished:
             return False
 
-        if self.VALIDATE_FAIL:
+        if self.VALIDATE_REVERSE:
             return self.validate_last != True       # dont use validate_last_bool!!! recursion!
         else:
             return self.validate_last == True
 
     def __str__(self) -> str:
         # main ---------------
-        result_str = self.STR_PATTERN.format(self)
+        # # TODO: apply name from source!!! if not passed???
+        # STR_PATTERN: str = (
+        #     "{0.__class__.__name__}(validate_last_bool={0.validate_last_bool},validate_last={0.validate_last},\n"
+        #     "...VALUE_LINK={0.VALUE_LINK},ARGS__VALUE={0.ARGS__VALUE},KWARGS__VALUE={0.KWARGS__VALUE},value_last={0.value_last},\n"
+        #     "...VALIDATE_LINK={0.VALIDATE_LINK},ARGS__VALIDATE={0.ARGS__VALIDATE},KWARGS__VALIDATE={0.KWARGS__VALIDATE},\n"
+        #     "...skip_last={0.skip_last},NAME={0.NAME},finished={0.finished},timestamp_last={0.timestamp_last})"
+        # )
+        # result_str = STR_PATTERN.format(self)
+
+        # -------------------------------------
+        result_str = f"{self.__class__.__name__}(NAME={self.NAME},skip_last={self.skip_last},validate_last_bool={self.validate_last_bool},\n"
+        # value ----
+        result_str += f"...VALUE_LINK={self.VALUE_LINK}"
+        if self.ARGS__VALUE:
+            result_str += f",ARGS__VALUE={self.ARGS__VALUE}"
+        if self.KWARGS__VALUE:
+            result_str += f",KWARGS__VALUE={self.KWARGS__VALUE}"
+        result_str += f",value_last={self.value_last},\n"
+
+        # validate ----
+        result_str += f"...VALIDATE_LINK={self.VALIDATE_LINK}"
+        if self.ARGS__VALIDATE:
+            result_str += f",ARGS__VALIDATE={self.ARGS__VALIDATE}"
+        if self.KWARGS__VALIDATE:
+            result_str += f",KWARGS__VALIDATE={self.KWARGS__VALIDATE}"
+
+        result_str += f",validate_last={self.validate_last}"
+        if self.VALIDATE_REVERSE:
+            result_str += f"*VALIDATE_REVERSE={self.VALIDATE_REVERSE}"
+        result_str += f",\n"
+
+        # finish ----
+        result_str += f",finished={self.finished},timestamp_last={self.timestamp_last},\n"
 
         # log ----------------
         for index, line in enumerate(self.log_lines):

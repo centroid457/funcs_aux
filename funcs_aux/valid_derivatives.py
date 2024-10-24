@@ -43,11 +43,11 @@ class ValidNoCum(Valid):
     CHAIN__CUM = False
 
 
-class ValidFail(Valid):
+class ValidReverse(Valid):
     """
     reverse direct valid result (if finished)
     """
-    VALIDATE_FAIL = True
+    VALIDATE_REVERSE = True
 
 
 # UTILS ---------------------------------------------------------------------------------------------------------------
